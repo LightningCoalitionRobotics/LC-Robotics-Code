@@ -1,3 +1,11 @@
+# Welcome to the Lightning Coalition Robotics code base!
+When we write out code, we will put it in `TeamCode/src/main/java/org/firstinspires/ftc/teamcode.` Samples can be found in `FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples`.
+I will update this information later with how to connect Android Studio with this repository.
+
+See below for FTC's full README.
+
+------
+
 ## Welcome!
 This GitHub repository contains the source code that is used to build an Android app to control a *FIRST* Tech Challenge competition robot.  To use this SDK, download/clone the entire project to your local computer.
 
