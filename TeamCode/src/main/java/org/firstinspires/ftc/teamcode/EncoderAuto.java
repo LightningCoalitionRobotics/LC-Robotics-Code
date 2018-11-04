@@ -156,18 +156,20 @@ public class EncoderAuto extends LinearOpMode {
         int newLeftTarget;
         int newRightTarget;
 
+        boolean stop = false;
+
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
             newLeftTarget = motorRight.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
             newRightTarget = motorLeft.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
-            motorRight.setTargetPosition(newLeftTarget);
-            motorLeft.setTargetPosition(newRightTarget);
+            //motorRight.setTargetPosition(newLeftTarget);
+            //motorLeft.setTargetPosition(newRightTarget);
 
             // Turn On RUN_TO_POSITION
-            motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -182,7 +184,28 @@ public class EncoderAuto extends LinearOpMode {
             // onto the next step, use (isBusy() || isBusy()) in the loop test.*/
             while (opModeIsActive() &&
                    (runtime.seconds() < timeoutS) &&
-                   (motorRight.isBusy() && motorLeft.isBusy())) {
+                   (!stop)) {
+
+                //Stop right motor if it's finished.
+                if(motorRight.getCurrentPosition() >= newRightTarget) {
+
+                    motorRight.setPower(0);
+
+                    if (motorLeft.getCurrentPosition() >= newLeftTarget) {
+
+                        stop = true;
+
+                    }
+
+                } else {
+
+                    //Stop left motor if it's finished.
+                    if (motorLeft.getCurrentPosition() >= newLeftTarget) {
+
+                        motorRight.setPower(0);
+
+                    }
+                }
 
                 // Display it for the driver.
                 telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
@@ -202,12 +225,8 @@ public class EncoderAuto extends LinearOpMode {
             motorRight.setPower(0);
             motorLeft.setPower(0);
 
-            // Turn off RUN_TO_POSITION
-            motorRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            motorLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-            telemetry.addData("Mode Right", motorRight.getMode());
-            telemetry.addData("Mode Left", motorLeft.getMode());
+            telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
+            telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
             telemetry.update();
               sleep(2000);   // optional pause after each move
         }
