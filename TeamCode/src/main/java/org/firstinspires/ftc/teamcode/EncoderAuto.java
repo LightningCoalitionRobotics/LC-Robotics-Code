@@ -69,9 +69,12 @@ public class EncoderAuto extends LinearOpMode {
     /* Declare OpMode members. */
     private ElapsedTime     runtime = new ElapsedTime();
 
+    static final double     BIG_ENCODER_COUNTS_PER_MOTOR_REV    = 30 ;
     static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 2.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 6.0 ;     // For figuring circumference
+    static final double     BIG_ENCODER_COUNTS_PER_INCH         = (BIG_ENCODER_COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
                                                       (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double     DRIVE_SPEED             = 0.2;
@@ -163,7 +166,7 @@ public class EncoderAuto extends LinearOpMode {
 
             // Determine new target position, and pass to motor controller
             newLeftTarget = motorRight.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newRightTarget = motorLeft.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+            newRightTarget = motorLeft.getCurrentPosition() + (int)(rightInches * BIG_ENCODER_COUNTS_PER_INCH);
             //motorRight.setTargetPosition(newLeftTarget);
             //motorLeft.setTargetPosition(newRightTarget);
 
@@ -191,8 +194,10 @@ public class EncoderAuto extends LinearOpMode {
 
                     motorRight.setPower(0);
 
+                    //if both are finished
                     if (motorLeft.getCurrentPosition() >= newLeftTarget) {
 
+                        //break from the loop
                         stop = true;
 
                     }
@@ -208,8 +213,8 @@ public class EncoderAuto extends LinearOpMode {
                 }
 
                 // Display it for the driver.
-                telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
-                telemetry.addData("Path2",  "Running at %7d :%7d",
+                telemetry.addData("Path1 Right, Left",  "Running to %7d :%7d", newRightTarget,  newLeftTarget);
+                telemetry.addData("Status Right, Left",  "Running at %7d :%7d",
 
                                             motorRight.getCurrentPosition(),
                                             motorLeft.getCurrentPosition());
