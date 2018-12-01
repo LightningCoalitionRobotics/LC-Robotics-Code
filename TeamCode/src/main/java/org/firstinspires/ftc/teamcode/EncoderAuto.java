@@ -72,8 +72,8 @@ public class EncoderAuto extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
     static final double     BIG_ENCODER_COUNTS_PER_MOTOR_REV    = 30 ;
-    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 2.0 ;     // This is < 1.0 if geared UP
+    static final double     COUNTS_PER_MOTOR_REV    = 30;    // eg: TETRIX Motor Encoder
+    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 6.0 ;     // For figuring circumference
     static final double     BIG_ENCODER_COUNTS_PER_INCH         = (BIG_ENCODER_COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
@@ -133,7 +133,7 @@ public class EncoderAuto extends LinearOpMode {
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Path0",  "Starting at %7d :%7d",
                           motorRight.getCurrentPosition(),
-                          motorLeft.getCurrentPosition());
+                (int) ((motorLeft.getCurrentPosition()) * (30) / (1440)));
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
@@ -142,10 +142,8 @@ public class EncoderAuto extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         encoderDrive(DRIVE_SPEED,  36,  36, 15);  // S1: Forward 47 Inches with 5 Sec timeout
-        /*encoderDrive(TURN_SPEED,   1000, 1000, 999999999);  // S2: Turn Right 12 Inches with 4 Sec timeout
-        encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
-*/
-        sleep(2000);     // pause for servos to move
+
+        sleep(2000);     // pause
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -165,20 +163,17 @@ public class EncoderAuto extends LinearOpMode {
         int newLeftTarget;
         int newRightTarget;
 
-        boolean stop = false;
+        boolean leftStop = false;
+        boolean rightStop = false;
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
-            // Determine new target position, and pass to motor controller
-            newLeftTarget = motorLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newRightTarget = motorRight.getCurrentPosition() + (int)(rightInches * BIG_ENCODER_COUNTS_PER_INCH);
-            //motorRight.setTargetPosition(newLeftTarget);
-            //motorLeft.setTargetPosition(newRightTarget);
+            int mappedDownEncoderLeft = (int) ((motorLeft.getCurrentPosition()) * (30) / (1440));
 
-            // Turn On RUN_TO_POSITION
-            //motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            //motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            // Determine new target position, and pass to motor controller
+            newLeftTarget = mappedDownEncoderLeft + (int)(leftInches * COUNTS_PER_INCH);
+            newRightTarget = motorRight.getCurrentPosition() + (int)(rightInches * BIG_ENCODER_COUNTS_PER_INCH);
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -193,37 +188,32 @@ public class EncoderAuto extends LinearOpMode {
             // onto the next step, use (isBusy() || isBusy()) in the loop test.*/
             while (opModeIsActive() &&
                    (runtime.seconds() < timeoutS) &&
-                   (!stop)) {
+                   (!leftStop || !rightStop)) {
 
                 //Stop right motor if it's finished.
                 if(motorRight.getCurrentPosition() >= newRightTarget) {
 
                     motorRight.setPower(0);
+                    rightStop = true;
 
-                    //if both are finished
-                    if (motorLeft.getCurrentPosition() >= newLeftTarget) {
-
-                        //break from the loop
-                        stop = true;
-
-                    }
-
-                } else {
+                }
 
                     //Stop left motor if it's finished.
-                    if (motorLeft.getCurrentPosition() >= newLeftTarget) {
+                if ((int)((motorLeft.getCurrentPosition()) * (30) / (1440)) >= newLeftTarget) {
 
                         motorLeft.setPower(0);
+                        leftStop = true;
 
                     }
-                }
+
+
 
                 // Display it for the driver.
                 telemetry.addData("Path1 Right, Left",  "Running to %7d :%7d", newRightTarget,  newLeftTarget);
                 telemetry.addData("Status Right, Left",  "Running at %7d :%7d",
 
                                             motorRight.getCurrentPosition(),
-                                            motorLeft.getCurrentPosition());
+                        (int) ((motorLeft.getCurrentPosition()) * (30) / (1440)));
 
                 telemetry.addData("Mode Right", motorRight.getMode());
                 telemetry.addData("Mode Left", motorLeft.getMode());
@@ -236,10 +226,10 @@ public class EncoderAuto extends LinearOpMode {
             motorRight.setPower(0);
             motorLeft.setPower(0);
 
-            telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
+            telemetry.addData("Final position Left: ", (int) ((motorLeft.getCurrentPosition()) * (30) / (1440)));
             telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
             telemetry.update();
-              sleep(2000);   // optional pause after each move
+              sleep(2000);   // pause after each move
         }
     }
 }
