@@ -36,6 +36,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
+
 /**
  * This file illustrates the concept of driving a path based on encoder counts.
  * It uses the common Pushbot hardware class to define the drive on the robot.
@@ -94,6 +96,10 @@ public class EncoderAuto extends LinearOpMode {
         motorRight = hardwareMap.dcMotor.get("motorRight");
         motorLeft = hardwareMap.dcMotor.get("motorLeft");
 
+
+        motorLeft.setDirection(REVERSE);
+        motorRight.setDirection(REVERSE);
+
         /*
          * Initialize the drive system variables.
          * The init() method of the hardware class does all the work here
@@ -135,7 +141,7 @@ public class EncoderAuto extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  18,  18, 10);  // S1: Forward 47 Inches with 5 Sec timeout
+        encoderDrive(DRIVE_SPEED,  36,  36, 15);  // S1: Forward 47 Inches with 5 Sec timeout
         /*encoderDrive(TURN_SPEED,   1000, 1000, 999999999);  // S2: Turn Right 12 Inches with 4 Sec timeout
         encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
 */
@@ -165,8 +171,8 @@ public class EncoderAuto extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newLeftTarget = motorRight.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newRightTarget = motorLeft.getCurrentPosition() + (int)(rightInches * BIG_ENCODER_COUNTS_PER_INCH);
+            newLeftTarget = motorLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
+            newRightTarget = motorRight.getCurrentPosition() + (int)(rightInches * BIG_ENCODER_COUNTS_PER_INCH);
             //motorRight.setTargetPosition(newLeftTarget);
             //motorLeft.setTargetPosition(newRightTarget);
 
@@ -176,8 +182,8 @@ public class EncoderAuto extends LinearOpMode {
 
             // reset the timeout time and start motion.
             runtime.reset();
-            motorRight.setPower(Math.abs(speed));
-            motorLeft.setPower(Math.abs(speed));
+            motorRight.setPower(Math.abs(0.5));
+            motorLeft.setPower(Math.abs(0.5));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
@@ -207,7 +213,7 @@ public class EncoderAuto extends LinearOpMode {
                     //Stop left motor if it's finished.
                     if (motorLeft.getCurrentPosition() >= newLeftTarget) {
 
-                        motorRight.setPower(0);
+                        motorLeft.setPower(0);
 
                     }
                 }
