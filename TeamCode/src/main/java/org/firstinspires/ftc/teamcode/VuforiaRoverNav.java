@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -90,9 +90,9 @@ import java.util.List;
  * is explained below.
  */
 
-@TeleOp(name="Concept: Vuforia Rover Nav", group ="Concept")
+@TeleOp(name="vuforia_rover_nav", group ="TeleOp")
 @Disabled
-public class ConceptVuforiaNavRoverRuckus extends LinearOpMode {
+public class VuforiaRoverNav extends LinearOpMode {
 
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
