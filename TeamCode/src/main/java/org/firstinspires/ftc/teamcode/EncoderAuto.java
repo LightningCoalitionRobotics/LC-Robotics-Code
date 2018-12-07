@@ -133,7 +133,7 @@ public class EncoderAuto extends LinearOpMode {
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Path0",  "Starting at %7d :%7d",
                           motorRight.getCurrentPosition(),
-                (int) ((motorLeft.getCurrentPosition()) * (30) / (1440)));
+                motorLeft.getCurrentPosition());
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
@@ -141,7 +141,9 @@ public class EncoderAuto extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  36,  36, 15);  // S1: Forward 47 Inches with 5 Sec timeout
+        encoderDrive(DRIVE_SPEED,  72,  72, 15);  // S1: Forward 47 Inches with 5 Sec timeout
+        encoderTurn(DRIVE_SPEED,  90, 15);  // S1: Forward 47 Inches with 5 Sec timeout
+        encoderDrive(DRIVE_SPEED,  72,  72, 15);  // S1: Forward 47 Inches with 5 Sec timeout
 
         sleep(2000);     // pause
 
@@ -169,10 +171,9 @@ public class EncoderAuto extends LinearOpMode {
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
-            int mappedDownEncoderLeft = (int) ((motorLeft.getCurrentPosition()) * (30) / (1440));
 
             // Determine new target position, and pass to motor controller
-            newLeftTarget = mappedDownEncoderLeft + (int)(leftInches * COUNTS_PER_INCH);
+            newLeftTarget = motorLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
             newRightTarget = motorRight.getCurrentPosition() + (int)(rightInches * BIG_ENCODER_COUNTS_PER_INCH);
 
             // reset the timeout time and start motion.
@@ -199,7 +200,7 @@ public class EncoderAuto extends LinearOpMode {
                 }
 
                     //Stop left motor if it's finished.
-                if ((int)((motorLeft.getCurrentPosition()) * (30) / (1440)) >= newLeftTarget) {
+                if ((Math.abs((motorLeft.getCurrentPosition()))) >= newLeftTarget) {
 
                         motorLeft.setPower(0);
                         leftStop = true;
@@ -213,7 +214,7 @@ public class EncoderAuto extends LinearOpMode {
                 telemetry.addData("Status Right, Left",  "Running at %7d :%7d",
 
                                             motorRight.getCurrentPosition(),
-                        (int) ((motorLeft.getCurrentPosition()) * (30) / (1440)));
+                        (Math.abs((motorLeft.getCurrentPosition()))));
 
                 telemetry.addData("Mode Right", motorRight.getMode());
                 telemetry.addData("Mode Left", motorLeft.getMode());
@@ -226,10 +227,88 @@ public class EncoderAuto extends LinearOpMode {
             motorRight.setPower(0);
             motorLeft.setPower(0);
 
-            telemetry.addData("Final position Left: ", (int) ((motorLeft.getCurrentPosition()) * (30) / (1440)));
+            telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
             telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
             telemetry.update();
               sleep(2000);   // pause after each move
         }
     }
+
+    public void encoderTurn(double speed,
+                             double angle,
+                             double timeoutS) {
+        int newLeftTarget;
+        int newRightTarget;
+
+        boolean leftStop = false;
+        boolean rightStop = false;
+
+        int angleToInches = (int)((angle/360)*(11.84));
+
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+
+
+            // Determine new target position, and pass to motor controller
+            newLeftTarget = motorLeft.getCurrentPosition() + (-1)*(angleToInches) ;
+            newRightTarget = motorRight.getCurrentPosition() + angleToInches;
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+            motorRight.setPower(Math.abs(0.5));
+            motorLeft.setPower(Math.abs(0.5));
+
+            // keep looping while we are still active, and there is time left, and both motors are running.
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
+            // its target position, the motion will stop.  This is "safer" in the event that the robot will
+            // always end the motion as soon as possible.
+            // However, if you require that BOTH motors have finished their moves before the robot continues
+            // onto the next step, use (isBusy() || isBusy()) in the loop test.*/
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (!leftStop || !rightStop)) {
+
+                //Stop right motor if it's finished.
+                if(Math.abs(motorRight.getCurrentPosition()) >= Math.abs(newRightTarget)) {
+
+                    motorRight.setPower(0);
+                    rightStop = true;
+
+                }
+
+                //Stop left motor if it's finished.
+                if ((Math.abs((motorLeft.getCurrentPosition()))) >= Math.abs(newLeftTarget)) {
+
+                    motorLeft.setPower(0);
+                    leftStop = true;
+
+                }
+
+
+
+                // Display it for the driver.
+                telemetry.addData("Turn Right, Left",  "Running to %7d :%7d", newRightTarget,  newLeftTarget);
+                telemetry.addData("Status Right, Left",  "Running at %7d :%7d",
+
+                        motorRight.getCurrentPosition(),
+                        (Math.abs((motorLeft.getCurrentPosition()))));
+
+                telemetry.addData("Mode Right", motorRight.getMode());
+                telemetry.addData("Mode Left", motorLeft.getMode());
+                telemetry.addData("Motor Right", motorRight.isBusy());
+                telemetry.addData("Motor Left", motorLeft.isBusy());
+                telemetry.update();
+            }
+
+            // Stop all motion;
+            motorRight.setPower(0);
+            motorLeft.setPower(0);
+
+            telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
+            telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
+            telemetry.update();
+            sleep(2000);   // pause after each move
+        }
+    }
+
 }
