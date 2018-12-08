@@ -91,7 +91,6 @@ import java.util.List;
  */
 
 @TeleOp(name="vuforia_rover_nav", group ="TeleOp")
-@Disabled
 public class VuforiaRoverNav extends LinearOpMode {
 
     /*
