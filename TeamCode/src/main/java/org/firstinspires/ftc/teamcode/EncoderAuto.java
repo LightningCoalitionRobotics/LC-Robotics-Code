@@ -242,7 +242,7 @@ public class EncoderAuto extends LinearOpMode {
         boolean leftStop = false;
         boolean rightStop = false;
 
-        int angleToInches = (int)((angle/360)*(38.3)); // Needs to be calibrated.
+        int angleToInches = (int)((angle/360)*(38.3)*0.45); // Needs to be calibrated.
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
