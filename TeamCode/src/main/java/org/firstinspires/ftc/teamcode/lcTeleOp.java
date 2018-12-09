@@ -52,9 +52,13 @@ public class lcTeleOp extends OpMode {
 
 // motor controllers
     DcMotorController wheelController;
+    DcMotorController stronkBoiController;
 // motors
 	DcMotor motorRight;
 	DcMotor motorLeft;
+
+	DcMotor stronkBoi;
+
     // slow mode settings
 
     int slowModeType = 1;
@@ -89,7 +93,7 @@ public class lcTeleOp extends OpMode {
         motorRight = hardwareMap.dcMotor.get("motorRight");
 		motorLeft = hardwareMap.dcMotor.get("motorLeft");
 
-
+		stronkBoi = hardwareMap.dcMotor.get("stronkBoi");
 
 	}
 
@@ -122,13 +126,16 @@ public class lcTeleOp extends OpMode {
             if(gamepad1.y || gamepad2.y) {
                 slowModeType = 4;
             }
-            if(gamepad1.x || gamepad2.x){
-                slowModeType = 8;
-            }
+            if(gamepad1.x || gamepad2.x) {
+				slowModeType = 8;
+			}
             //tank drive:
 
             float right = -gamepad1.right_stick_y;
             float left = -gamepad1.left_stick_y;
+
+            //StronkBoi (Lifter)
+			float stronkBoiMove = gamepad2.left_stick_y;
 
             // clip the right/left values so that the values never exceed +/- 1
             right = Range.clip(right, -1, 1);
@@ -139,13 +146,14 @@ public class lcTeleOp extends OpMode {
             right = (float) scaleInput(right);
             left = (float) scaleInput(left);
 
+            stronkBoiMove = (float) scaleInput(stronkBoiMove);
 
 
             //write the values to the motors
             motorRight.setPower(right/slowModeType);
             motorLeft.setPower(left/slowModeType);
 
-
+			stronkBoi.setPower(stronkBoiMove);
 
 
 
