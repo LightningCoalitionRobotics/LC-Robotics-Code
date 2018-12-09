@@ -135,7 +135,18 @@ public class lcTeleOp extends OpMode {
             float left = -gamepad1.left_stick_y;
 
             //StronkBoi (Lifter)
-			float stronkBoiMove = gamepad2.left_stick_y;
+			float stronkBoiMove = 0;
+
+			//Conditional makes it possible to use triggers instead of sticks to consolidate to one controller
+			if(gamepad1.left_trigger > gamepad1.right_trigger) {
+
+			    stronkBoiMove = -gamepad1.left_trigger;
+
+            } else {
+
+			    stronkBoiMove = gamepad1.right_trigger;
+
+            }
 
             // clip the right/left values so that the values never exceed +/- 1
             right = Range.clip(right, -1, 1);
