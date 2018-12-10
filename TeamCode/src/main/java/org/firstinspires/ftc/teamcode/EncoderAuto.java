@@ -71,14 +71,11 @@ public class EncoderAuto extends LinearOpMode {
     /* Declare OpMode members. */
     private ElapsedTime     runtime = new ElapsedTime();
 
+    static final double     turnConstant = 0.45;
+    static final double     reductionConstant = 0.2;
     static final double     BIG_ENCODER_COUNTS_PER_MOTOR_REV    = 30 ;
     static final double     COUNTS_PER_MOTOR_REV    = 30;    // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
-    static final double     WHEEL_DIAMETER_INCHES   = 6.0 ;     // For figuring circumference
-    static final double     BIG_ENCODER_COUNTS_PER_INCH         = (BIG_ENCODER_COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-                                                      (WHEEL_DIAMETER_INCHES * 3.1415);
+    static final double     COUNTS_PER_INCH         = 3.5;
     static final double     DRIVE_SPEED             = 0.2;
     static final double     TURN_SPEED              = 0.5;
 
@@ -141,10 +138,10 @@ public class EncoderAuto extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  72,  72, 15);  // S1: Forward 47 Inches with 5 Sec timeout
+        encoderTurn(DRIVE_SPEED,  -135, 15);
+        encoderDrive(DRIVE_SPEED,  33,  33, 15);  // S1: Forward 47 Inches with 5 Sec timeout
         encoderTurn(DRIVE_SPEED,  90, 15);
-        sleep(2000);
-        encoderDrive(DRIVE_SPEED,  72,  72, 15);  // S1: Forward 47 Inches with 5 Sec timeout
+        encoderDrive(DRIVE_SPEED,  16,  16, 15);  // S1: Forward 47 Inches with 5 Sec timeout
 
         sleep(2000);     // pause
 
@@ -175,7 +172,7 @@ public class EncoderAuto extends LinearOpMode {
 
             // Determine new target position, and pass to motor controller
             newLeftTarget = motorLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newRightTarget = motorRight.getCurrentPosition() + (int)(rightInches * BIG_ENCODER_COUNTS_PER_INCH);
+            newRightTarget = motorRight.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -244,7 +241,7 @@ public class EncoderAuto extends LinearOpMode {
         boolean leftStop = false;
         boolean rightStop = false;
 
-        int angleToInches = (int)((angle/360)*(40)); // Needs to be calibrated.
+        int angleToInches = (int)((angle/360)*(38.3)*turnConstant); // Needs to be calibrated.
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
@@ -253,14 +250,14 @@ public class EncoderAuto extends LinearOpMode {
             if(angle > 0) {
 
                 // Determine new target position, and pass to motor controller
-                newLeftTarget = Math.abs(motorLeft.getCurrentPosition()) - (angleToInches);
-                newRightTarget = Math.abs(motorRight.getCurrentPosition()) + angleToInches;
+                newLeftTarget = (int)(Math.abs(motorLeft.getCurrentPosition()) - (angleToInches*COUNTS_PER_INCH));
+                newRightTarget = (int)(Math.abs(motorRight.getCurrentPosition()) + (angleToInches*COUNTS_PER_INCH));
 
             } else {
 
                 // Determine new target position, and pass to motor controller
-                newLeftTarget = Math.abs(motorLeft.getCurrentPosition()) + (angleToInches);
-                newRightTarget = Math.abs(motorRight.getCurrentPosition()) - angleToInches;
+                newLeftTarget = (int)(Math.abs(motorLeft.getCurrentPosition()) + (angleToInches*COUNTS_PER_INCH));
+                newRightTarget = (int)(Math.abs(motorRight.getCurrentPosition()) - (angleToInches*COUNTS_PER_INCH));
 
             }
 

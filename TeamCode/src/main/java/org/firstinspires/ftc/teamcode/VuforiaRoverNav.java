@@ -90,8 +90,7 @@ import java.util.List;
  * is explained below.
  */
 
-@TeleOp(name="vuforia_rover_nav", group ="TeleOp")
-@Disabled
+@TeleOp(name="VuforiaRoverNav", group ="TeleOp")
 public class VuforiaRoverNav extends LinearOpMode {
 
     /*
@@ -249,14 +248,14 @@ public class VuforiaRoverNav extends LinearOpMode {
          * In this example, it is centered (left to right), but 110 mm forward of the middle of the robot, and 200 mm above ground level.
          */
 
-        final int CAMERA_FORWARD_DISPLACEMENT  = 110;   // eg: Camera is 110 mm in front of robot center
-        final int CAMERA_VERTICAL_DISPLACEMENT = 200;   // eg: Camera is 200 mm above ground
+        final int CAMERA_FORWARD_DISPLACEMENT  = 152;   // eg: Camera is 110 mm in front of robot center
+        final int CAMERA_VERTICAL_DISPLACEMENT = 203;   // eg: Camera is 200 mm above ground
         final int CAMERA_LEFT_DISPLACEMENT     = 0;     // eg: Camera is ON the robot's center line
 
         OpenGLMatrix phoneLocationOnRobot = OpenGLMatrix
                 .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES,
-                        CAMERA_CHOICE == FRONT ? 90 : -90, 0, 0));
+                        CAMERA_CHOICE == BACK ? 90 : 90, 0, 0));
 
         /**  Let all the trackable listeners know where the phone is.  */
         for (VuforiaTrackable trackable : allTrackables)
