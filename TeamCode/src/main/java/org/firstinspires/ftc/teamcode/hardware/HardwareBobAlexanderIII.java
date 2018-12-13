@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  * @author Noah Simon
  */
-public class HardwareBobAlexanderIII implements IBotHardware {
+public class HardwareBobAlexanderIII extends Robot {
     // All of the components we will need (e.g. motors, servos, sensors...) that are attached to the robot
     /**
      * Left drive motor for the robot.
@@ -38,21 +38,41 @@ public class HardwareBobAlexanderIII implements IBotHardware {
     public DcMotor arm;
 
     // Constants
+    /**
+     * In inches, the diameter of the wheels of the robot.
+     */
     public static final double WHEEL_DIAMETER = 6;
     public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
+    public static final int COUNTS_PER_INCH = 30;
+    /**
+     * In milliseconds, how long the robot should wait after each autodrive.
+     */
+    public static final long SLEEP_AFTER_DRIVE = 2000;
 
     public HardwareMap hardwareMap;
     private OpMode opMode;
 
-    private ElapsedTime elapsedTime = new ElapsedTime();
+    /**
+     * The default drive speed for the robot.
+     */
+    public double drive_speed = 0.5;
 
     /**
      * Create an instance of Bob Alexander III.
-     * @author Noah Simon
      * @param opMode Use <code>this</code>.
      */
     public HardwareBobAlexanderIII(OpMode opMode) {
         this.opMode = opMode;
+    }
+
+    /**
+     * Create an instance of Bob Alexander III.
+     * @param opMode Use <code>this</code>.
+     * @param drive_speed The initial setting for {@link #drive_speed}.
+     */
+    public HardwareBobAlexanderIII(OpMode opMode, double drive_speed) {
+        this(opMode);
+        this.drive_speed = drive_speed;
     }
 
     @Override
@@ -67,7 +87,6 @@ public class HardwareBobAlexanderIII implements IBotHardware {
 
     /**
      * A convenience function to configure a {@link DcMotor} in order to use it in an {@link com.qualcomm.robotcore.eventloop.opmode.OpMode}.
-     * @author Noah Simon
      * @param name The name of the motor configured on the Android devices.
      * @param direction The motor direction that should be set as positive.
      * @param runMode How the motor should interpret commands from the OpMode.
@@ -84,28 +103,109 @@ public class HardwareBobAlexanderIII implements IBotHardware {
         return motor;
     }
 
+    /**
+     *
+     * {@inheritDoc}
+     * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive(double, double, double, double)
+     */
     @Override
-    @Deprecated
     public void drive(double speed, double dist, double timeout) {
-        // FIXME: Not done yet.
         // Code adapted from org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive
-        boolean stop = false;
+        double leftPos = leftDrive.getCurrentPosition();
+        double rightPos = rightDrive.getCurrentPosition();
         if(opMode instanceof LinearOpMode && ((LinearOpMode) opMode).opModeIsActive()) {
             double target = dist * 30 / WHEEL_CIRCUMFERENCE;
             elapsedTime.reset();
-            leftDrive.setPower(0.5);
-            rightDrive.setPower(0.5);
-            while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout
-                    && !stop) {
-//                if (leftDrive.getCurrentPosition() >= )
+            leftDrive.setPower(speed);
+            rightDrive.setPower(speed);
+            // Add debug information
+            opMode.telemetry.addData("Path1 Right, Left",  "Running to %7d", target);
+            opMode.telemetry.addData("Status Right, Left",  "Running at %7d :%7d",
+                    rightDrive.getCurrentPosition(), leftDrive.getCurrentPosition());
+            opMode.telemetry.addData("Mode Right", rightDrive.getMode());
+            opMode.telemetry.addData("Mode Left", leftDrive.getMode());
+            opMode.telemetry.addData("Motor Right", rightDrive.isBusy());
+            opMode.telemetry.addData("Motor Left", leftDrive.isBusy());
+            opMode.telemetry.update();
+            while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
+                if (leftDrive.getCurrentPosition() >= leftPos + dist * COUNTS_PER_INCH
+                        || rightDrive.getCurrentPosition() >= rightPos + dist * COUNTS_PER_INCH) {
+                    leftDrive.setPower(0);
+                    rightDrive.setPower(0);
+                    break;
+                }
             }
+            leftDrive.setPower(0);
+            rightDrive.setPower(0);
+            opMode.telemetry.addData("Final position Left: ", leftDrive.getCurrentPosition());
+            opMode.telemetry.addData("Final position Right: ", rightDrive.getCurrentPosition());
+            opMode.telemetry.update();
+            ((LinearOpMode)opMode).sleep(SLEEP_AFTER_DRIVE);
         } else {
-            opMode.telemetry.addData("Error", "Attempted to autodrive during teleop.");
+            opMode.telemetry.addData("Error", "Attempted to autodrive during teleop or when opmode is closed.");
+            opMode.telemetry.update();
         }
     }
 
+    /**
+     *
+     * Drives the robot forward using the default speed.
+     *
+     * @param dist In inches, the distance the robot should travel.
+     * @param timeout In seconds, how long the robot should attempt to reach the target distance.
+     * @see #drive(double, double, double)
+     * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive(double, double, double, double)
+     */
+    public void drive(double dist, double timeout) {
+        drive(drive_speed, dist, timeout);
+    }
+
+    /**
+     * Drives the robot using the default speed in the specified direction.
+     * @param direction True if forward, false if backward.
+     * @param dist In inches, the distance the robot should travel.
+     * @param timeout In seconds, how long the robot should attempt to reach the target distance.
+     * @see #drive(double, double, double)
+     * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive(double, double, double, double)
+     */
+    public void drive(boolean direction, double dist, double timeout) {
+        if (direction) {
+            drive(dist, timeout);
+        } else {
+            drive(-drive_speed, dist, timeout);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderTurn(double, double, double)
+     */
     @Override
     public void turn(double speed, double angle, double timeout) {
-        // FIXME: Not done yet
+//        double leftPos = leftDrive.getCurrentPosition();
+//        double rightPos = rightDrive.getCurrentPosition();
+//        if (opMode instanceof LinearOpMode && ((LinearOpMode) opMode).opModeIsActive()) {
+//            int leftTarget;
+//            int rightTarget;
+//
+//            if (angle > 0) {
+//
+//            } else {
+//
+//            }
+//        } else {
+//            opMode.telemetry.addData("Error", "Attempted to autoturn during teleop or when opmode is closed.");
+//            opMode.telemetry.update();
+//        }
+        throw new UnsupportedOperationException("This method has not yet been implemented.");
+    }
+
+    /**
+     *
+     * @param angle In degrees, how far the robot should turn. A positive amount is counterclockwise.
+     * @param timeout In seconds, how long the robot should attempt to reach the target angle.
+     */
+    public void turn(double angle, double timeout) {
+        turn(drive_speed, angle, timeout);
     }
 }
