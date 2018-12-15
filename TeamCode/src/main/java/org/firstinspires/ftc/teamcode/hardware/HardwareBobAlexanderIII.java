@@ -198,14 +198,33 @@ public class HardwareBobAlexanderIII extends Robot {
 //            opMode.telemetry.update();
 //        }
         throw new UnsupportedOperationException("This method has not yet been implemented.");
+        // TODO(Gabe Ruoff): Fill out
     }
 
     /**
      *
      * @param angle In degrees, how far the robot should turn. A positive amount is counterclockwise.
      * @param timeout In seconds, how long the robot should attempt to reach the target angle.
+     * @see #turn(double, double, double)
+     * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderTurn(double, double, double)
      */
     public void turn(double angle, double timeout) {
         turn(drive_speed, angle, timeout);
+    }
+
+    /**
+     *
+     * @param direction True if counterclockwise, false if clockwise.
+     * @param angle In degrees, how far the robot should turn.
+     * @param timeout In seconds, how long the robot should attempt to reach the target angle.
+     * @see #turn(double, double, double)
+     * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderTurn(double, double, double)
+     */
+    public void turn(boolean direction, double angle, double timeout) {
+        if (direction) {
+            turn(angle, timeout);
+        } else {
+            turn(-angle, timeout);
+        }
     }
 }
