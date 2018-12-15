@@ -27,36 +27,45 @@ public class HardwareBobAlexanderIII extends Robot {
     /**
      * Left lift motor for the robot.
      */
-    public DcMotor leftLift;
+    public DcMotor leftSpinner;
     /**
      * Right lift motor for the robot.
      */
-    public DcMotor rightLift;
+    public DcMotor rightSpinner;
     /**
      * Arm motor for the robot.
      */
-    public DcMotor arm;
+    public DcMotor lifter;
 
     // Constants
     /**
      * In inches, the diameter of the wheels of the robot.
      */
     public static final double WHEEL_DIAMETER = 6;
+    /**
+     *
+     */
     public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
+    /**
+     *
+     */
     public static final int COUNTS_PER_INCH = 30;
     /**
      * In milliseconds, how long the robot should wait after each autodrive.
      */
     public static final long SLEEP_AFTER_DRIVE = 2000;
 
-    public HardwareMap hardwareMap;
-    private OpMode opMode;
+
 
     /**
      * The default drive speed for the robot.
      */
     public double drive_speed = 0.5;
 
+    /**
+     *
+     */
+    public SlowModeType slowModeType = SlowModeType.NORMAL;
     /**
      * Create an instance of Bob Alexander III.
      * @param opMode Use <code>this</code>.
@@ -80,9 +89,9 @@ public class HardwareBobAlexanderIII extends Robot {
         this.hardwareMap = hardwareMap;
         leftDrive = register("motorLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
         rightDrive = register("motorRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
-        leftLift = register("lifterLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightLift = register("lifterRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        arm = register("arm", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftSpinner = register("spinnerLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightSpinner = register("spinnerRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lifter = register("arm", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     /**
@@ -225,6 +234,21 @@ public class HardwareBobAlexanderIII extends Robot {
             turn(angle, timeout);
         } else {
             turn(-angle, timeout);
+        }
+    }
+
+    /**
+     * Checks the gamepads to see if A, B, Y, or X have been pressed, If so, it changes the slow mode type accordingly.
+     */
+    public void checkSlowMode() {
+        if (opMode.gamepad1.a || opMode.gamepad2.a) {
+            slowModeType = SlowModeType.NORMAL;
+        } else if (opMode.gamepad1.b || opMode.gamepad2.b) {
+            slowModeType = SlowModeType.HALF;
+        } else if (opMode.gamepad1.y || opMode.gamepad2.y) {
+            slowModeType = SlowModeType.QUARTER;
+        } else if (opMode.gamepad1.x || opMode.gamepad2.x){
+            slowModeType = SlowModeType.EIGHTH;
         }
     }
 }

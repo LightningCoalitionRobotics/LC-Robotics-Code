@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -40,4 +41,116 @@ public abstract class Robot {
      *
      */
     protected ElapsedTime elapsedTime = new ElapsedTime();
+
+
+    /**
+     *
+     */
+    public enum SlowModeType {
+        /**
+         *
+         */
+        DOUBLE(2),
+        /**
+         *
+         */
+        NORMAL(1),
+        /**
+         *
+         */
+        HALF(1/2),
+        /**
+         *
+         */
+        QUARTER(1/4),
+        /**
+         *
+         */
+        EIGHTH(1/8);
+
+        /**
+         *
+         * @param changeFactor The factor by which the instance should change motor speed.
+         */
+        SlowModeType(float changeFactor) {
+            this.changeFactor = changeFactor;
+        }
+
+        /**
+         * Get the factor by which the instance should change motor speed.
+         * @return the factor by which the instance should change motor speed.
+         */
+        public float getChangeFactor() {
+            return changeFactor;
+        }
+
+        /**
+         *
+         */
+        private float changeFactor;
+        @Override
+        public String toString() {
+            switch (this) {
+                case DOUBLE:
+                    return "Double speed";
+                case NORMAL:
+                    return "Normal Speed";
+                case HALF:
+                    return "Half Speed";
+                case QUARTER:
+                    return "Quarter Speed";
+                case EIGHTH:
+                    return "Eighth Speed";
+                default:
+                    throw new IllegalArgumentException();
+            }
+        }
+
+        /**
+         * Double the change factor of the caller.
+         * @return The throttle level above the caller.
+         */
+        public SlowModeType gearUp() {
+            switch (this) {
+                case NORMAL:
+                    return DOUBLE;
+                case HALF:
+                    return NORMAL;
+                case QUARTER:
+                    return HALF;
+                case EIGHTH:
+                    return QUARTER;
+                default:
+                    return this;
+            }
+        }
+
+        /**
+         * Half the change factor of the caller.
+         * @return The gear level below the caller.
+         */
+        public SlowModeType gearDown() {
+            switch (this) {
+                case QUARTER:
+                    return EIGHTH;
+                case HALF:
+                    return QUARTER;
+                case NORMAL:
+                    return HALF;
+                case DOUBLE:
+                    return NORMAL;
+                default:
+                    return this;
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    public HardwareMap hardwareMap;
+    /**
+     *
+     */
+    protected OpMode opMode;
 }
