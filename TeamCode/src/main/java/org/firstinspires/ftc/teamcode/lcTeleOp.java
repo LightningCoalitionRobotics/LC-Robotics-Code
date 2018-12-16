@@ -53,11 +53,14 @@ public class lcTeleOp extends OpMode {
 // motor controllers
     DcMotorController wheelController;
     DcMotorController stronkBoiController;
+    DcMotorController spinnerController;
 // motors
 	DcMotor motorRight;
 	DcMotor motorLeft;
 
 	DcMotor stronkBoi;
+
+	DcMotor spinner1, spinner2;
 
     // slow mode settings
 
@@ -95,6 +98,8 @@ public class lcTeleOp extends OpMode {
 
 		stronkBoi = hardwareMap.dcMotor.get("stronkBoi");
 
+		spinner1 = hardwareMap.dcMotor.get("spinner1");
+		spinner2 = hardwareMap.dcMotor.get("spinner2");
 	}
 
 	/*
@@ -147,6 +152,23 @@ public class lcTeleOp extends OpMode {
 			    stronkBoiMove = gamepad1.right_trigger;
 
             }
+
+            float spinner1Float = 0, spinner2Float = 0;
+
+            //spinner collect
+			if(gamepad1.right_bumper) {
+
+				spinner1Float = 1;
+				spinner2Float = 2;
+
+			}
+
+			if(gamepad1.left_bumper) {
+
+				spinner1Float = -1;
+				spinner2Float = -1;
+
+			}
 
             // clip the right/left values so that the values never exceed +/- 1
             right = Range.clip(right, -1, 1);
