@@ -65,13 +65,13 @@ import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="EncoderTest", group="Autonomous")
+@Autonomous(name="EncoderAuto", group="Autonomous")
 public class EncoderAuto extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime     runtime = new ElapsedTime();
 
-    static final double     turnConstant = 0.45;
+    static final double     turnConstant = 0.1;
     static final double     reductionConstant = 0.2;
     static final double     BIG_ENCODER_COUNTS_PER_MOTOR_REV    = 30 ;
     static final double     COUNTS_PER_MOTOR_REV    = 30;    // eg: TETRIX Motor Encoder
@@ -138,9 +138,26 @@ public class EncoderAuto extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderTurn(DRIVE_SPEED,  -135, 15);
-        encoderDrive(DRIVE_SPEED,  33,  33, 15);  // S1: Forward 47 Inches with 5 Sec timeout
-        encoderTurn(DRIVE_SPEED,  90, 15);
+        //encoderTurn(DRIVE_SPEED,  -135, 15);
+        encoderDrive(DRIVE_SPEED,  33.0,  33.0, 15);  // S1: Forward 47 Inches with 5 Sec timeout
+        encoderTurn(DRIVE_SPEED,  90.0, 15);
+
+        motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        telemetry.addData("Mode Right", motorRight.getMode());
+        telemetry.addData("Mode Left", motorLeft.getMode());
+        telemetry.update();
+        sleep(sleep);   // optional pause after each move
+
+        motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        telemetry.addData("Mode Right", motorRight.getMode());
+        telemetry.addData("Mode Left", motorLeft.getMode());
+        telemetry.update();
+        sleep(sleep);   // optional pause after each move
+
         encoderDrive(DRIVE_SPEED,  16,  16, 15);  // S1: Forward 47 Inches with 5 Sec timeout
 
         sleep(2000);     // pause
@@ -160,8 +177,8 @@ public class EncoderAuto extends LinearOpMode {
     public void encoderDrive(double speed,
                              double leftInches, double rightInches,
                              double timeoutS) {
-        int newLeftTarget;
-        int newRightTarget;
+        double newLeftTarget;
+        double newRightTarget;
 
         boolean leftStop = false;
         boolean rightStop = false;
@@ -171,8 +188,8 @@ public class EncoderAuto extends LinearOpMode {
 
 
             // Determine new target position, and pass to motor controller
-            newLeftTarget = motorLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newRightTarget = motorRight.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+            newLeftTarget = motorLeft.getCurrentPosition() + (leftInches * COUNTS_PER_INCH);
+            newRightTarget = motorRight.getCurrentPosition() + (rightInches * COUNTS_PER_INCH);
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -190,7 +207,7 @@ public class EncoderAuto extends LinearOpMode {
                    (!leftStop || !rightStop)) {
 
                 //Stop right motor if it's finished.
-                if(motorRight.getCurrentPosition() >= newRightTarget) {
+                if(Math.abs(motorRight.getCurrentPosition()) >= newRightTarget) {
 
                     motorRight.setPower(0);
                     rightStop = true;
@@ -208,7 +225,7 @@ public class EncoderAuto extends LinearOpMode {
 
 
                 // Display it for the driver.
-                telemetry.addData("Path1 Right, Left",  "Running to %7d :%7d", newRightTarget,  newLeftTarget);
+                telemetry.addData("Path1 Right, Left",  "Running to %7d :%7d", ((int)newRightTarget),  ((int)newLeftTarget));
                 telemetry.addData("Status Right, Left",  "Running at %7d :%7d",
 
                                             motorRight.getCurrentPosition(),
@@ -235,31 +252,22 @@ public class EncoderAuto extends LinearOpMode {
     public void encoderTurn(double speed,
                              double angle,
                              double timeoutS) {
-        int newLeftTarget;
-        int newRightTarget;
+        double newLeftTarget;
+        double newRightTarget;
 
         boolean leftStop = false;
         boolean rightStop = false;
 
-        int angleToInches = (int)((angle/360)*(38.3)*turnConstant); // Needs to be calibrated.
+        double angleToInches = (((angle/360)*(17.8)*turnConstant)); // Needs to be calibrated.
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
 
-            if(angle > 0) {
-
                 // Determine new target position, and pass to motor controller
-                newLeftTarget = (int)(Math.abs(motorLeft.getCurrentPosition()) - (angleToInches*COUNTS_PER_INCH));
-                newRightTarget = (int)(Math.abs(motorRight.getCurrentPosition()) + (angleToInches*COUNTS_PER_INCH));
+                newLeftTarget = (Math.abs(motorLeft.getCurrentPosition()) - (angleToInches*COUNTS_PER_INCH));
+                newRightTarget = (Math.abs(motorRight.getCurrentPosition()) + (angleToInches*COUNTS_PER_INCH));
 
-            } else {
-
-                // Determine new target position, and pass to motor controller
-                newLeftTarget = (int)(Math.abs(motorLeft.getCurrentPosition()) + (angleToInches*COUNTS_PER_INCH));
-                newRightTarget = (int)(Math.abs(motorRight.getCurrentPosition()) - (angleToInches*COUNTS_PER_INCH));
-
-            }
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -327,7 +335,7 @@ public class EncoderAuto extends LinearOpMode {
             sleep(2000);
 
                 // Display it for the driver.
-                telemetry.addData("Turn Right, Left",  "Running to %7d :%7d", newRightTarget,  newLeftTarget);
+                telemetry.addData("Turn Right, Left",  "Running to %7d :%7d", ((int)newRightTarget),  ((int)newLeftTarget));
                 telemetry.addData("Status Right, Left",  "Running at %7d :%7d",
 
                         motorRight.getCurrentPosition(),
