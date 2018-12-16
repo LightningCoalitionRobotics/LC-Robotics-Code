@@ -71,13 +71,11 @@ public class EncoderAuto extends LinearOpMode {
     /* Declare OpMode members. */
     private ElapsedTime     runtime = new ElapsedTime();
 
-    static final double     turnConstant = 0.1;
+    static final double     turnErrorConstant = 0.1;
     static final double     reductionConstant = 0.2;
-    static final double     BIG_ENCODER_COUNTS_PER_MOTOR_REV    = 30 ;
     static final double     COUNTS_PER_MOTOR_REV    = 30;    // eg: TETRIX Motor Encoder
     static final double     COUNTS_PER_INCH         = 3.5;
     static final double     DRIVE_SPEED             = 0.2;
-    static final double     TURN_SPEED              = 0.5;
 
     static final int sleep = 2000;
 
@@ -139,8 +137,8 @@ public class EncoderAuto extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         //encoderTurn(DRIVE_SPEED,  -135, 15);
-        encoderDrive(DRIVE_SPEED,  33.0,  33.0, 15);  // S1: Forward 47 Inches with 5 Sec timeout
-        encoderTurn(DRIVE_SPEED,  90.0, 15);
+        encoderDrive(DRIVE_SPEED,  33.0,  33.0, 15);  // S1: Forward 33 Inches with 15 Sec timeout
+        encoderTurn(DRIVE_SPEED,  90.0, 15); // Turn 90 degrees
 
         motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -158,7 +156,7 @@ public class EncoderAuto extends LinearOpMode {
         telemetry.update();
         sleep(sleep);   // optional pause after each move
 
-        encoderDrive(DRIVE_SPEED,  16,  16, 15);  // S1: Forward 47 Inches with 5 Sec timeout
+        encoderDrive(DRIVE_SPEED,  16,  16, 15);  // S1: Forward 16 Inches with 15 Sec timeout
 
         sleep(2000);     // pause
 
@@ -258,7 +256,7 @@ public class EncoderAuto extends LinearOpMode {
         boolean leftStop = false;
         boolean rightStop = false;
 
-        double angleToInches = (((angle/360)*(17.8)*turnConstant)); // Needs to be calibrated.
+        double angleToInches = ((((angle)*(Math.PI)/180)*(5.66)*turnErrorConstant)); // Needs to be calibrated (angle -> radians * radius * constant.
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
