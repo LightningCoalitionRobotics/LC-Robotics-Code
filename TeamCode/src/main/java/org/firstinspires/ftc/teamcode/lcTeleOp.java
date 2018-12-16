@@ -60,7 +60,7 @@ public class lcTeleOp extends OpMode {
 
 	DcMotor stronkBoi;
 
-	DcMotor spinner1, spinner2;
+	DcMotor leftSpinner, rightSpinner;
 
     // slow mode settings
 
@@ -98,8 +98,8 @@ public class lcTeleOp extends OpMode {
 
 		stronkBoi = hardwareMap.dcMotor.get("stronkBoi");
 
-		spinner1 = hardwareMap.dcMotor.get("spinner1");
-		spinner2 = hardwareMap.dcMotor.get("spinner2");
+		leftSpinner = hardwareMap.dcMotor.get("leftSpinner");
+		rightSpinner = hardwareMap.dcMotor.get("rightSpinner");
 	}
 
 	/*

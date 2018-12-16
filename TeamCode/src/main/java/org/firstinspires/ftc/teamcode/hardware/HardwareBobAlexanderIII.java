@@ -19,11 +19,11 @@ public class HardwareBobAlexanderIII extends Robot {
     /**
      * Left drive motor for the robot.
      */
-    public DcMotor leftDrive;
+    public DcMotor motorLeft;
     /**
      * Right drive motor for the robot.
      */
-    public DcMotor rightDrive;
+    public DcMotor motorRight;
     /**
      * Left lift motor for the robot.
      */
@@ -35,21 +35,13 @@ public class HardwareBobAlexanderIII extends Robot {
     /**
      * Arm motor for the robot.
      */
-    public DcMotor lifter;
+    public DcMotor stronkBoi;
 
     // Constants
     /**
-     * In inches, the diameter of the wheels of the robot.
-     */
-    public static final double WHEEL_DIAMETER = 6;
-    /**
      *
      */
-    public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
-    /**
-     *
-     */
-    public static final int COUNTS_PER_INCH = 30;
+    public static final double COUNTS_PER_INCH = 3.5;
     /**
      * In milliseconds, how long the robot should wait after each autodrive.
      */
@@ -87,11 +79,11 @@ public class HardwareBobAlexanderIII extends Robot {
     @Override
     public void init(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
-        leftDrive = register("motorLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
-        rightDrive = register("motorRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
+        motorLeft = register("motorLeft", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
+        motorRight = register("motorRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
         leftSpinner = register("spinnerLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightSpinner = register("spinnerRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        lifter = register("arm", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        stronkBoi = register("stronkBoi", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     /**
@@ -117,37 +109,43 @@ public class HardwareBobAlexanderIII extends Robot {
      * {@inheritDoc}
      * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive(double, double, double, double)
      */
+
+
+    /*
+     *   This function needs to be able to account for prior movements
+     */
+
     @Override
     public void drive(double speed, double dist, double timeout) {
         // Code adapted from org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive
-        double leftPos = leftDrive.getCurrentPosition();
-        double rightPos = rightDrive.getCurrentPosition();
+        double leftPos = motorLeft.getCurrentPosition();
+        double rightPos = motorRight.getCurrentPosition();
         if(opMode instanceof LinearOpMode && ((LinearOpMode) opMode).opModeIsActive()) {
-            double target = dist * 30 / WHEEL_CIRCUMFERENCE;
+            double target = dist * 30 / WHEEL_CIRCUMFERENCE; //Can be calculated without circumference, just CPI
             elapsedTime.reset();
-            leftDrive.setPower(speed);
-            rightDrive.setPower(speed);
+            motorLeft.setPower(speed);
+            motorRight.setPower(speed);
             // Add debug information
             opMode.telemetry.addData("Path1 Right, Left",  "Running to %7d", target);
             opMode.telemetry.addData("Status Right, Left",  "Running at %7d :%7d",
-                    rightDrive.getCurrentPosition(), leftDrive.getCurrentPosition());
-            opMode.telemetry.addData("Mode Right", rightDrive.getMode());
-            opMode.telemetry.addData("Mode Left", leftDrive.getMode());
-            opMode.telemetry.addData("Motor Right", rightDrive.isBusy());
-            opMode.telemetry.addData("Motor Left", leftDrive.isBusy());
+                    motorRight.getCurrentPosition(), motorLeft.getCurrentPosition());
+            opMode.telemetry.addData("Mode Right", motorRight.getMode());
+            opMode.telemetry.addData("Mode Left", motorLeft.getMode());
+            opMode.telemetry.addData("Motor Right", motorRight.isBusy());
+            opMode.telemetry.addData("Motor Left", motorLeft.isBusy());
             opMode.telemetry.update();
             while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-                if (leftDrive.getCurrentPosition() >= leftPos + dist * COUNTS_PER_INCH
-                        || rightDrive.getCurrentPosition() >= rightPos + dist * COUNTS_PER_INCH) {
-                    leftDrive.setPower(0);
-                    rightDrive.setPower(0);
+                if (motorLeft.getCurrentPosition() >= leftPos + dist * COUNTS_PER_INCH
+                        || motorRight.getCurrentPosition() >= rightPos + dist * COUNTS_PER_INCH) {
+                    motorLeft.setPower(0);
+                    motorRight.setPower(0);
                     break;
                 }
             }
-            leftDrive.setPower(0);
-            rightDrive.setPower(0);
-            opMode.telemetry.addData("Final position Left: ", leftDrive.getCurrentPosition());
-            opMode.telemetry.addData("Final position Right: ", rightDrive.getCurrentPosition());
+            motorLeft.setPower(0);
+            motorRight.setPower(0);
+            opMode.telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
+            opMode.telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
             opMode.telemetry.update();
             ((LinearOpMode)opMode).sleep(SLEEP_AFTER_DRIVE);
         } else {
@@ -191,8 +189,8 @@ public class HardwareBobAlexanderIII extends Robot {
      */
     @Override
     public void turn(double speed, double angle, double timeout) {
-//        double leftPos = leftDrive.getCurrentPosition();
-//        double rightPos = rightDrive.getCurrentPosition();
+//        double leftPos = motorLeft.getCurrentPosition();
+//        double rightPos = motorRight.getCurrentPosition();
 //        if (opMode instanceof LinearOpMode && ((LinearOpMode) opMode).opModeIsActive()) {
 //            int leftTarget;
 //            int rightTarget;
