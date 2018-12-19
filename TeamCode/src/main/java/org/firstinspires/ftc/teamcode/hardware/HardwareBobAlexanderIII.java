@@ -121,7 +121,7 @@ public class HardwareBobAlexanderIII extends Robot {
         double leftPos = motorLeft.getCurrentPosition();
         double rightPos = motorRight.getCurrentPosition();
         if(opMode instanceof LinearOpMode && ((LinearOpMode) opMode).opModeIsActive()) {
-            double target = dist * 30 / WHEEL_CIRCUMFERENCE; //Can be calculated without circumference, just CPI
+            double target = dist * 30 / 1; //Can be calculated without circumference, just CPI
             elapsedTime.reset();
             motorLeft.setPower(speed);
             motorRight.setPower(speed);
