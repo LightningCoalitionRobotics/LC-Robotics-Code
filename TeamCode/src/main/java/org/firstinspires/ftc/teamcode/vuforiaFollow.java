@@ -147,7 +147,7 @@ public class vuforiaFollow extends LinearOpMode {
         motorLeft = hardwareMap.dcMotor.get("motorLeft");
 
 
-        motorLeft.setDirection(REVERSE);
+        //motorLeft.setDirection(REVERSE);
         motorRight.setDirection(REVERSE);
 
         //we don't care about encoders here
@@ -354,6 +354,12 @@ public class vuforiaFollow extends LinearOpMode {
 
                 motorLeft.setPower(-scaledHeading);
                 motorRight.setPower(scaledHeading);
+
+            } else {
+
+                //if it's in the range of error turn off the motors
+                motorLeft.setPower(0);
+                motorRight.setPower(0);
 
             }
 			
