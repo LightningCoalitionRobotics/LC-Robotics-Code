@@ -71,7 +71,7 @@ public class EncoderAuto extends LinearOpMode {
     /* Declare OpMode members. */
     private ElapsedTime     runtime = new ElapsedTime();
 
-    static final double     turnErrorConstant = 0.1;
+    static final double     turnErrorConstant = (1.75);
     static final double     reductionConstant = 0.2;
     static final double     COUNTS_PER_MOTOR_REV    = 30;    // eg: TETRIX Motor Encoder
     static final double     COUNTS_PER_INCH         = 3.5;
@@ -92,7 +92,7 @@ public class EncoderAuto extends LinearOpMode {
         motorLeft = hardwareMap.dcMotor.get("motorLeft");
 
 
-        motorLeft.setDirection(REVERSE);
+        //motorLeft.setDirection(REVERSE);
         motorRight.setDirection(REVERSE);
 
         /*
@@ -205,7 +205,7 @@ public class EncoderAuto extends LinearOpMode {
                    (!leftStop || !rightStop)) {
 
                 //Stop right motor if it's finished.
-                if(Math.abs(motorRight.getCurrentPosition()) >= newRightTarget) {
+                if(motorRight.getCurrentPosition() >= newRightTarget) {
 
                     motorRight.setPower(0);
                     rightStop = true;
@@ -213,7 +213,7 @@ public class EncoderAuto extends LinearOpMode {
                 }
 
                     //Stop left motor if it's finished.
-                if ((Math.abs((motorLeft.getCurrentPosition()))) >= newLeftTarget) {
+                if ((motorLeft.getCurrentPosition()) >= newLeftTarget) {
 
                         motorLeft.setPower(0);
                         leftStop = true;
@@ -256,15 +256,15 @@ public class EncoderAuto extends LinearOpMode {
         boolean leftStop = false;
         boolean rightStop = false;
 
-        double angleToInches = ((((angle)*(Math.PI)/180)*(5.66)*turnErrorConstant)); // Needs to be calibrated (angle -> radians * radius * constant.
+        double angleToInches = ((((angle)*(Math.PI)/180.0)*(5.66)*turnErrorConstant)); // Needs to be calibrated (angle -> radians * radius * constant.
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
 
                 // Determine new target position, and pass to motor controller
-                newLeftTarget = (Math.abs(motorLeft.getCurrentPosition()) - (angleToInches*COUNTS_PER_INCH));
-                newRightTarget = (Math.abs(motorRight.getCurrentPosition()) + (angleToInches*COUNTS_PER_INCH));
+                newLeftTarget = (motorLeft.getCurrentPosition() - (angleToInches*COUNTS_PER_INCH));
+                newRightTarget = (motorRight.getCurrentPosition()) + (angleToInches*COUNTS_PER_INCH);
 
 
             // reset the timeout time and start motion.
@@ -295,7 +295,7 @@ public class EncoderAuto extends LinearOpMode {
                 if(angle > 0) {
 
                     //Stop right motor if it's finished.
-                    if (Math.abs(motorRight.getCurrentPosition()) >= Math.abs(newRightTarget)) {
+                    if (motorRight.getCurrentPosition() >= newRightTarget) {
 
                         motorRight.setPower(0);
                         rightStop = true;
@@ -303,7 +303,7 @@ public class EncoderAuto extends LinearOpMode {
                     }
 
                     //Stop left motor if it's finished.
-                    if ((Math.abs((motorLeft.getCurrentPosition()))) <= Math.abs(newLeftTarget)) {
+                    if ((motorLeft.getCurrentPosition()) <= newLeftTarget) {
 
                         motorLeft.setPower(0);
                         leftStop = true;
@@ -313,7 +313,7 @@ public class EncoderAuto extends LinearOpMode {
                 } else {
 
                     //Stop right motor if it's finished.
-                    if (Math.abs(motorRight.getCurrentPosition()) <= Math.abs(newRightTarget)) {
+                    if (motorRight.getCurrentPosition() <= newRightTarget) {
 
                         motorRight.setPower(0);
                         rightStop = true;
@@ -321,7 +321,7 @@ public class EncoderAuto extends LinearOpMode {
                     }
 
                     //Stop left motor if it's finished.
-                    if ((Math.abs((motorLeft.getCurrentPosition()))) >= Math.abs(newLeftTarget)) {
+                    if (((motorLeft.getCurrentPosition())) >= newLeftTarget) {
 
                         motorLeft.setPower(0);
                         leftStop = true;
@@ -329,8 +329,6 @@ public class EncoderAuto extends LinearOpMode {
                     }
 
                 }
-
-            sleep(2000);
 
                 // Display it for the driver.
                 telemetry.addData("Turn Right, Left",  "Running to %7d :%7d", ((int)newRightTarget),  ((int)newLeftTarget));
@@ -351,7 +349,7 @@ public class EncoderAuto extends LinearOpMode {
             motorRight.setPower(0);
             motorLeft.setPower(0);
 
-            sleep(2000);
+            sleep(500);
 
             telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
             telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
