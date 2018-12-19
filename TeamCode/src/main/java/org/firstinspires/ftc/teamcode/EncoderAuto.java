@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -68,6 +69,13 @@ import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
 @Autonomous(name="EncoderAuto", group="Autonomous")
 public class EncoderAuto extends LinearOpMode {
 
+    private static OpMode opmode = null;
+
+    public static OpMode getOpModeInstance()
+    {
+        return opmode;
+    }
+
     /* Declare OpMode members. */
     private ElapsedTime     runtime = new ElapsedTime();
 
@@ -87,6 +95,8 @@ public class EncoderAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+
+        opmode = this;
 
         motorRight = hardwareMap.dcMotor.get("motorRight");
         motorLeft = hardwareMap.dcMotor.get("motorLeft");

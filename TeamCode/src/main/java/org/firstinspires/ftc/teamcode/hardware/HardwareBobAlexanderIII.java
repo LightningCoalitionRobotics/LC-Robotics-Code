@@ -7,6 +7,11 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.EncoderAuto;
+
+import static java.lang.Thread.sleep;
+
 /**
  * The class for the LCR 2018-19 robot.
  *
@@ -14,8 +19,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  * @author Noah Simon
  */
-public class HardwareBobAlexanderIII extends Robot {
+public abstract class HardwareBobAlexanderIII extends Robot {
     // All of the components we will need (e.g. motors, servos, sensors...) that are attached to the robot
+    /**
+     * ElapsedTime and telemetry
+     */
+    static final double turnErrorConstant = (1.75);
+    private Telemetry telemetry;
+    private ElapsedTime runtime = new ElapsedTime();
     /**
      * Left drive motor for the robot.
      */
@@ -74,6 +85,8 @@ public class HardwareBobAlexanderIII extends Robot {
     public HardwareBobAlexanderIII(OpMode opMode, double drive_speed) {
         this(opMode);
         this.drive_speed = drive_speed;
+
+        telemetry = EncoderAuto.getOpModeInstance().telemetry;
     }
 
     @Override
@@ -115,57 +128,83 @@ public class HardwareBobAlexanderIII extends Robot {
      *   This function needs to be able to account for prior movements
      */
 
-    @Override
-    public void drive(double speed, double dist, double timeout) {
-        // Code adapted from org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive
-        double leftPos = motorLeft.getCurrentPosition();
-        double rightPos = motorRight.getCurrentPosition();
-        if(opMode instanceof LinearOpMode && ((LinearOpMode) opMode).opModeIsActive()) {
-            double target = dist * 30 / 1; //Can be calculated without circumference, just CPI
-            elapsedTime.reset();
-            motorLeft.setPower(speed);
-            motorRight.setPower(speed);
-            // Add debug information
-            opMode.telemetry.addData("Path1 Right, Left",  "Running to %7d", target);
-            opMode.telemetry.addData("Status Right, Left",  "Running at %7d :%7d",
-                    motorRight.getCurrentPosition(), motorLeft.getCurrentPosition());
-            opMode.telemetry.addData("Mode Right", motorRight.getMode());
-            opMode.telemetry.addData("Mode Left", motorLeft.getMode());
-            opMode.telemetry.addData("Motor Right", motorRight.isBusy());
-            opMode.telemetry.addData("Motor Left", motorLeft.isBusy());
-            opMode.telemetry.update();
-            while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-                if (motorLeft.getCurrentPosition() >= leftPos + dist * COUNTS_PER_INCH
-                        || motorRight.getCurrentPosition() >= rightPos + dist * COUNTS_PER_INCH) {
-                    motorLeft.setPower(0);
-                    motorRight.setPower(0);
-                    break;
-                }
-            }
-            motorLeft.setPower(0);
-            motorRight.setPower(0);
-            opMode.telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
-            opMode.telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
-            opMode.telemetry.update();
-            ((LinearOpMode)opMode).sleep(SLEEP_AFTER_DRIVE);
-        } else {
-            opMode.telemetry.addData("Error", "Attempted to autodrive during teleop or when opmode is closed.");
-            opMode.telemetry.update();
-        }
-    }
 
-    /**
-     *
-     * Drives the robot forward using the default speed.
-     *
-     * @param dist In inches, the distance the robot should travel.
-     * @param timeout In seconds, how long the robot should attempt to reach the target distance.
-     * @see #drive(double, double, double)
-     * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive(double, double, double, double)
-     */
-    public void drive(double dist, double timeout) {
-        drive(drive_speed, dist, timeout);
-    }
+    public void drive(double speed,
+                      double leftInches, double rightInches,
+                      double timeoutS) {
+
+        this.motorLeft = motorLeft;
+        this.motorRight = motorRight;
+
+        double newLeftTarget;
+        double newRightTarget;
+
+        boolean leftStop = false;
+        boolean rightStop = false;
+
+
+            // Determine new target position, and pass to motor controller
+            newLeftTarget = motorLeft.getCurrentPosition() + (leftInches * COUNTS_PER_INCH);
+            newRightTarget = motorRight.getCurrentPosition() + (rightInches * COUNTS_PER_INCH);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+            motorRight.setPower(Math.abs(0.5));
+            motorLeft.setPower(Math.abs(0.5));
+
+            // keep looping while we are still active, and there is time left, and both motors are running.
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
+            // its target position, the motion will stop.  This is "safer" in the event that the robot will
+            // always end the motion as soon as possible.
+            // However, if you require that BOTH motors have finished their moves before the robot continues
+            // onto the next step, use (isBusy() || isBusy()) in the loop test.*/
+            while ((runtime.seconds() < timeoutS) &&
+                    (!leftStop || !rightStop)) {
+
+                //Stop right motor if it's finished.
+                if (motorRight.getCurrentPosition() >= newRightTarget) {
+
+                    motorRight.setPower(0);
+                    rightStop = true;
+
+                }
+
+                //Stop left motor if it's finished.
+                if ((motorLeft.getCurrentPosition()) >= newLeftTarget) {
+
+                    motorLeft.setPower(0);
+                    leftStop = true;
+
+                }
+
+
+                // Display it for the driver.
+                telemetry.addData("Path1 Right, Left", "Running to %7d :%7d", ((int) newRightTarget), ((int) newLeftTarget));
+                telemetry.addData("Status Right, Left", "Running at %7d :%7d",
+
+                        motorRight.getCurrentPosition(),
+                        (Math.abs((motorLeft.getCurrentPosition()))));
+
+                telemetry.addData("Mode Right", motorRight.getMode());
+                telemetry.addData("Mode Left", motorLeft.getMode());
+                telemetry.addData("Motor Right", motorRight.isBusy());
+                telemetry.addData("Motor Left", motorLeft.isBusy());
+                telemetry.update();
+            }
+
+            // Stop all motion;
+            motorRight.setPower(0);
+            motorLeft.setPower(0);
+
+            telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
+            telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
+            telemetry.update();
+
+            try {
+                sleep(2000);   // pause after each move
+            } catch(InterruptedException e) { telemetry.addData("InterruptedException",e); telemetry.update();}
+
+        }
 
     /**
      * Drives the robot using the default speed in the specified direction.
@@ -175,38 +214,12 @@ public class HardwareBobAlexanderIII extends Robot {
      * @see #drive(double, double, double)
      * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive(double, double, double, double)
      */
-    public void drive(boolean direction, double dist, double timeout) {
-        if (direction) {
-            drive(dist, timeout);
-        } else {
-            drive(-drive_speed, dist, timeout);
-        }
-    }
+
 
     /**
      * {@inheritDoc}
      * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderTurn(double, double, double)
      */
-    @Override
-    public void turn(double speed, double angle, double timeout) {
-//        double leftPos = motorLeft.getCurrentPosition();
-//        double rightPos = motorRight.getCurrentPosition();
-//        if (opMode instanceof LinearOpMode && ((LinearOpMode) opMode).opModeIsActive()) {
-//            int leftTarget;
-//            int rightTarget;
-//
-//            if (angle > 0) {
-//
-//            } else {
-//
-//            }
-//        } else {
-//            opMode.telemetry.addData("Error", "Attempted to autoturn during teleop or when opmode is closed.");
-//            opMode.telemetry.update();
-//        }
-        throw new UnsupportedOperationException("This method has not yet been implemented.");
-        // TODO(Gabe Ruoff): Fill out
-    }
 
     /**
      *
@@ -215,9 +228,111 @@ public class HardwareBobAlexanderIII extends Robot {
      * @see #turn(double, double, double)
      * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderTurn(double, double, double)
      */
+
     public void turn(double angle, double timeout) {
-        turn(drive_speed, angle, timeout);
-    }
+        double newLeftTarget;
+        double newRightTarget;
+
+        boolean leftStop = false;
+        boolean rightStop = false;
+
+        double angleToInches = ((((angle)*(Math.PI)/180.0)*(5.66)*turnErrorConstant)); // Needs to be calibrated (angle -> radians * radius * constant.
+
+
+            // Determine new target position, and pass to motor controller
+            newLeftTarget = (motorLeft.getCurrentPosition() - (angleToInches*COUNTS_PER_INCH));
+            newRightTarget = (motorRight.getCurrentPosition()) + (angleToInches*COUNTS_PER_INCH);
+
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+
+            if(angle > 0) {
+
+                motorRight.setPower(Math.abs(0.5));
+                motorLeft.setPower((-0.5));
+
+            } else {
+
+                motorRight.setPower((-0.5));
+                motorLeft.setPower(Math.abs(0.5));
+
+            }
+
+            // keep looping while we are still active, and there is time left, and both motors are running.
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
+            // its target position, the motion will stop.  This is "safer" in the event that the robot will
+            // always end the motion as soon as possible.
+            // However, if you require that BOTH motors have finished their moves before the robot continues
+            // onto the next step, use (isBusy() || isBusy()) in the loop test.*/
+            while ((runtime.seconds() < timeout) &&
+                    (!leftStop || !rightStop)) {
+
+                if(angle > 0) {
+
+                    //Stop right motor if it's finished.
+                    if (motorRight.getCurrentPosition() >= newRightTarget) {
+
+                        motorRight.setPower(0);
+                        rightStop = true;
+
+                    }
+
+                    //Stop left motor if it's finished.
+                    if ((motorLeft.getCurrentPosition()) <= newLeftTarget) {
+
+                        motorLeft.setPower(0);
+                        leftStop = true;
+
+                    }
+
+                } else {
+
+                    //Stop right motor if it's finished.
+                    if (motorRight.getCurrentPosition() <= newRightTarget) {
+
+                        motorRight.setPower(0);
+                        rightStop = true;
+
+                    }
+
+                    //Stop left motor if it's finished.
+                    if (((motorLeft.getCurrentPosition())) >= newLeftTarget) {
+
+                        motorLeft.setPower(0);
+                        leftStop = true;
+
+                    }
+
+                }
+
+                // Display it for the driver.
+                telemetry.addData("Turn Right, Left",  "Running to %7d :%7d", ((int)newRightTarget),  ((int)newLeftTarget));
+                telemetry.addData("Status Right, Left",  "Running at %7d :%7d",
+
+                        motorRight.getCurrentPosition(),
+                        (Math.abs((motorLeft.getCurrentPosition()))));
+
+                telemetry.addData("Mode Right", motorRight.getMode());
+                telemetry.addData("Mode Left", motorLeft.getMode());
+                telemetry.addData("Motor Right", motorRight.isBusy());
+                telemetry.addData("Motor Left", motorLeft.isBusy());
+                telemetry.update();
+            }
+
+
+            // Stop all motion;
+            motorRight.setPower(0);
+            motorLeft.setPower(0);
+
+            try {
+                sleep(500);
+            } catch(InterruptedException e) { telemetry.addData("InterruptedException",e); telemetry.update();}
+
+            telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
+            telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
+            telemetry.update();
+        }
 
     /**
      *
