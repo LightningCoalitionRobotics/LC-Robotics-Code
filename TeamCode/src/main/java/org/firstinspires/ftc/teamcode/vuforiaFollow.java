@@ -93,7 +93,7 @@ import java.util.List;
  * is explained below.
  */
 
-@TeleOp(name="VuforiaRoverNav", group ="Autonomous")
+@TeleOp(name="VuforiaFollow", group ="Autonomous")
 public class vuforiaFollow extends LinearOpMode {
 
     /*
@@ -329,39 +329,44 @@ public class vuforiaFollow extends LinearOpMode {
 
                 // express the rotation of the robot in degrees.
                 Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+
+                telemetry.addData("ThirdAngle: ", rotation.thirdAngle);
+
+                //if the camera is not facing the image within a standard degree of error
+                if(Math.abs(rotation.thirdAngle) > 10) {
+
+                    //map heading value to between -1 and 1
+                    double scaledHeading = scale(rotation.thirdAngle, -180, 180, -1, 1);
+
+                    telemetry.addData("scaledHeading: ", scaledHeading);
+
+                    //compensate in case power is over 1
+                    if(Math.abs(scaledHeading) > 1) {
+
+                        //Map down to 1 or -1 if scaledHeading is greater/less than 1/-1
+                        scaledHeading -= (scaledHeading-(scaledHeading/Math.abs(scaledHeading)));
+
+                    }
+
+                    telemetry.addData("Setting power: ", scaledHeading);
+
+                    motorLeft.setPower(-scaledHeading);
+                    motorRight.setPower(scaledHeading);
+
+                } else {
+
+                    //if it's in the range of error turn off the motors
+                    motorLeft.setPower(0);
+                    motorRight.setPower(0);
+
+                }
+
                 telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
             } else {
                 telemetry.addData("Visible Target", "none");
             }
             telemetry.update();
 
-            //Set rotation variable
-            Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-
-            //if the camera is not facing the image within a standard degree of error
-            if(Math.abs(rotation.thirdAngle) > 10) {
-
-                //map heading value to between -1 and 1
-                double scaledHeading = scale(rotation.thirdAngle, 0, 360, -1, 1);
-
-                //compensate in case power is over 1
-                if(Math.abs(scaledHeading) > 1) {
-
-                    //Map down to 1 or -1 if scaledHeading is greater/less than 1/-1
-                    scaledHeading -= (scaledHeading-(scaledHeading/Math.abs(scaledHeading)));
-
-                }
-
-                motorLeft.setPower(-scaledHeading);
-                motorRight.setPower(scaledHeading);
-
-            } else {
-
-                //if it's in the range of error turn off the motors
-                motorLeft.setPower(0);
-                motorRight.setPower(0);
-
-            }
 			
         }
     }
