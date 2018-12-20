@@ -237,6 +237,40 @@ public class HardwareBobAlexanderIII extends Robot {
     }
 
     /**
+     * Spin the spinners for a specified amount of time.
+     * @param speed A value from -1 to 1, a higher absolute value meaning a higher speed.
+     * @param time In seconds, how long the motors should spin.
+     */
+    public void autoSpin(double speed, long time) {
+        if (opMode instanceof LinearOpMode) {
+            leftSpinner.setPower(speed);
+            rightSpinner.setPower(speed);
+            ((LinearOpMode) opMode).sleep(time * 1000);
+            leftSpinner.setPower(0);
+            rightSpinner.setPower(0);
+        } else {
+            throw new UnsupportedOperationException("Attempted to autospin during teleop.");
+        }
+    }
+
+    /**
+     * Start the spinners in front of the robot.
+     * @param speed A value from -1 to 1, a higher absolute value meaning a higher speed.
+     */
+    public void startSpin(double speed) {
+        leftSpinner.setPower(speed);
+        rightSpinner.setPower(speed);
+    }
+
+    /**
+     * Stop the spinners in front of the robot.
+     */
+    public void stopSpin() {
+        leftSpinner.setPower(0);
+        rightSpinner.setPower(0);
+    }
+
+    /**
      * Checks the gamepads to see if A, B, Y, or X have been pressed, If so, it changes the slow mode type accordingly.
      */
     public void checkSlowMode() {

@@ -32,5 +32,9 @@ public class HardwareTestAutonomous extends LinearOpMode {
         robot.drive(false, 15, 5);
         telemetry.addData("Status", "Finished reverse.");
         telemetry.update();
+
+        robot.autoSpin(0.5, 3);
+        telemetry.addData("Status", "Finished spin.");
+        telemetry.update();
     }
 }
