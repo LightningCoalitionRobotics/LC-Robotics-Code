@@ -147,8 +147,8 @@ public class EncoderAuto extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         //encoderTurn(DRIVE_SPEED,  -135, 15);
-        encoderDrive(DRIVE_SPEED,  33.0,  33.0, 15);  // S1: Forward 33 Inches with 15 Sec timeout
         encoderTurn(DRIVE_SPEED,  90.0, 15); // Turn 90 degrees
+        encoderDrive(DRIVE_SPEED, 31, 31, 15);
 
         motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

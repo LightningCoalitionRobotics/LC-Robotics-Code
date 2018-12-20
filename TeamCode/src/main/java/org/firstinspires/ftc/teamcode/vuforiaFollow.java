@@ -93,7 +93,7 @@ import java.util.List;
  * is explained below.
  */
 
-@TeleOp(name="VuforiaRoverNav", group ="Autonomous")
+@TeleOp(name="VuforiaFollow", group ="Autonomous")
 public class vuforiaFollow extends LinearOpMode {
 
     /*
@@ -301,6 +301,7 @@ public class vuforiaFollow extends LinearOpMode {
         /** Start tracking the data sets we care about. */
         targetsRoverRuckus.activate();
 
+
         while (opModeIsActive()) {
 
             // check all the trackable target to see which one (if any) is visible.
@@ -315,6 +316,39 @@ public class vuforiaFollow extends LinearOpMode {
                     OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
                     if (robotLocationTransform != null) {
                         lastLocation = robotLocationTransform;
+
+                        Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+
+
+
+                        //if the camera is not facing the image within a standard degree of error
+                        if(Math.abs(rotation.thirdAngle) > 10) {
+
+                            //map heading value to between -1 and 1
+                            double scaledHeading = scale(rotation.thirdAngle, -180
+                                    , 180, -1, 1);
+
+                            //compensate in case power is over 1
+                            if(Math.abs(scaledHeading) > 1) {
+
+                                //Map down to 1 or -1 if scaledHeading is greater/less than 1/-1
+                                scaledHeading -= (scaledHeading-(scaledHeading/Math.abs(scaledHeading)));
+
+                            }
+
+                            motorLeft.setPower(-scaledHeading);
+                            motorRight.setPower(scaledHeading);
+
+                        } else {
+
+                            //if it's in the range of error turn off the motors
+                            motorLeft.setPower(0);
+                            motorRight.setPower(0);
+
+                        }
+
+                    }
+
                     }
                     break;
                 }
@@ -327,8 +361,9 @@ public class vuforiaFollow extends LinearOpMode {
                 telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
                         translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
 
-                // express the rotation of the robot in degrees.
                 Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+
+                // express the rotation of the robot in degrees.
                 telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
             } else {
                 telemetry.addData("Visible Target", "none");
@@ -336,34 +371,7 @@ public class vuforiaFollow extends LinearOpMode {
             telemetry.update();
 
             //Set rotation variable
-            Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
 
-            //if the camera is not facing the image within a standard degree of error
-            if(Math.abs(rotation.thirdAngle) > 10) {
-
-                //map heading value to between -1 and 1
-                double scaledHeading = scale(rotation.thirdAngle, 0, 360, -1, 1);
-
-                //compensate in case power is over 1
-                if(Math.abs(scaledHeading) > 1) {
-
-                    //Map down to 1 or -1 if scaledHeading is greater/less than 1/-1
-                    scaledHeading -= (scaledHeading-(scaledHeading/Math.abs(scaledHeading)));
-
-                }
-
-                motorLeft.setPower(-scaledHeading);
-                motorRight.setPower(scaledHeading);
-
-            } else {
-
-                //if it's in the range of error turn off the motors
-                motorLeft.setPower(0);
-                motorRight.setPower(0);
-
-            }
-			
-        }
     }
 
     //Function to return a scaled value
