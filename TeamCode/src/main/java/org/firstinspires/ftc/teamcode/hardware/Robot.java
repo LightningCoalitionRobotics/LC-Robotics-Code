@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -38,38 +40,62 @@ public abstract class Robot {
     public abstract void turn(double speed, double angle, double timeout);
 
     /**
-     *
+     * Move a single motor for a specific amount of time.
+     * @param motor The motor that will be in use.
+     * @param speed A value from -1 to 1, a higher absolute value meaning a higher speed.
+     * @param time In seconds, how long the motor should turn for.
+     */
+    public void moveMotor(DcMotor motor, double speed, long time) {
+        if (opMode instanceof LinearOpMode) {
+            motor.setPower(speed);
+            ((LinearOpMode) opMode).sleep(time);
+            motor.setPower(0);
+        } else {
+            throw new UnsupportedOperationException("Tried to run automatically during teleop.");
+        }
+//        motor.setPower(speed);
+//        if (opMode instanceof LinearOpMode) {
+//            ((LinearOpMode) opMode).sleep(time);
+//        } else {
+//            double startTime = opMode.getRuntime();
+//            while (opMode.getRuntime() - startTime > 0) {
+//            }
+//        }
+//        motor.setPower(0);
+    }
+
+    /**
+     * An object used to determine the amount of time elapsed since this class was called.
      */
     protected ElapsedTime elapsedTime = new ElapsedTime();
 
-
     /**
-     *
+     * Factors by which motors should multiply their speed, usually during teleop.
      */
     public enum SlowModeType {
         /**
-         *
+         * A factor of 2.
          */
         DOUBLE(2),
         /**
-         *
+         * A factor of 1, or normal speed.
          */
         NORMAL(1),
         /**
-         *
+         * A factor of 0.5.
          */
         HALF(1/2),
         /**
-         *
+         * A factor of 0.25.
          */
         QUARTER(1/4),
         /**
-         *
+         * A factor of 0.125.
          */
         EIGHTH(1/8);
 
         /**
-         *
+         * Create a new value in this enum.
          * @param changeFactor The factor by which the instance should change motor speed.
          */
         SlowModeType(float changeFactor) {
@@ -78,16 +104,17 @@ public abstract class Robot {
 
         /**
          * Get the factor by which the instance should change motor speed.
-         * @return the factor by which the instance should change motor speed.
+         * @return the {@link #changeFactor} of the instance.
          */
         public float getChangeFactor() {
             return changeFactor;
         }
 
         /**
-         *
+         * The factor by which the instance should change motor speed.
          */
         private float changeFactor;
+
         @Override
         public String toString() {
             switch (this) {
@@ -146,11 +173,11 @@ public abstract class Robot {
     }
 
     /**
-     *
+     * The registry of motors and other hardware elements on the robot.
      */
     public HardwareMap hardwareMap;
     /**
-     *
+     * The class instantiating this instance.
      */
     protected OpMode opMode;
 }
