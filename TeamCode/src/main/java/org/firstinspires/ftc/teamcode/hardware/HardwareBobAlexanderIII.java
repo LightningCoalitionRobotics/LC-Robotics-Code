@@ -254,12 +254,35 @@ public class HardwareBobAlexanderIII extends Robot {
     }
 
     /**
+     * Spin the spinners for a specified amount of time at the default speed.
+     * @param time In seconds, how long the motors should spin.
+     * @param direction True if forward, false if backward.
+     */
+    public void autoSpin(boolean direction, long time) {
+        autoSpin(direction ? drive_speed : -drive_speed, time);
+    }
+
+    /**
      * Start the spinners in front of the robot.
      * @param speed A value from -1 to 1, a higher absolute value meaning a higher speed.
      */
     public void startSpin(double speed) {
         leftSpinner.setPower(speed);
         rightSpinner.setPower(speed);
+    }
+
+    /**
+     * Start the spinners in front of the robot at the default speed.
+     * @param direction True if forward, false if backward.
+     */
+    public void startSpin(boolean direction) {
+        if (direction) {
+            leftSpinner.setPower(drive_speed);
+            rightSpinner.setPower(drive_speed);
+        } else {
+            leftSpinner.setPower(-drive_speed);
+            rightSpinner.setPower(-drive_speed);
+        }
     }
 
     /**
