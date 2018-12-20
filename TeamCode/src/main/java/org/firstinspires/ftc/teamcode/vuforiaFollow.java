@@ -342,7 +342,7 @@ public class vuforiaFollow extends LinearOpMode {
             if(Math.abs(rotation.thirdAngle) > 10) {
 
                 //map heading value to between -1 and 1
-                double scaledHeading = (((rotation.thirdAngle + 180) * (1 - (-1)) / (180 + 180)) -1) * 1.25;
+                double scaledHeading = scale(rotation.thirdAngle, 0, 360, -1, 1);
 
                 //compensate in case power is over 1
                 if(Math.abs(scaledHeading) > 1) {
@@ -364,5 +364,12 @@ public class vuforiaFollow extends LinearOpMode {
             }
 			
         }
+    }
+
+    //Function to return a scaled value
+    double scale(double input, double in_min, double in_max, double out_min, double out_max) {
+
+        return (((input - in_min) * (out_max - out_min) / (in_max - in_min)) + out_min);
+
     }
 }
