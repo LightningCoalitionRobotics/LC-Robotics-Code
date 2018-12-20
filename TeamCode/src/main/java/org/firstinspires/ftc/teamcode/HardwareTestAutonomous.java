@@ -25,9 +25,9 @@ public class HardwareTestAutonomous extends LinearOpMode {
         telemetry.addData("Status", "Finished drive.");
         telemetry.update();
 
-        robot.turn(90, 5);
-        telemetry.addData("Status", "Finished turn.");
-        telemetry.update();
+//        robot.turn(90, 5);
+//        telemetry.addData("Status", "Finished turn.");
+//        telemetry.update();
 
         robot.drive(false, 15, 5);
         telemetry.addData("Status", "Finished reverse.");
