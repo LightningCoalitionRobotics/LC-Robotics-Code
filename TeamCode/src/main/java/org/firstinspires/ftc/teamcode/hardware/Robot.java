@@ -43,7 +43,7 @@ public abstract class Robot {
      * Move a single motor for a specific amount of time.
      * @param motor The motor that will be in use.
      * @param speed A value from -1 to 1, a higher absolute value meaning a higher speed.
-     * @param time In seconds, how long the motor should turn for.
+     * @param time In milliseconds, how long the motor should turn for.
      */
     public void moveMotor(DcMotor motor, double speed, long time) {
         if (opMode instanceof LinearOpMode) {
