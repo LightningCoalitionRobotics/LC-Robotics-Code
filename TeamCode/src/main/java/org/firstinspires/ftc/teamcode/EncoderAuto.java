@@ -36,33 +36,23 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+
+import java.util.List;
+
 import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
 
 /**
- * This file illustrates the concept of driving a path based on encoder counts.
- * It uses the common Pushbot hardware class to define the drive on the robot.
- * The code is structured as a LinearOpMode
+ * This autonomous utilizes TFOD, Vuforia, and encoders to detect and hit the proper mineral.
  *
- * The code REQUIRES that you DO have encoders on the wheels,
- *   otherwise you would use: PushbotAutoDriveByTime;
+ * The robot begins on the ground after releasing from the lander, and rotates 45 degrees* to
+ * face the rightmost mineral. It then scans the mineral and, if it's the correct one, drives
+ * forward and hits it. Otherwise, it rotates one third of 45 degrees* to face the next mineral.
  *
- *  This code ALSO requires that the drive Motors have been configured such that a positive
- *  power command moves them forwards, and causes the encoders to count UP.
- *
- *   The desired path in this example is:
- *   - Drive forward for 48 inches
- *   - Spin right for 12 Inches
- *   - Drive Backwards for 24 inches
- *   - Stop and close the claw.
- *
- *  The code is written using a method called: encoderDrive(speed, leftInches, rightInches, timeoutS)
- *  that performs the actual movement.
- *  This methods assumes that each movement is relative to the last stopping place.
- *  There are other ways to perform encoder based moves, but this method is probably the simplest.
- *  This code uses the RUN_TO_POSITION mode to enable the Motor controllers to generate the run profile
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
+ * *45 degrees is an estimate this will have to be measured.
  */
 
 @Autonomous(name="EncoderAuto", group="Autonomous")
@@ -85,14 +75,52 @@ public class EncoderAuto extends LinearOpMode {
     DcMotor motorRight;
     DcMotor motorLeft;
 
+    /*
+    *
+    * Vuforia and tensorflow definitions
+    *
+    */
+    private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
+    private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
+    private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
+
+    private static final String VUFORIA_KEY = "ASSk3sX/////AAABmZWE717QekkdmC87AEyc0L6Na1AyUrqBEaj7NYyPpaf18ZBSjn+obOdkmGLU1q/w7LLf7qJc5azO7JMsOnmafRv5PeDR2pE7SHMjmW00ym0OesQecU0IsHE5LscvJT891aKTdEj+ED8rJLk8WXtotM4trkZvgt7X6bHp35nf1cuCJn7E4niNNdE1FiYADOTNSPTgCMUn1e2U/0x7SEUpMn+uFj/CQTmUMW+UurQi+OV/4FWHCK9Q6HyWmQsgY3BYs7BsEzk5D6PEVOilwvyk9tA7Rni+DjbwJcN/pOkMCucWYgLhIkQEL4/Wg6Aog8uqkRPi4mAB5n+2R+7PXpJzQ12xNBZbAJKJkvn7sPtEelId";
+
+    /**
+     * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
+     * localization engine.
+     */
+    private VuforiaLocalizer vuforia;
+
+    /**
+     * {@link #tfod} is the variable we will use to store our instance of the Tensor Flow Object
+     * Detection engine.
+     */
+    private TFObjectDetector tfod;
+
     @Override
     public void runOpMode() {
+
+        // Initialize Vuforia and TFOD
+        initVuforia();
+
+        if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
+            initTfod();
+        } else {
+            telemetry.addData("Sorry!", "This device is not compatible with TFOD");
+        }
+
+        //notify the driver
+        telemetry.addData(">", "Vuforia/TFOD ready");
+        telemetry.update();
+
+        sleep(500);
 
         motorRight = hardwareMap.dcMotor.get("motorRight");
         motorLeft = hardwareMap.dcMotor.get("motorLeft");
 
 
-        //motorLeft.setDirection(REVERSE);
+        //reverse the right motor
         motorRight.setDirection(REVERSE);
 
         /*
@@ -127,45 +155,47 @@ public class EncoderAuto extends LinearOpMode {
 
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Path0",  "Starting at %7d :%7d",
-                          motorRight.getCurrentPosition(),
+                motorRight.getCurrentPosition(),
                 motorLeft.getCurrentPosition());
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        // Step through each leg of the path,
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        //encoderTurn(DRIVE_SPEED,  -135, 15);
-        encoderDrive(DRIVE_SPEED,  33.0,  33.0, 15);  // S1: Forward 33 Inches with 15 Sec timeout
-        encoderTurn(DRIVE_SPEED,  90.0, 15); // Turn 90 degrees
+        //BEGIN DRIVING
 
-        motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //Turn 45 degrees from starting point to rightmost mineral
+        encoderTurn(DRIVE_SPEED,  45.0, 7); // Turn 90 degrees
 
-        telemetry.addData("Mode Right", motorRight.getMode());
-        telemetry.addData("Mode Left", motorLeft.getMode());
-        telemetry.update();
-        sleep(sleep);   // optional pause after each move
+        //define exit bool for detection loop
+        boolean detectedGoldMineral = false;
 
-        motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //Loop to position robot in front of gold mineral
+        while(!detectedGoldMineral) {
 
-        telemetry.addData("Mode Right", motorRight.getMode());
-        telemetry.addData("Mode Left", motorLeft.getMode());
-        telemetry.update();
-        sleep(sleep);   // optional pause after each move
+            //Observe mineral in front of the bot
+            if ((getObject() != null) && (getObject() == LABEL_GOLD_MINERAL)) {
 
-        encoderDrive(DRIVE_SPEED,  16,  16, 15);  // S1: Forward 16 Inches with 15 Sec timeout
+                detectedGoldMineral = true;
 
-        sleep(2000);     // pause
+            } else {
 
+                encoderTurn(DRIVE_SPEED, (45/3), 7);
+
+            }
+
+        }
+
+        //Move robot forward and hit mineral
+        encoderDrive(DRIVE_SPEED, 33, 7);
+
+        //Notify driver that path is complete
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
 
     /*
-     *  Method to perfmorm a relative move, based on encoder counts.
+     *  Method to perform a relative move, based on encoder counts.
      *  Encoders are not reset as the move is based on the current position.
      *  Move will stop if any of three conditions occur:
      *  1) Move gets to the desired position
@@ -173,7 +203,7 @@ public class EncoderAuto extends LinearOpMode {
      *  3) Driver stops the opmode running.
      */
     public void encoderDrive(double speed,
-                             double leftInches, double rightInches,
+                             double inches,
                              double timeoutS) {
         double newLeftTarget;
         double newRightTarget;
@@ -186,8 +216,8 @@ public class EncoderAuto extends LinearOpMode {
 
 
             // Determine new target position, and pass to motor controller
-            newLeftTarget = motorLeft.getCurrentPosition() + (leftInches * COUNTS_PER_INCH);
-            newRightTarget = motorRight.getCurrentPosition() + (rightInches * COUNTS_PER_INCH);
+            newLeftTarget = motorLeft.getCurrentPosition() + (inches * COUNTS_PER_INCH);
+            newRightTarget = motorRight.getCurrentPosition() + (inches * COUNTS_PER_INCH);
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -219,8 +249,6 @@ public class EncoderAuto extends LinearOpMode {
                         leftStop = true;
 
                     }
-
-
 
                 // Display it for the driver.
                 telemetry.addData("Path1 Right, Left",  "Running to %7d :%7d", ((int)newRightTarget),  ((int)newLeftTarget));
@@ -344,7 +372,6 @@ public class EncoderAuto extends LinearOpMode {
                 telemetry.update();
             }
 
-
             // Stop all motion;
             motorRight.setPower(0);
             motorLeft.setPower(0);
@@ -355,6 +382,84 @@ public class EncoderAuto extends LinearOpMode {
             telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
             telemetry.update();
         }
+    }
+
+    /**
+     * Initialize the Vuforia localization engine.
+     */
+    private void initVuforia() {
+        /*
+         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
+         */
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+
+        parameters.vuforiaLicenseKey = VUFORIA_KEY;
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+
+        //  Instantiate the Vuforia engine
+        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+
+        // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
+    }
+
+    /**
+     * Initialize the Tensor Flow Object Detection engine.
+     */
+    private void initTfod() {
+        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
+        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
+    }
+
+    //Method to return which object the robot sees
+    public String getObject() {
+
+        if (opModeIsActive()) {
+            /** Activate Tensor Flow Object Detection. */
+            if (tfod != null) {
+                tfod.activate();
+            }
+
+            while (opModeIsActive()) {
+                if (tfod != null) {
+                    // getUpdatedRecognitions() will return null if no new information is available since
+                    // the last time that call was made.
+                    List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+                    if (updatedRecognitions != null) {
+                        telemetry.addData("# Object Detected", updatedRecognitions.size());
+                            for (Recognition recognition : updatedRecognitions) {
+                                if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                                    telemetry.addData("Gold mineral", "detected");
+                                    //update telemetry
+                                    telemetry.update();
+                                    return recognition.getLabel();
+                                } else {
+
+                                    telemetry.addData("Silver mineral", "detected");
+                                    //update telemetry
+                                    telemetry.update();
+                                    return recognition.getLabel();
+
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
+        if (tfod != null) {
+            tfod.shutdown();
+        }
+
+        //if no object detected
+        telemetry.addData("No mineral", "detected");
+        //update telemetry
+        telemetry.update();
+        return null;
+
     }
 
 }
