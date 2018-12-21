@@ -301,6 +301,7 @@ public class vuforiaFollow extends LinearOpMode {
         /** Start tracking the data sets we care about. */
         targetsRoverRuckus.activate();
 
+
         while (opModeIsActive()) {
 
             // check all the trackable target to see which one (if any) is visible.
@@ -315,60 +316,62 @@ public class vuforiaFollow extends LinearOpMode {
                     OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
                     if (robotLocationTransform != null) {
                         lastLocation = robotLocationTransform;
+
+                        Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+
+
+
+                        //if the camera is not facing the image within a standard degree of error
+                        if(Math.abs(rotation.thirdAngle) > 10) {
+
+                            //map heading value to between -1 and 1
+                            double scaledHeading = scale(rotation.thirdAngle, -180
+                                    , 180, -1, 1);
+
+                            //compensate in case power is over 1
+                            if(Math.abs(scaledHeading) > 1) {
+
+                                //Map down to 1 or -1 if scaledHeading is greater/less than 1/-1
+                                scaledHeading -= (scaledHeading-(scaledHeading/Math.abs(scaledHeading)));
+
+                            }
+
+                            motorLeft.setPower(-scaledHeading);
+                            motorRight.setPower(scaledHeading);
+
+                        } else {
+
+                            //if it's in the range of error turn off the motors
+                            motorLeft.setPower(0);
+                            motorRight.setPower(0);
+
+                        }
+
                     }
-                    break;
-                }
-            }
-
-            // Provide feedback as to where the robot is located (if we know).
-            if (targetVisible) {
-                // express position (translation) of robot in inches.
-                VectorF translation = lastLocation.getTranslation();
-                telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
-                        translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
-
-                // express the rotation of the robot in degrees.
-                Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-
-                telemetry.addData("ThirdAngle: ", rotation.thirdAngle);
-
-                //if the camera is not facing the image within a standard degree of error
-                if(Math.abs(rotation.thirdAngle) > 10) {
-
-                    //map heading value to between -1 and 1
-                    double scaledHeading = scale(rotation.thirdAngle, -180, 180, -1, 1);
-
-                    telemetry.addData("scaledHeading: ", scaledHeading);
-
-                    //compensate in case power is over 1
-                    if(Math.abs(scaledHeading) > 1) {
-
-                        //Map down to 1 or -1 if scaledHeading is greater/less than 1/-1
-                        scaledHeading -= (scaledHeading-(scaledHeading/Math.abs(scaledHeading)));
-
-                    }
-
-                    telemetry.addData("Setting power: ", scaledHeading);
-
-                    motorLeft.setPower(-scaledHeading);
-                    motorRight.setPower(scaledHeading);
-
-                } else {
-
-                    //if it's in the range of error turn off the motors
-                    motorLeft.setPower(0);
-                    motorRight.setPower(0);
 
                 }
-
-                telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
-            } else {
-                telemetry.addData("Visible Target", "none");
+                break;
             }
-            telemetry.update();
-
-			
         }
+
+        // Provide feedback as to where the robot is located (if we know).
+        if (targetVisible) {
+            // express position (translation) of robot in inches.
+            VectorF translation = lastLocation.getTranslation();
+            telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
+                    translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
+
+            Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+
+            // express the rotation of the robot in degrees.
+            telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+        } else {
+            telemetry.addData("Visible Target", "none");
+        }
+        telemetry.update();
+
+        //Set rotation variable
+
     }
 
     //Function to return a scaled value
