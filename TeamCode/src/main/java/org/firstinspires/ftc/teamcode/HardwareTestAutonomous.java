@@ -18,11 +18,11 @@ public class HardwareTestAutonomous extends LinearOpMode {
         robot.init(hardwareMap);
 
         robot.moveMotor(robot.lifter, 0.5, 2000);
-        telemetry.addData("Status", "Landed, On ground");
+        telemetry.addData("Status1", "Landed, On ground");
         telemetry.update();
 
         robot.drive(30, 10);
-        telemetry.addData("Status", "Finished drive.");
+        telemetry.addData("Status2", "Finished drive.");
         telemetry.update();
 
 //        robot.turn(90, 5);
@@ -30,11 +30,11 @@ public class HardwareTestAutonomous extends LinearOpMode {
 //        telemetry.update();
 
         robot.drive(false, 15, 5);
-        telemetry.addData("Status", "Finished reverse.");
+        telemetry.addData("Status3", "Finished reverse.");
         telemetry.update();
 
         robot.autoSpin(0.5, 3);
-        telemetry.addData("Status", "Finished spin.");
+        telemetry.addData("Status4", "Finished spin.");
         telemetry.update();
     }
 }

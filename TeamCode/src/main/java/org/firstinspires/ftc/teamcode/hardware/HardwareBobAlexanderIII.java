@@ -122,7 +122,7 @@ public class HardwareBobAlexanderIII extends Robot {
         double leftPos = motorLeft.getCurrentPosition();
         double rightPos = motorRight.getCurrentPosition();
         if(opMode instanceof LinearOpMode && ((LinearOpMode) opMode).opModeIsActive()) {
-            double target = dist * 30 / 1; //Can be calculated without circumference, just CPI
+            double target = dist * COUNTS_PER_INCH; //Can be calculated without circumference, just CPI
             elapsedTime.reset();
             motorLeft.setPower(speed);
             motorRight.setPower(speed);
@@ -136,8 +136,8 @@ public class HardwareBobAlexanderIII extends Robot {
             opMode.telemetry.addData("Motor Left", motorLeft.isBusy());
             opMode.telemetry.update();
             while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-                if (motorLeft.getCurrentPosition() >= leftPos + dist * COUNTS_PER_INCH
-                        || motorRight.getCurrentPosition() >= rightPos + dist * COUNTS_PER_INCH) {
+                if (motorLeft.getCurrentPosition() >= leftPos + target
+                        || motorRight.getCurrentPosition() >= rightPos + target) {
                     motorLeft.setPower(0);
                     motorRight.setPower(0);
                     break;
