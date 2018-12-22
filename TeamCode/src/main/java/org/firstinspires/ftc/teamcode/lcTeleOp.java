@@ -164,7 +164,7 @@ public class lcTeleOp extends OpMode {
 			if(gamepad1.right_bumper) {
 
 				spinner1Float = 1;
-				spinner2Float = 2;
+				spinner2Float = 1;
 
 			}
 
@@ -193,11 +193,8 @@ public class lcTeleOp extends OpMode {
 
 			stronkBoi.setPower(stronkBoiMove);
 
-
-
-
-
-
+			leftSpinner.setPower(spinner1Float);
+			rightSpinner.setPower(spinner2Float);
 
         /*
         * Gamepad 2:
