@@ -6,7 +6,7 @@ package org.firstinspires.ftc.teamcode;
  * Please feel free to add more, but remember to document what it measures!
  * @author Noah Simon
  */
-public final class RoverRuckusCourseConstants {
+public final class RoverRuckusCourseConstants implements CourseConstants {
     /**
      * The distance in inches from the lander wall to the center scoring element of the nearest set of 3.
      */
