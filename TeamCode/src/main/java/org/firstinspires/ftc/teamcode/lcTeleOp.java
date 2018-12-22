@@ -39,6 +39,8 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.util.Range;
 import java.lang.Boolean;
 
+import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
+
 /**
  * TeleOp Mode
  * <p>
@@ -95,6 +97,9 @@ public class lcTeleOp extends OpMode {
 
         motorRight = hardwareMap.dcMotor.get("motorRight");
 		motorLeft = hardwareMap.dcMotor.get("motorLeft");
+
+		//reverse the right motor
+		motorRight.setDirection(REVERSE);
 
 		stronkBoi = hardwareMap.dcMotor.get("stronkBoi");
 
