@@ -137,11 +137,7 @@ public class HardwareBobAlexanderIII extends Robot {
             opMode.telemetry.update();
             while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
                 if (motorLeft.getCurrentPosition() >= leftPos + target
-                        || motorRight.getCurrentPosition() >= rightPos + target) {
-                    motorLeft.setPower(0);
-                    motorRight.setPower(0);
-                    break;
-                }
+                        || motorRight.getCurrentPosition() >= rightPos + target) break;
             }
             motorLeft.setPower(0);
             motorRight.setPower(0);
@@ -152,6 +148,7 @@ public class HardwareBobAlexanderIII extends Robot {
         } else {
             opMode.telemetry.addData("Error", "Attempted to autodrive during teleop or when opmode is closed.");
             opMode.telemetry.update();
+            opMode.requestOpModeStop();
         }
     }
 
