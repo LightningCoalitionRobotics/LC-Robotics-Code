@@ -165,7 +165,7 @@ public class EncoderAuto extends LinearOpMode {
         //BEGIN DRIVING
 
         //Turn 45 degrees from starting point to rightmost mineral
-        encoderTurn(DRIVE_SPEED,  45.0, 7); // Turn 90 degrees
+        encoderTurn(DRIVE_SPEED,  60, 7); // Turn 90 degrees
 
         //define exit bool for detection loop
         boolean detectedGoldMineral = false;
@@ -180,14 +180,14 @@ public class EncoderAuto extends LinearOpMode {
 
             } else {
 
-                encoderTurn(DRIVE_SPEED, (45/3), 7);
+                encoderTurn(DRIVE_SPEED, (17), 7);
 
             }
 
         }
 
         //Move robot forward and hit mineral
-        encoderDrive(DRIVE_SPEED, 33, 7);
+        encoderDrive(DRIVE_SPEED, 36, 7);
 
         //Notify driver that path is complete
         telemetry.addData("Path", "Complete");
