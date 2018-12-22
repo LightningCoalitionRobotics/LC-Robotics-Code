@@ -1,0 +1,80 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+import org.firstinspires.ftc.teamcode.hardware.HardwareBobAlexanderIII;
+
+
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+
+import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
+import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
+import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
+import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
+import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
+import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.FRONT;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+/**
+ * An autonomous program to test the features in {@link org.firstinspires.ftc.teamcode.hardware.HardwareBobAlexanderIII}.
+ * @author Noah Simon
+ */
+@Autonomous(name="AutonomousVuforiaRoverNav", group="autonomous")
+public class AutonomousVuforiaRoverNav extends LinearOpMode {
+
+
+    @Override
+    public void runOpMode() {
+        for (DesiredXLocation /= translation.get(0) / mmPerInch, DesiredXLocation - translation.get(0) / mmPerInch = ) {
+            for (rotation.ThirdAngle /=0, rotation.thirdAngle /= 0){
+                robot.turn(1, 1);
+                telemetry.update();
+            }
+
+            robot.drive(3,1)
+
+        }
+        robot.turn(90, 3);
+        telemetry
+        robot.init(hardwareMap);
+
+        robot.moveMotor(robot.lifter, 0.5, 2000);
+        telemetry.addData("Status1", "Landed, On ground");
+        telemetry.update();
+
+        robot.drive(30, 10);
+        telemetry.addData("Status2", "Finished drive.");
+        telemetry.update();
+
+//        robot.turn(90, 5);
+//        telemetry.addData("Status", "Finished turn.");
+//        telemetry.update();
+
+        sleep(2000);
+
+        robot.drive(false, 15, 5);
+        telemetry.addData("Status3", "Finished reverse.");
+        telemetry.update();
+
+        robot.autoSpin(0.5, 3);
+        telemetry.addData("Status4", "Finished spin.");
+        telemetry.update();
+    }
+}
