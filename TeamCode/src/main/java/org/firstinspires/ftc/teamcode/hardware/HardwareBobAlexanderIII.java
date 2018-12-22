@@ -46,7 +46,7 @@ public abstract class HardwareBobAlexanderIII extends Robot {
     /**
      * Arm motor for the robot.
      */
-    public DcMotor stronkBoi;
+    public DcMotor lifter;
 
     // Constants
     /**
@@ -94,9 +94,9 @@ public abstract class HardwareBobAlexanderIII extends Robot {
         this.hardwareMap = hardwareMap;
         motorLeft = register("motorLeft", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
         motorRight = register("motorRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
-        leftSpinner = register("spinnerLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightSpinner = register("spinnerRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        stronkBoi = register("stronkBoi", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftSpinner = register("spinner1", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightSpinner = register("spinner1", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lifter = register("stronkBoi", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     /**
@@ -126,6 +126,7 @@ public abstract class HardwareBobAlexanderIII extends Robot {
 
     /*
      *   This function needs to be able to account for prior movements
+     *   TODO(Noah Simon) ^
      */
 
 
@@ -348,6 +349,63 @@ public abstract class HardwareBobAlexanderIII extends Robot {
         } else {
             turn(-angle, timeout);
         }
+    }
+
+    /**
+     * Spin the spinners for a specified amount of time.
+     * @param speed A value from -1 to 1, a higher absolute value meaning a higher speed.
+     * @param time In seconds, how long the motors should spin.
+     */
+    public void autoSpin(double speed, long time) {
+        if (opMode instanceof LinearOpMode) {
+            leftSpinner.setPower(speed);
+            rightSpinner.setPower(speed);
+            ((LinearOpMode) opMode).sleep(time * 1000);
+            leftSpinner.setPower(0);
+            rightSpinner.setPower(0);
+        } else {
+            throw new UnsupportedOperationException("Attempted to autospin during teleop.");
+        }
+    }
+
+    /**
+     * Spin the spinners for a specified amount of time at the default speed.
+     * @param time In seconds, how long the motors should spin.
+     * @param direction True if forward, false if backward.
+     */
+    public void autoSpin(boolean direction, long time) {
+        autoSpin(direction ? drive_speed : -drive_speed, time);
+    }
+
+    /**
+     * Start the spinners in front of the robot.
+     * @param speed A value from -1 to 1, a higher absolute value meaning a higher speed.
+     */
+    public void startSpin(double speed) {
+        leftSpinner.setPower(speed);
+        rightSpinner.setPower(speed);
+    }
+
+    /**
+     * Start the spinners in front of the robot at the default speed.
+     * @param direction True if forward, false if backward.
+     */
+    public void startSpin(boolean direction) {
+        if (direction) {
+            leftSpinner.setPower(drive_speed);
+            rightSpinner.setPower(drive_speed);
+        } else {
+            leftSpinner.setPower(-drive_speed);
+            rightSpinner.setPower(-drive_speed);
+        }
+    }
+
+    /**
+     * Stop the spinners in front of the robot.
+     */
+    public void stopSpin() {
+        leftSpinner.setPower(0);
+        rightSpinner.setPower(0);
     }
 
     /**
