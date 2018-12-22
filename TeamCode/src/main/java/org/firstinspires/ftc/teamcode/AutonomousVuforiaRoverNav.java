@@ -39,42 +39,34 @@ import java.util.List;
 @Autonomous(name="AutonomousVuforiaRoverNav", group="autonomous")
 public class AutonomousVuforiaRoverNav extends LinearOpMode {
 
+int DesiredXLocation = 5;
+int DesiredYLocation = 6;
 
     @Override
     public void runOpMode() {
-        for (DesiredXLocation /= translation.get(0) / mmPerInch, DesiredXLocation - translation.get(0) / mmPerInch = ) {
+        for (DesiredXLocation /= translation.get(0) / mmPerInch, DesiredXLocation - translation.get(0) / mmPerInch = 4) {
             for (rotation.ThirdAngle /=0, rotation.thirdAngle /= 0){
                 robot.turn(1, 1);
                 telemetry.update();
             }
 
-            robot.drive(3,1)
+            robot.drive(3,1);
+            telemetry.update();
 
         }
+
         robot.turn(90, 3);
-        telemetry
-        robot.init(hardwareMap);
-
-        robot.moveMotor(robot.lifter, 0.5, 2000);
-        telemetry.addData("Status1", "Landed, On ground");
         telemetry.update();
 
-        robot.drive(30, 10);
-        telemetry.addData("Status2", "Finished drive.");
-        telemetry.update();
+        for (DesiredYLocation /= translation.get(1) / mmPerInch, DesiredYLocation - translation.get(1) / mmPerInch = 4) {
+            for (rotation.ThirdAngle /=0, rotation.thirdAngle /= 0){
+                robot.turn(1, 1);
+                telemetry.update();
+            }
 
-//        robot.turn(90, 5);
-//        telemetry.addData("Status", "Finished turn.");
-//        telemetry.update();
+            robot.drive(3,1);
+            telemetry.update();
 
-        sleep(2000);
-
-        robot.drive(false, 15, 5);
-        telemetry.addData("Status3", "Finished reverse.");
-        telemetry.update();
-
-        robot.autoSpin(0.5, 3);
-        telemetry.addData("Status4", "Finished spin.");
-        telemetry.update();
+        }
     }
 }
