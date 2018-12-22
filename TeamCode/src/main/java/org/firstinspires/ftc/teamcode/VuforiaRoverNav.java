@@ -58,6 +58,8 @@ import java.util.List;
  * positioning and orientation of robot on the FTC field.
  * The code is structured as a LinearOpMode
  *
+ * Contributor: William Nolan
+ *
  * Vuforia uses the phone's camera to inspect it's surroundings, and attempt to locate target images.
  *
  * When images are located, Vuforia is able to determine the position and orientation of the
