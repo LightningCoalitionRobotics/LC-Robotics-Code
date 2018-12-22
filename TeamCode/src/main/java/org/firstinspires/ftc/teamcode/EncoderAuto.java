@@ -363,6 +363,9 @@ public class EncoderAuto extends LinearOpMode {
         telemetry.addData("reverting", Double.toString(inchesToAngle), "degrees");
         telemetry.update();
 
+        //turn to revert
+        encoderTurn(DRIVE_SPEED, (-inchesToAngle), 5);
+
         //Turn 62 degrees from starting point to rightmost mineral
         encoderTurn(DRIVE_SPEED, 62, 7); // Turn 90 degrees
 
@@ -475,8 +478,8 @@ public class EncoderAuto extends LinearOpMode {
     }
 
     public void exactEncoderDrive(double speed,
-                             double leftInches, double rightInches,
-                             double timeoutS) {
+                                  double leftInches, double rightInches,
+                                  double timeoutS) {
         double newLeftTarget;
         double newRightTarget;
 
@@ -661,23 +664,23 @@ public class EncoderAuto extends LinearOpMode {
      */
     private String visibleVumark(List<VuforiaTrackable> allTrackables) {
 
-            // check all the trackable target to see which one (if any) is visible.
-            targetVisible = false;
-            for (VuforiaTrackable trackable : allTrackables) {
-                if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
-                    telemetry.addData("Visible Target", trackable.getName());
-                    targetVisible = true;
+        // check all the trackable target to see which one (if any) is visible.
+        targetVisible = false;
+        for (VuforiaTrackable trackable : allTrackables) {
+            if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
+                telemetry.addData("Visible Target", trackable.getName());
+                targetVisible = true;
 
-                    // getUpdatedRobotLocation() will return null if no new information is available since
-                    // the last time that call was made, or if the trackable is not currently visible.
-                    OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
-                    if (robotLocationTransform != null) {
-                        lastLocation = robotLocationTransform;
-                    }
-                    //return target
-                    return trackable.getName();
+                // getUpdatedRobotLocation() will return null if no new information is available since
+                // the last time that call was made, or if the trackable is not currently visible.
+                OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
+                if (robotLocationTransform != null) {
+                    lastLocation = robotLocationTransform;
                 }
+                //return target
+                return trackable.getName();
             }
+        }
 
         return "none";
 
@@ -710,18 +713,18 @@ public class EncoderAuto extends LinearOpMode {
                     List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
                     if (updatedRecognitions != null) {
                         telemetry.addData("# Object Detected", updatedRecognitions.size());
-                            for (Recognition recognition : updatedRecognitions) {
-                                if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
-                                    telemetry.addData("Gold mineral", "detected");
-                                    //update telemetry
-                                    telemetry.update();
-                                    return recognition.getLabel();
-                                } else {
+                        for (Recognition recognition : updatedRecognitions) {
+                            if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                                telemetry.addData("Gold mineral", "detected");
+                                //update telemetry
+                                telemetry.update();
+                                return recognition.getLabel();
+                            } else {
 
-                                    telemetry.addData("Silver mineral", "detected");
-                                    //update telemetry
-                                    telemetry.update();
-                                    return recognition.getLabel();
+                                telemetry.addData("Silver mineral", "detected");
+                                //update telemetry
+                                telemetry.update();
+                                return recognition.getLabel();
 
                             }
 
