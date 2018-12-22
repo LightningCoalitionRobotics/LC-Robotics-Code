@@ -124,6 +124,8 @@ public class HardwareBobAlexanderIII extends Robot {
         // Code adapted from org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive
         double leftPos = motorLeft.getCurrentPosition();
         double rightPos = motorRight.getCurrentPosition();
+        if (DEBUG) opMode.telemetry.addData("opMode is Autonomous", opMode instanceof LinearOpMode);
+        if (DEBUG && opMode instanceof LinearOpMode) opMode.telemetry.addData("opMode status", ((LinearOpMode) opMode).opModeIsActive());
         if(opMode instanceof LinearOpMode && ((LinearOpMode) opMode).opModeIsActive()) {
             double target = dist * COUNTS_PER_INCH; //Can be calculated without circumference, just CPI
             elapsedTime.reset();
