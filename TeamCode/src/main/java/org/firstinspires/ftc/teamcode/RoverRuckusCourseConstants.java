@@ -11,4 +11,5 @@ public final class RoverRuckusCourseConstants implements CourseConstants {
      * The distance in inches from the lander wall to the center scoring element of the nearest set of 3.
      */
     public static final int LANDER_TO_MIDDlE_ELEMENT = 31;
+    public static final int LANDER_TO_SIDE_ELEMENTS = 35;
 }
