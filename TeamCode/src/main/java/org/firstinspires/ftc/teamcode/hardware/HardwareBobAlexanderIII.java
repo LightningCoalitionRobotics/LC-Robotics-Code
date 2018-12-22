@@ -81,8 +81,8 @@ public class HardwareBobAlexanderIII extends Robot {
         this.hardwareMap = hardwareMap;
         motorLeft = register("motorLeft", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
         motorRight = register("motorRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
-        leftSpinner = register("spinner1", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightSpinner = register("spinner1", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftSpinner = register("leftSpinner", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightSpinner = register("rightSpinner", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         lifter = register("stronkBoi", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
@@ -104,11 +104,11 @@ public class HardwareBobAlexanderIII extends Robot {
         return motor;
     }
 
-    /**
-     *
-     * {@inheritDoc}
-     * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive(double, double, double, double)
-     */
+//    /**
+//     *
+//     * {@inheritDoc}
+//     * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive(double, double, double, double)
+//     */
 
 
     /*
@@ -162,7 +162,6 @@ public class HardwareBobAlexanderIII extends Robot {
      * @param dist In inches, the distance the robot should travel.
      * @param timeout In seconds, how long the robot should attempt to reach the target distance.
      * @see #drive(double, double, double)
-     * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive(double, double, double, double)
      */
     public void drive(double dist, double timeout) {
         drive(drive_speed, dist, timeout);
@@ -174,7 +173,6 @@ public class HardwareBobAlexanderIII extends Robot {
      * @param dist In inches, the distance the robot should travel.
      * @param timeout In seconds, how long the robot should attempt to reach the target distance.
      * @see #drive(double, double, double)
-     * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive(double, double, double, double)
      */
     public void drive(boolean direction, double dist, double timeout) {
         if (direction) {
