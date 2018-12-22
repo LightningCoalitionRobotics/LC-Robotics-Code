@@ -315,6 +315,9 @@ public class EncoderAuto extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+        //detatch from hook
+        exactEncoderDrive(DRIVE_SPEED, (-2), (-2), 5);
+
         //find the vumark
         //Turn left until it sees a vumark
         while(visibleVumark(allTrackables) == "none") {
@@ -343,21 +346,24 @@ public class EncoderAuto extends LinearOpMode {
         }
 
         //revert back to original position
-        double inchesToAngle = (((motorLeft.getCurrentPosition())*180)/(Math.PI*5.66*turnErrorConstant)/COUNTS_PER_INCH);
+        double inchesToAngle = Math.abs((((motorLeft.getCurrentPosition())*180)/(Math.PI*5.66*turnErrorConstant)/COUNTS_PER_INCH));
 
-        telemetry.addData("reverting", (Double.toString(inchesToAngle)), "degrees");
+        /*double leftInches = motorLeft.getCurrentPosition()/3.5;
+        double rightInches = motorRight.getCurrentPosition()/3.5*(-1);
+
+        telemetry.addData("reverting", "left", "right");
+        telemetry.addData("Values", Double.toString(leftInches), Double.toString(rightInches));
         telemetry.update();
 
         sleep(1500);
 
-        double leftInches = motorLeft.getCurrentPosition()/3.5;
-        double rightInches = motorRight.getCurrentPosition()/3.5*(-1);
-
         //turn to revert to original position
-        doubleEncoderDrive(DRIVE_SPEED, (leftInches), rightInches, 5);
+        exactEncoderDrive(DRIVE_SPEED, (leftInches), rightInches, 5); */
 
-        //Turn 45 degrees from starting point to rightmost mineral
-        /*encoderDrive(DRIVE_SPEED, (-2), 5);
+        telemetry.addData("reverting", Double.toString(inchesToAngle), "degrees");
+        telemetry.update();
+
+        //Turn 62 degrees from starting point to rightmost mineral
         encoderTurn(DRIVE_SPEED, 62, 7); // Turn 90 degrees
 
         //define exit bool for detection loop
@@ -381,7 +387,7 @@ public class EncoderAuto extends LinearOpMode {
 
         //Move robot forward and hit mineral
         encoderDrive(DRIVE_SPEED, 42, 7);
-*/
+
         //Notify driver that path is complete
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -414,8 +420,8 @@ public class EncoderAuto extends LinearOpMode {
 
             // reset the timeout time and start motion.
             runtime.reset();
-            motorRight.setPower(((Math.abs(inches) / inches) * 0.5));
-            motorLeft.setPower(((Math.abs(inches) / inches) * 0.5));
+            motorRight.setPower(((Math.abs(inches) / inches) * speed));
+            motorLeft.setPower(((Math.abs(inches) / inches) * speed));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
@@ -468,7 +474,7 @@ public class EncoderAuto extends LinearOpMode {
         }
     }
 
-    public void doubleEncoderDrive(double speed,
+    public void exactEncoderDrive(double speed,
                              double leftInches, double rightInches,
                              double timeoutS) {
         double newLeftTarget;
@@ -487,8 +493,8 @@ public class EncoderAuto extends LinearOpMode {
 
             // reset the timeout time and start motion.
             runtime.reset();
-            motorRight.setPower(((Math.abs(rightInches) / rightInches) * 0.5));
-            motorLeft.setPower(((Math.abs(rightInches) / rightInches) * 0.5));
+            motorRight.setPower(((Math.abs(rightInches) / rightInches) * speed));
+            motorLeft.setPower(((Math.abs(rightInches) / rightInches) * speed));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
@@ -501,7 +507,7 @@ public class EncoderAuto extends LinearOpMode {
                     (!leftStop || !rightStop)) {
 
                 //Stop right motor if it's finished.
-                if (motorRight.getCurrentPosition() <= newRightTarget) {
+                if (Math.abs(motorRight.getCurrentPosition()) >= newRightTarget) {
 
                     motorRight.setPower(0);
                     rightStop = true;
@@ -509,7 +515,7 @@ public class EncoderAuto extends LinearOpMode {
                 }
 
                 //Stop left motor if it's finished.
-                if ((motorLeft.getCurrentPosition()) >= newLeftTarget) {
+                if ((Math.abs(motorLeft.getCurrentPosition())) >= newLeftTarget) {
 
                     motorLeft.setPower(0);
                     leftStop = true;
