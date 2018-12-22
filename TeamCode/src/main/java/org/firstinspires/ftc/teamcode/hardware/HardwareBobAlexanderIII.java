@@ -15,6 +15,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * @author Noah Simon
  */
 public class HardwareBobAlexanderIII extends Robot {
+
+    private static final boolean DEBUG = true;
+
     // All of the components we will need (e.g. motors, servos, sensors...) that are attached to the robot
     /**
      * Left drive motor for the robot.
@@ -135,6 +138,7 @@ public class HardwareBobAlexanderIII extends Robot {
             opMode.telemetry.addData("Motor Right", motorRight.isBusy());
             opMode.telemetry.addData("Motor Left", motorLeft.isBusy());
             opMode.telemetry.update();
+            if (DEBUG) ((LinearOpMode) opMode).sleep(2000);
             while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
                 if (motorLeft.getCurrentPosition() >= leftPos + target
                         || motorRight.getCurrentPosition() >= rightPos + target) break;
@@ -144,10 +148,18 @@ public class HardwareBobAlexanderIII extends Robot {
             opMode.telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
             opMode.telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
             opMode.telemetry.update();
+            if (DEBUG) ((LinearOpMode) opMode).sleep(2000);
             ((LinearOpMode)opMode).sleep(SLEEP_AFTER_DRIVE);
         } else {
             opMode.telemetry.addData("Error", "Attempted to autodrive during teleop or when opmode is closed.");
             opMode.telemetry.update();
+            if (DEBUG) {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
             opMode.requestOpModeStop();
         }
     }
