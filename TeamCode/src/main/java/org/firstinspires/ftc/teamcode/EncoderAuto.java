@@ -419,7 +419,7 @@ public class EncoderAuto extends LinearOpMode {
         orientation -= 30;
 
         //Keep turning until robot sees second vumark
-        while(visibleVumark(allTrackables) == "none") {
+        while(opModeIsActive() && (visibleVumark(allTrackables) == "none")) {
 
             encoderTurn(DRIVE_SPEED, -30, 2);
             orientation -= 30;
@@ -872,16 +872,12 @@ public class EncoderAuto extends LinearOpMode {
         // check all the trackable target to see which one (if any) is visible.
         targetVisible = false;
         for (VuforiaTrackable trackable : allTrackables) {
+
             if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
+
                 telemetry.addData("Visible Target", trackable.getName());
                 targetVisible = true;
 
-                // getUpdatedRobotLocation() will return null if no new information is available since
-                // the last time that call was made, or if the trackable is not currently visible.
-                OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
-                if (robotLocationTransform != null) {
-                    lastLocation = robotLocationTransform;
-                }
                 //return target
                 return trackable.getName();
             }
@@ -912,18 +908,25 @@ public class EncoderAuto extends LinearOpMode {
             }
 
             while (opModeIsActive()) {
+
                 if (tfod != null) {
                     // getUpdatedRecognitions() will return null if no new information is available since
                     // the last time that call was made.
                     List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+
                     if (updatedRecognitions != null) {
+
                         telemetry.addData("# Object Detected", updatedRecognitions.size());
+
                         for (Recognition recognition : updatedRecognitions) {
+
                             if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
+
                                 telemetry.addData("Gold mineral", "detected");
                                 //update telemetry
                                 telemetry.update();
                                 return recognition.getLabel();
+
                             } else {
 
                                 telemetry.addData("Silver mineral", "detected");
@@ -932,7 +935,6 @@ public class EncoderAuto extends LinearOpMode {
                                 return recognition.getLabel();
 
                             }
-
                         }
                     }
                 }

@@ -41,6 +41,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
@@ -314,7 +315,7 @@ public class VuforiaRoverNav extends LinearOpMode {
         robot.init();
         for (DesiredXLocation /= translation.get(0) / mmPerInch, DesiredXLocation - translation.get(0) / mmPerInch = 4) {
             for (rotation.ThirdAngle /=0, rotation.thirdAngle /= 0){
-                robot.turn(1, 1);
+                robot.turn(1, 1;
                 telemetry.update();
             }
 
