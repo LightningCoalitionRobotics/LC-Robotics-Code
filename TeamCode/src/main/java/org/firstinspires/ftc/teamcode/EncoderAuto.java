@@ -269,9 +269,12 @@ public class EncoderAuto extends LinearOpMode {
         targetsRoverRuckus.activate();
 
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
+
             initTfod();
         } else {
+
             telemetry.addData("Sorry!", "This device is not compatible with TFOD");
+
         }
 
 
@@ -329,6 +332,7 @@ public class EncoderAuto extends LinearOpMode {
 
         //detatch from hook
         exactEncoderDrive(DRIVE_SPEED, (-2), (-2), 5);
+        sleep(100);
 
         //Turn 62 degrees from starting point to rightmost mineral
         encoderTurn(DRIVE_SPEED, 62, 7); // Turn 90 degrees
@@ -495,14 +499,16 @@ public class EncoderAuto extends LinearOpMode {
 
         }
 
-        //update vector array based on how far the robot has moved, adding the width of the lander.
-        translationVector[0] = (iSign)*(int)(16.5+(((motorLeft.getCurrentPosition()+motorRight.getCurrentPosition())/2)/3.5)/Math.sqrt(2.0));
-        translationVector[1] = (jSign)*(int)(16.5+(((motorLeft.getCurrentPosition()+motorRight.getCurrentPosition())/2)/3.5)/Math.sqrt(2.0));
+        //update vector array based on how far the robot has moved, adding the width of the lander. (11.65 is the distance from
+        //the center of the lander to where the robot initially starts. The next operation uses 45,45,90 triangle to find the distance
+        //in inches the bot has moved from its starting position.
+        translationVector[0] = (iSign)*(int)(11.65+(((motorLeft.getCurrentPosition()+motorRight.getCurrentPosition())/2)/3.5)/Math.sqrt(2.0));
+        translationVector[1] = (jSign)*(int)(11.65+(((motorLeft.getCurrentPosition()+motorRight.getCurrentPosition())/2)/3.5)/Math.sqrt(2.0));
 
         //Update position array
         currentPosition = addTranslationVector(currentPosition, translationVector);
 
-        //tell the driver what the current position in array form is
+        //tell the driver what the current position is
         telemetry.addData("Position", "X:", currentPosition[0], "Y:", currentPosition[1]);
         telemetry.update();
         sleep(3000);
@@ -523,10 +529,12 @@ public class EncoderAuto extends LinearOpMode {
             translationVector[1] = (int)((5*12)*Math.sin((orientation*2*Math.PI)/180));
             currentPosition = addTranslationVector(currentPosition, translationVector);
 
+            //Turn to face depot
             encoderTurn(DRIVE_SPEED, -135, 5);
             orientation -= 135;
             sleep(500);
 
+            //Drive into depot
             encoderDrive(DRIVE_SPEED, (5*12), 6); //5 feet is an estimate
             sleep(500);
 
@@ -549,10 +557,12 @@ public class EncoderAuto extends LinearOpMode {
             translationVector[1] = (int)((5*12)*Math.sin((orientation*2*Math.PI)/180));
             currentPosition = addTranslationVector(currentPosition, translationVector);
 
+            //Turn to face depot
             encoderTurn(DRIVE_SPEED, -45, 5);
             orientation -= 45;
             sleep(500);
 
+            //Drive into depot
             encoderDrive(DRIVE_SPEED, (5*12), 6); //5 feet is an estimate
             sleep(500);
 
@@ -564,15 +574,17 @@ public class EncoderAuto extends LinearOpMode {
         }
 
         /*
-        *
-        * Place object in depot
-        *
+         *
+         * Place object in depot
+         *
          */
 
         //Park in crater (same for all quadrants)
+        //Turn to face crater
         encoderTurn(DRIVE_SPEED, 180, 7);
         orientation += 180;
 
+        //Drive into crater
         encoderDrive(DRIVE_SPEED, (10*12), 10);
 
         //add drive to translation vector
@@ -595,9 +607,8 @@ public class EncoderAuto extends LinearOpMode {
      *  2) Move runs out of time
      *  3) Driver stops the opmode running.
      */
-    public void encoderDrive(double speed,
-                             double inches,
-                             double timeoutS) {
+    public void encoderDrive(double speed, double inches, double timeoutS) {
+
         double newLeftTarget;
         double newRightTarget;
 
@@ -623,9 +634,7 @@ public class EncoderAuto extends LinearOpMode {
             // always end the motion as soon as possible.
             // However, if you require that BOTH motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.*/
-            while (opModeIsActive() &&
-                    (runtime.seconds() < timeoutS) &&
-                    (!leftStop || !rightStop)) {
+            while (opModeIsActive() && (runtime.seconds() < timeoutS) && (!leftStop || !rightStop)) {
 
                 //Stop right motor if it's finished.
                 if (motorRight.getCurrentPosition() >= newRightTarget) {
@@ -664,13 +673,12 @@ public class EncoderAuto extends LinearOpMode {
             telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
             telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
             telemetry.update();
-            sleep(2000);   // pause after each move
+
         }
     }
 
-    public void exactEncoderDrive(double speed,
-                                  double leftInches, double rightInches,
-                                  double timeoutS) {
+    public void exactEncoderDrive(double speed, double leftInches, double rightInches, double timeoutS) {
+
         double newLeftTarget;
         double newRightTarget;
 
@@ -737,13 +745,17 @@ public class EncoderAuto extends LinearOpMode {
             telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
             telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
             telemetry.update();
-            sleep(2000);   // pause after each move
+
         }
     }
 
-    public void encoderTurn(double speed,
-                            double angle,
-                            double timeoutS) {
+    /*
+    *
+    * Method to turn to a certain angle. Can be used with both positive
+    * and negative angles.
+    *
+     */
+    public void encoderTurn(double speed, double angle, double timeoutS) {
         double newLeftTarget;
         double newRightTarget;
 
@@ -851,7 +863,7 @@ public class EncoderAuto extends LinearOpMode {
     }
 
     /*
-     *Detect visible vumark
+     *Detect a visible Vuforia VuMark
      */
     private String visibleVumark(List<VuforiaTrackable> allTrackables) {
 
