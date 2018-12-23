@@ -442,14 +442,16 @@ public class EncoderAuto extends LinearOpMode {
             telemetry.update();
             sleep(1000);
 
-        } else if(visibleVumark(allTrackables) == "Blue-Rover") {
+        }
+
+        if(visibleVumark(allTrackables) == "Blue-Rover") {
 
             quadrant[1] = "BLUE";
             telemetry.addData("Detected", "Blue-Rover");
             telemetry.update();
             sleep(1000);
 
-        } else {
+        } else if(visibleVumark(allTrackables) == "Red-Footprint") {
 
             quadrant[1] = "RED";
             telemetry.addData("Detected", "Red-Footprint");
