@@ -358,7 +358,7 @@ public class EncoderAuto extends LinearOpMode {
         encoderDrive(DRIVE_SPEED, 42, 7);
         sleep(500);
 
-        //go back
+        //go back from mineral
         exactEncoderDrive(DRIVE_SPEED, -42, -42, 7);
 
         //rotate back to original position then turn to face corner and drive forward 30 inches
@@ -937,6 +937,7 @@ public class EncoderAuto extends LinearOpMode {
 
     }
 
+    //Method to add a translation vector to update current position
     public int[] addTranslationVector(int[] position, int[] vector) {
 
         position[0] += vector[0];
