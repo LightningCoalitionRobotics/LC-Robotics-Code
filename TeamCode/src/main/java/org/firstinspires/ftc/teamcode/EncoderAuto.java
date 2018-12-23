@@ -114,6 +114,18 @@ public class EncoderAuto extends LinearOpMode {
      */
     private TFObjectDetector tfod;
 
+    //Initialize current position, vector, and quadrant arrays
+    //Course is 12ft by 12ft
+    int[] currentPosition = new int[2];
+    String[] quadrant = new String[2];
+    int[] translationVector = new int[2];
+
+    //initialize orientation variable
+    private static double orientation;
+
+    //initialize signs for vectors
+    private static int iSign, jSign = 1;
+
     @Override
     public void runOpMode() {
 
@@ -318,56 +330,9 @@ public class EncoderAuto extends LinearOpMode {
         //detatch from hook
         exactEncoderDrive(DRIVE_SPEED, (-2), (-2), 5);
 
-        //find the vumark
-        //Turn left until it sees a vumark
-        while(visibleVumark(allTrackables) == "none") {
-
-            encoderTurn(DRIVE_SPEED, 15, 2);
-            sleep(1000);
-        }
-
-        //If vumark is back-space
-        if(visibleVumark(allTrackables) == "Back-Space") {
-
-            telemetry.addData("Detected", "Back-Space");
-            telemetry.update();
-
-            // express position (translation) of robot in inches.
-            VectorF translation = lastLocation.getTranslation();
-            telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
-                    translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
-
-            // express the rotation of the robot in degrees.
-            Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-            telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
-
-            sleep(2000);
-
-        }
-
-        //revert back to original position
-        double inchesToAngle = Math.abs((((motorLeft.getCurrentPosition())*180)/(Math.PI*5.66*turnErrorConstant)/COUNTS_PER_INCH));
-
-        /*double leftInches = motorLeft.getCurrentPosition()/3.5;
-        double rightInches = motorRight.getCurrentPosition()/3.5*(-1);
-
-        telemetry.addData("reverting", "left", "right");
-        telemetry.addData("Values", Double.toString(leftInches), Double.toString(rightInches));
-        telemetry.update();
-
-        sleep(1500);
-
-        //turn to revert to original position
-        exactEncoderDrive(DRIVE_SPEED, (leftInches), rightInches, 5); */
-
-        telemetry.addData("reverting", Double.toString(inchesToAngle), "degrees");
-        telemetry.update();
-
-        //turn to revert
-        encoderTurn(DRIVE_SPEED, (-inchesToAngle), 5);
-
         //Turn 62 degrees from starting point to rightmost mineral
         encoderTurn(DRIVE_SPEED, 62, 7); // Turn 90 degrees
+        orientation += 62;
 
         //define exit bool for detection loop
         boolean detectedGoldMineral = false;
@@ -383,6 +348,7 @@ public class EncoderAuto extends LinearOpMode {
             } else {
 
                 encoderTurn(DRIVE_SPEED, (20), 7);
+                orientation += 20;
 
             }
 
@@ -390,9 +356,234 @@ public class EncoderAuto extends LinearOpMode {
 
         //Move robot forward and hit mineral
         encoderDrive(DRIVE_SPEED, 42, 7);
+        sleep(500);
+
+        //go back
+        exactEncoderDrive(DRIVE_SPEED, -42, -42, 7);
+
+        //rotate back to original position then turn to face corner and drive forward 30 inches
+        encoderTurn(DRIVE_SPEED, -orientation, 7);
+        orientation = 0;
+        sleep(100);
+        encoderTurn(DRIVE_SPEED, 90, 7);
+        orientation += 90;
+        sleep(100);
+        encoderDrive(DRIVE_SPEED, 30, 5);
+
+        //find the first vumark
+        //Turn left until it sees the vumark
+        while(visibleVumark(allTrackables) == "none") {
+
+            encoderTurn(DRIVE_SPEED, 30, 2);
+            orientation += 30;
+            sleep(500);
+        }
+
+        //Set quadrant entry depending on the vumark it sees
+        if(visibleVumark(allTrackables) == "Back-Space") {
+
+            quadrant[0] = "BACK";
+            telemetry.addData("Detected", "Back-Space");
+            telemetry.update();
+            sleep(1000);
+
+        } else if(visibleVumark(allTrackables) == "Front-Craters") {
+
+            quadrant[0] = "FRONT";
+            telemetry.addData("Detected", "Front-Craters");
+            telemetry.update();
+            sleep(1000);
+
+        } else if(visibleVumark(allTrackables) == "Blue-Rover") {
+
+            quadrant[1] = "BLUE";
+            telemetry.addData("Detected", "Blue-Rover");
+            telemetry.update();
+            sleep(1000);
+
+        } else {
+
+            quadrant[1] = "RED";
+            telemetry.addData("Detected", "Red-Footprint");
+            telemetry.update();
+            sleep(1000);
+
+        }
+
+        //Turn right so first vumark is out of view
+        encoderTurn(DRIVE_SPEED, -30, 5);
+        orientation -= 30;
+
+        //Keep turning until robot sees second vumark
+        while(visibleVumark(allTrackables) == "none") {
+
+            encoderTurn(DRIVE_SPEED, -30, 2);
+            orientation -= 30;
+            sleep(500);
+        }
+
+        //When second vumark is found, see what it is
+        //Set quadrant entry depending on the vumark it sees
+        if(visibleVumark(allTrackables) == "Back-Space") {
+
+            quadrant[0] = "BACK";
+            telemetry.addData("Detected", "Back-Space");
+            telemetry.update();
+            sleep(1000);
+
+        } else if(visibleVumark(allTrackables) == "Front-Craters") {
+
+            quadrant[0] = "FRONT";
+            telemetry.addData("Detected", "Front-Craters");
+            telemetry.update();
+            sleep(1000);
+
+        } else if(visibleVumark(allTrackables) == "Blue-Rover") {
+
+            quadrant[1] = "BLUE";
+            telemetry.addData("Detected", "Blue-Rover");
+            telemetry.update();
+            sleep(1000);
+
+        } else {
+
+            quadrant[1] = "RED";
+            telemetry.addData("Detected", "Red-Footprint");
+            telemetry.update();
+            sleep(1000);
+
+        }
+
+        //revert back to original position facing the corner
+        //Add because orientation will be negative
+        encoderTurn(DRIVE_SPEED, (90+orientation), 5);
+        orientation += 90;
+
+
+        //determine sign of vector components from the determined quadrant and update orientation measurement
+        if(quadrant[0] == "FRONT") {
+
+            jSign = 1;
+
+            if(quadrant[1] == "RED") {
+
+                orientation += 45;
+                iSign = -1;
+
+            } else {
+
+                orientation -= 135;
+                iSign = 1;
+
+            }
+
+        } else {
+
+            jSign = -1;
+
+            if(quadrant[1] == "RED") {
+
+                orientation -= 135;
+                iSign = -1;
+
+            } else {
+
+                orientation +=45;
+                iSign = 1;
+
+            }
+
+        }
+
+        //update vector array based on how far the robot has moved, adding the width of the lander.
+        translationVector[0] = (iSign)*(int)(16.5+(((motorLeft.getCurrentPosition()+motorRight.getCurrentPosition())/2)/3.5)/Math.sqrt(2.0));
+        translationVector[1] = (jSign)*(int)(16.5+(((motorLeft.getCurrentPosition()+motorRight.getCurrentPosition())/2)/3.5)/Math.sqrt(2.0));
+
+        //Update position array
+        currentPosition = addTranslationVector(currentPosition, translationVector);
+
+        //tell the driver what the current position in array form is
+        telemetry.addData("Position", "X:", currentPosition[0], "Y:", currentPosition[1]);
+        telemetry.update();
+        sleep(3000);
+
+
+        //Go to depot depending on what quadrant bot is in. Opposite quadrants have the same moves.
+        if((quadrant[0] == "FRONT" && quadrant[1] == "RED" || (quadrant[0] == "BACK" && quadrant[1] == "BLUE"))) {
+
+            //turn, drive, and turn towards depot
+            encoderTurn(DRIVE_SPEED, 90, 5);
+            orientation += 90;
+
+            encoderDrive(DRIVE_SPEED, 36, 5); //36 is an estimate
+            sleep(500);
+
+            //add drive to translation vector
+            translationVector[0] = (int)((5*12)*Math.cos((orientation*2*Math.PI)/180));
+            translationVector[1] = (int)((5*12)*Math.sin((orientation*2*Math.PI)/180));
+            currentPosition = addTranslationVector(currentPosition, translationVector);
+
+            encoderTurn(DRIVE_SPEED, -135, 5);
+            orientation -= 135;
+            sleep(500);
+
+            encoderDrive(DRIVE_SPEED, (5*12), 6); //5 feet is an estimate
+            sleep(500);
+
+            //add drive to translation vector
+            translationVector[0] = (int)((5*12)*Math.cos((orientation*2*Math.PI)/180));
+            translationVector[1] = (int)((5*12)*Math.sin((orientation*2*Math.PI)/180));
+            currentPosition = addTranslationVector(currentPosition, translationVector);
+
+        } else if((quadrant[0] == "FRONT" && quadrant[1] == "BLUE") || (quadrant[0] == "BACK" && quadrant[1] == "RED")) {
+
+            //turn, drive, and turn towards depot
+            encoderTurn(DRIVE_SPEED, -45, 5);
+            orientation -= 45;
+
+            encoderDrive(DRIVE_SPEED, 36, 5); //36 is an estimate
+            sleep(500);
+
+            //add drive to translation vector
+            translationVector[0] = (int)((5*12)*Math.cos((orientation*2*Math.PI)/180));
+            translationVector[1] = (int)((5*12)*Math.sin((orientation*2*Math.PI)/180));
+            currentPosition = addTranslationVector(currentPosition, translationVector);
+
+            encoderTurn(DRIVE_SPEED, -45, 5);
+            orientation -= 45;
+            sleep(500);
+
+            encoderDrive(DRIVE_SPEED, (5*12), 6); //5 feet is an estimate
+            sleep(500);
+
+            //add drive to translation vector
+            translationVector[0] = (int)((5*12)*Math.cos((orientation*2*Math.PI)/180));
+            translationVector[1] = (int)((5*12)*Math.sin((orientation*2*Math.PI)/180));
+            currentPosition = addTranslationVector(currentPosition, translationVector);
+
+        }
+
+        /*
+        *
+        * Place object in depot
+        *
+         */
+
+        //Park in crater (same for all quadrants)
+        encoderTurn(DRIVE_SPEED, 180, 7);
+        orientation += 180;
+
+        encoderDrive(DRIVE_SPEED, (10*12), 10);
+
+        //add drive to translation vector
+        translationVector[0] = (int)((5*12)*Math.cos((orientation*2*Math.PI)/180));
+        translationVector[1] = (int)((5*12)*Math.sin((orientation*2*Math.PI)/180));
+        currentPosition = addTranslationVector(currentPosition, translationVector);
 
         //Notify driver that path is complete
         telemetry.addData("Path", "Complete");
+        telemetry.addData("Current Orientation:", orientation);
+        telemetry.addData("Current Position X", Integer.toString(currentPosition[0]), "Y:", Integer.toString(currentPosition[1]));
         telemetry.update();
     }
 
@@ -743,6 +934,15 @@ public class EncoderAuto extends LinearOpMode {
         //update telemetry
         telemetry.update();
         return null;
+
+    }
+
+    public int[] addTranslationVector(int[] position, int[] vector) {
+
+        position[0] += vector[0];
+        position[1] += vector[1];
+
+        return position;
 
     }
 
