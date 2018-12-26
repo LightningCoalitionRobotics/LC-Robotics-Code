@@ -298,12 +298,11 @@ public class EncoderAuto extends LinearOpMode {
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");
-        telemetry.update();
 
         telemetry.addData("Mode Right", motorRight.getMode());
         telemetry.addData("Mode Left", motorLeft.getMode());
         telemetry.update();
-        sleep(sleep);   // optional pause after each move
+        sleep(100);   //pause
 
         motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -311,7 +310,7 @@ public class EncoderAuto extends LinearOpMode {
         telemetry.addData("Mode Right", motorRight.getMode());
         telemetry.addData("Mode Left", motorLeft.getMode());
         telemetry.update();
-        sleep(sleep);   // optional pause after each move
+        sleep(sleep);   //pause
 
         motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -319,7 +318,7 @@ public class EncoderAuto extends LinearOpMode {
         telemetry.addData("Mode Right", motorRight.getMode());
         telemetry.addData("Mode Left", motorLeft.getMode());
         telemetry.update();
-        sleep(sleep);   // optional pause after each move
+        sleep(sleep);   //pause
 
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Path0", "Starting at %7d :%7d",
@@ -502,8 +501,8 @@ public class EncoderAuto extends LinearOpMode {
         }
 
         //update vector array based on how far the robot has moved, adding the width of the lander. (11.65 is the distance from
-        //the center of the lander to where the robot initially starts. The next operation uses 45,45,90 triangle to find the distance
-        //in inches the bot has moved from its starting position.
+        //the center of the lander to where the robot initially starts). The next operation uses 45,45,90 triangle to find the distance
+        //in inches the bot has moved from its starting position. Averages currentPositions of both motors.
         translationVector[0] = (iSign)*(int)(11.65+(((motorLeft.getCurrentPosition()+motorRight.getCurrentPosition())/2)/3.5)/Math.sqrt(2.0));
         translationVector[1] = (jSign)*(int)(11.65+(((motorLeft.getCurrentPosition()+motorRight.getCurrentPosition())/2)/3.5)/Math.sqrt(2.0));
 
@@ -527,8 +526,8 @@ public class EncoderAuto extends LinearOpMode {
             sleep(500);
 
             //add drive to translation vector
-            translationVector[0] = (int)((5*12)*Math.cos((orientation*2*Math.PI)/180));
-            translationVector[1] = (int)((5*12)*Math.sin((orientation*2*Math.PI)/180));
+            translationVector[0] = (int)((5*12)*Math.cos((orientation*Math.PI)/180));
+            translationVector[1] = (int)((5*12)*Math.sin((orientation*Math.PI)/180));
             currentPosition = addTranslationVector(currentPosition, translationVector);
 
             //Turn to face depot
@@ -541,8 +540,8 @@ public class EncoderAuto extends LinearOpMode {
             sleep(500);
 
             //add drive to translation vector
-            translationVector[0] = (int)((5*12)*Math.cos((orientation*2*Math.PI)/180));
-            translationVector[1] = (int)((5*12)*Math.sin((orientation*2*Math.PI)/180));
+            translationVector[0] = (int)((5*12)*Math.cos((orientation*Math.PI)/180));
+            translationVector[1] = (int)((5*12)*Math.sin((orientation*Math.PI)/180));
             currentPosition = addTranslationVector(currentPosition, translationVector);
 
         } else if((quadrant[0] == "FRONT" && quadrant[1] == "BLUE") || (quadrant[0] == "BACK" && quadrant[1] == "RED")) {
@@ -555,8 +554,8 @@ public class EncoderAuto extends LinearOpMode {
             sleep(500);
 
             //add drive to translation vector
-            translationVector[0] = (int)((5*12)*Math.cos((orientation*2*Math.PI)/180));
-            translationVector[1] = (int)((5*12)*Math.sin((orientation*2*Math.PI)/180));
+            translationVector[0] = (int)((5*12)*Math.cos((orientation*Math.PI)/180));
+            translationVector[1] = (int)((5*12)*Math.sin((orientation*Math.PI)/180));
             currentPosition = addTranslationVector(currentPosition, translationVector);
 
             //Turn to face depot
@@ -569,8 +568,8 @@ public class EncoderAuto extends LinearOpMode {
             sleep(500);
 
             //add drive to translation vector
-            translationVector[0] = (int)((5*12)*Math.cos((orientation*2*Math.PI)/180));
-            translationVector[1] = (int)((5*12)*Math.sin((orientation*2*Math.PI)/180));
+            translationVector[0] = (int)((5*12)*Math.cos((orientation*Math.PI)/180));
+            translationVector[1] = (int)((5*12)*Math.sin((orientation*Math.PI)/180));
             currentPosition = addTranslationVector(currentPosition, translationVector);
 
         }
@@ -590,8 +589,8 @@ public class EncoderAuto extends LinearOpMode {
         encoderDrive(DRIVE_SPEED, (10*12), 10);
 
         //add drive to translation vector
-        translationVector[0] = (int)((5*12)*Math.cos((orientation*2*Math.PI)/180));
-        translationVector[1] = (int)((5*12)*Math.sin((orientation*2*Math.PI)/180));
+        translationVector[0] = (int)((5*12)*Math.cos((orientation*Math.PI)/180));
+        translationVector[1] = (int)((5*12)*Math.sin((orientation*Math.PI)/180));
         currentPosition = addTranslationVector(currentPosition, translationVector);
 
         //Notify driver that path is complete
