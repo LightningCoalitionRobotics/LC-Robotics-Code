@@ -335,7 +335,6 @@ public class EncoderAuto extends LinearOpMode {
 
         //Turn 62 degrees from starting point to rightmost mineral
         encoderTurn(DRIVE_SPEED, 62, 7); // Turn 90 degrees
-        orientation += 62;
 
         //define exit bool for detection loop
         boolean detectedGoldMineral = false;
@@ -351,7 +350,6 @@ public class EncoderAuto extends LinearOpMode {
             } else {
 
                 encoderTurn(DRIVE_SPEED, (20), 7);
-                orientation += 20;
 
             }
 
@@ -366,10 +364,10 @@ public class EncoderAuto extends LinearOpMode {
 
         //rotate back to original position then turn to face corner and drive forward 30 inches
         encoderTurn(DRIVE_SPEED, -orientation, 7);
-        orientation = 0;
+
         sleep(100);
         encoderTurn(DRIVE_SPEED, 90, 7);
-        orientation += 90;
+
         sleep(100);
         encoderDrive(DRIVE_SPEED, 30, 5);
 
@@ -378,8 +376,8 @@ public class EncoderAuto extends LinearOpMode {
         while(visibleVumark(allTrackables) == "none") {
 
             encoderTurn(DRIVE_SPEED, 30, 2);
-            orientation += 30;
             sleep(500);
+
         }
 
         //Set quadrant entry depending on the vumark it sees
@@ -415,14 +413,13 @@ public class EncoderAuto extends LinearOpMode {
 
         //Turn right so first vumark is out of view
         encoderTurn(DRIVE_SPEED, -30, 5);
-        orientation -= 30;
 
         //Keep turning until robot sees second vumark
         while(opModeIsActive() && (visibleVumark(allTrackables) == "none")) {
 
             encoderTurn(DRIVE_SPEED, -30, 2);
-            orientation -= 30;
             sleep(500);
+
         }
 
         //When second vumark is found, see what it is
@@ -462,10 +459,9 @@ public class EncoderAuto extends LinearOpMode {
         //revert back to original position facing the corner
         //Add because orientation will be negative
         encoderTurn(DRIVE_SPEED, (90+orientation), 5);
-        orientation += 90;
 
 
-        //determine sign of vector components from the determined quadrant and update orientation measurement
+        //determine sign of vector components from the determined quadrant
         if(quadrant[0] == "FRONT") {
 
             jSign = 1;
@@ -520,7 +516,6 @@ public class EncoderAuto extends LinearOpMode {
 
             //turn, drive, and turn towards depot
             encoderTurn(DRIVE_SPEED, 90, 5);
-            orientation += 90;
 
             encoderDrive(DRIVE_SPEED, 36, 5); //36 is an estimate
             sleep(500);
@@ -532,7 +527,6 @@ public class EncoderAuto extends LinearOpMode {
 
             //Turn to face depot
             encoderTurn(DRIVE_SPEED, -135, 5);
-            orientation -= 135;
             sleep(500);
 
             //Drive into depot
@@ -548,7 +542,6 @@ public class EncoderAuto extends LinearOpMode {
 
             //turn, drive, and turn towards depot
             encoderTurn(DRIVE_SPEED, -45, 5);
-            orientation -= 45;
 
             encoderDrive(DRIVE_SPEED, 36, 5); //36 is an estimate
             sleep(500);
@@ -560,7 +553,6 @@ public class EncoderAuto extends LinearOpMode {
 
             //Turn to face depot
             encoderTurn(DRIVE_SPEED, -45, 5);
-            orientation -= 45;
             sleep(500);
 
             //Drive into depot
@@ -583,7 +575,6 @@ public class EncoderAuto extends LinearOpMode {
         //Park in crater (same for all quadrants)
         //Turn to face crater
         encoderTurn(DRIVE_SPEED, 180, 7);
-        orientation += 180;
 
         //Drive into crater
         encoderDrive(DRIVE_SPEED, (10*12), 10);
@@ -705,9 +696,7 @@ public class EncoderAuto extends LinearOpMode {
             // always end the motion as soon as possible.
             // However, if you require that BOTH motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.*/
-            while (opModeIsActive() &&
-                    (runtime.seconds() < timeoutS) &&
-                    (!leftStop || !rightStop)) {
+            while (opModeIsActive() && (runtime.seconds() < timeoutS) && (!leftStop || !rightStop)) {
 
                 //Stop right motor if it's finished.
                 if (Math.abs(motorRight.getCurrentPosition()) >= newRightTarget) {
@@ -725,7 +714,7 @@ public class EncoderAuto extends LinearOpMode {
 
                 }
 
-                // Display it for the driver.
+                // Display robot position and target position information for the driver during the turn.
                 telemetry.addData("Path1 Right, Left", "Running to %7d :%7d", ((int) newRightTarget), ((int) newLeftTarget));
                 telemetry.addData("Status Right, Left", "Running at %7d :%7d",
 
@@ -743,6 +732,7 @@ public class EncoderAuto extends LinearOpMode {
             motorRight.setPower(0);
             motorLeft.setPower(0);
 
+            //Display the post-move encoder positions for the driver
             telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
             telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
             telemetry.update();
@@ -757,6 +747,7 @@ public class EncoderAuto extends LinearOpMode {
     *
      */
     public void encoderTurn(double speed, double angle, double timeoutS) {
+
         double newLeftTarget;
         double newRightTarget;
 
@@ -789,15 +780,10 @@ public class EncoderAuto extends LinearOpMode {
 
             }
 
-            // keep looping while we are still active, and there is time left, and both motors are running.
-            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
-            // its target position, the motion will stop.  This is "safer" in the event that the robot will
-            // always end the motion as soon as possible.
-            // However, if you require that BOTH motors have finished their moves before the robot continues
-            // onto the next step, use (isBusy() || isBusy()) in the loop test.*/
-            while (opModeIsActive() &&
-                    (runtime.seconds() < timeoutS) &&
-                    (!leftStop || !rightStop)) {
+            // Keep looping while we are still active, and there is time left, and both motors are running.
+            // We're using (isBusy() || isBusy()) in the loop test so the bot stops only after both motors
+            // have reached their targets.
+            while (opModeIsActive() && (runtime.seconds() < timeoutS) && (!leftStop || !rightStop)) {
 
                 if (angle > 0) {
 
@@ -837,19 +823,21 @@ public class EncoderAuto extends LinearOpMode {
 
                 }
 
-                // Display it for the driver.
-                telemetry.addData("Turn Right, Left", "Running to %7d :%7d", ((int) newRightTarget), ((int) newLeftTarget));
+                // Display robot position and target position information for the driver during the turn.
+                telemetry.addData("Target Right, Left", "Running to %7d :%7d", ((int) newRightTarget), ((int) newLeftTarget));
                 telemetry.addData("Status Right, Left", "Running at %7d :%7d",
-
-                        motorRight.getCurrentPosition(),
-                        (Math.abs((motorLeft.getCurrentPosition()))));
+                        motorRight.getCurrentPosition(), (Math.abs((motorLeft.getCurrentPosition()))));
 
                 telemetry.addData("Mode Right", motorRight.getMode());
                 telemetry.addData("Mode Left", motorLeft.getMode());
                 telemetry.addData("Motor Right", motorRight.isBusy());
                 telemetry.addData("Motor Left", motorLeft.isBusy());
                 telemetry.update();
+
             }
+
+            //update orientation variable
+            orientation += angle;
 
             // Stop all motion;
             motorRight.setPower(0);
@@ -857,9 +845,11 @@ public class EncoderAuto extends LinearOpMode {
 
             sleep(500);
 
+            //Display post-turn encoder position for the driver
             telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
             telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
             telemetry.update();
+
         }
     }
 
