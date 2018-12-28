@@ -135,6 +135,7 @@ public class HardwareBobAlexanderIII extends Robot {
             opMode.telemetry.addData("Path1 Right, Left",  "Running to %7f", target);
             opMode.telemetry.addData("Status Right, Left",  "Running at %7d :%7d",
                     motorRight.getCurrentPosition(), motorLeft.getCurrentPosition());
+            opMode.telemetry.addData("Speed", speed);
             opMode.telemetry.addData("Mode Right", motorRight.getMode());
             opMode.telemetry.addData("Mode Left", motorLeft.getMode());
             opMode.telemetry.addData("Motor Right", motorRight.isBusy());
@@ -145,8 +146,8 @@ public class HardwareBobAlexanderIII extends Robot {
                 if (motorLeft.getCurrentPosition() >= leftPos + target
                         || motorRight.getCurrentPosition() >= rightPos + target) break;
             }
-            motorLeft.setPower(0);
-            motorRight.setPower(0);
+//            motorLeft.setPower(0);
+//            motorRight.setPower(0);
             opMode.telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
             opMode.telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
             opMode.telemetry.update();
