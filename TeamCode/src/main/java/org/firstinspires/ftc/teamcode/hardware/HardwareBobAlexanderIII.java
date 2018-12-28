@@ -122,8 +122,8 @@ public class HardwareBobAlexanderIII extends Robot {
     @Override
     public void drive(double speed, double dist, double timeout) {
         // Code adapted from org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive
-        double leftPos = motorLeft.getCurrentPosition();
-        double rightPos = motorRight.getCurrentPosition();
+        int leftPos = motorLeft.getCurrentPosition();
+        int rightPos = motorRight.getCurrentPosition();
         if (DEBUG) opMode.telemetry.addData("opMode is Autonomous", opMode instanceof LinearOpMode);
         if (DEBUG && opMode instanceof LinearOpMode) opMode.telemetry.addData("opMode status", ((LinearOpMode) opMode).opModeIsActive());
         if(opMode instanceof LinearOpMode && ((LinearOpMode) opMode).opModeIsActive()) {
@@ -133,7 +133,7 @@ public class HardwareBobAlexanderIII extends Robot {
             motorRight.setPower(speed);
             // Add debug information
             opMode.telemetry.addData("Path1 Right, Left",  "Running to %7f", target);
-            opMode.telemetry.addData("Status Right, Left",  "Running at %7f :%7f",
+            opMode.telemetry.addData("Status Right, Left",  "Running at %7d :%7d",
                     motorRight.getCurrentPosition(), motorLeft.getCurrentPosition());
             opMode.telemetry.addData("Mode Right", motorRight.getMode());
             opMode.telemetry.addData("Mode Left", motorLeft.getMode());
