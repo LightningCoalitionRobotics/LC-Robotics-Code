@@ -16,6 +16,7 @@ public class HardwareTestAutonomous extends LinearOpMode {
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
+        waitForStart();
 
         telemetry.addData("active", this.opModeIsActive());
         telemetry.update();

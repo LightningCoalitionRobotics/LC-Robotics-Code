@@ -132,8 +132,8 @@ public class HardwareBobAlexanderIII extends Robot {
             motorLeft.setPower(speed);
             motorRight.setPower(speed);
             // Add debug information
-            opMode.telemetry.addData("Path1 Right, Left",  "Running to %7d", target);
-            opMode.telemetry.addData("Status Right, Left",  "Running at %7d :%7d",
+            opMode.telemetry.addData("Path1 Right, Left",  "Running to %7f", target);
+            opMode.telemetry.addData("Status Right, Left",  "Running at %7f :%7f",
                     motorRight.getCurrentPosition(), motorLeft.getCurrentPosition());
             opMode.telemetry.addData("Mode Right", motorRight.getMode());
             opMode.telemetry.addData("Mode Left", motorLeft.getMode());
