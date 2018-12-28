@@ -6,9 +6,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 /**
- * This interface should be implemented for any robot created. It provides a basic template for what
- * a hardware class should have.
+ * This abstract class should be implemented for any robot created. It provides a basic template for
+ * what a hardware class should have.
  * @author Noah Simon
  */
 public abstract class Robot {
@@ -172,6 +174,10 @@ public abstract class Robot {
         }
     }
 
+    public Robot(OpMode opMode) {
+        this.opMode = opMode;
+        this.telemetry = opMode.telemetry;
+    }
     /**
      * The registry of motors and other hardware elements on the robot.
      */
@@ -180,4 +186,8 @@ public abstract class Robot {
      * The class instantiating this instance.
      */
     protected OpMode opMode;
+    /**
+     * The telemetry object belonging to the opMode.
+     */
+    protected Telemetry telemetry;
 }

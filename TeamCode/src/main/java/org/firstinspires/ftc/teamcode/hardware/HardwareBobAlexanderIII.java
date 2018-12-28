@@ -61,13 +61,6 @@ public class HardwareBobAlexanderIII extends Robot {
      *
      */
     public SlowModeType slowModeType = SlowModeType.NORMAL;
-    /**
-     * Create an instance of Bob Alexander III.
-     * @param opMode Use <code>this</code>.
-     */
-    public HardwareBobAlexanderIII(OpMode opMode) {
-        this.opMode = opMode;
-    }
 
     /**
      * Create an instance of Bob Alexander III.
@@ -75,7 +68,7 @@ public class HardwareBobAlexanderIII extends Robot {
      * @param drive_speed The initial setting for {@link #drive_speed}.
      */
     public HardwareBobAlexanderIII(OpMode opMode, double drive_speed) {
-        this(opMode);
+        super(opMode);
         this.drive_speed = drive_speed;
     }
 
@@ -124,23 +117,23 @@ public class HardwareBobAlexanderIII extends Robot {
         // Code adapted from org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive
         int leftPos = motorLeft.getCurrentPosition();
         int rightPos = motorRight.getCurrentPosition();
-        if (DEBUG) opMode.telemetry.addData("opMode is Autonomous", opMode instanceof LinearOpMode);
-        if (DEBUG && opMode instanceof LinearOpMode) opMode.telemetry.addData("opMode status", ((LinearOpMode) opMode).opModeIsActive());
+        if (DEBUG) telemetry.addData("opMode is Autonomous", opMode instanceof LinearOpMode);
+        if (DEBUG && opMode instanceof LinearOpMode) telemetry.addData("opMode status", ((LinearOpMode) opMode).opModeIsActive());
         if(opMode instanceof LinearOpMode && ((LinearOpMode) opMode).opModeIsActive()) {
             double target = dist * COUNTS_PER_INCH; //Can be calculated without circumference, just CPI
             elapsedTime.reset();
             motorLeft.setPower(speed);
             motorRight.setPower(speed);
             // Add debug information
-            opMode.telemetry.addData("Path1 Right, Left",  "Running to %7f", target);
-            opMode.telemetry.addData("Status Right, Left",  "Running at %7d :%7d",
+            telemetry.addData("Path1 Right, Left",  "Running to %7f", target);
+            telemetry.addData("Status Right, Left",  "Running at %7d :%7d",
                     motorRight.getCurrentPosition(), motorLeft.getCurrentPosition());
-            opMode.telemetry.addData("Speed", speed);
-            opMode.telemetry.addData("Mode Right", motorRight.getMode());
-            opMode.telemetry.addData("Mode Left", motorLeft.getMode());
-            opMode.telemetry.addData("Motor Right", motorRight.isBusy());
-            opMode.telemetry.addData("Motor Left", motorLeft.isBusy());
-            opMode.telemetry.update();
+            telemetry.addData("Speed", speed);
+            telemetry.addData("Mode Right", motorRight.getMode());
+            telemetry.addData("Mode Left", motorLeft.getMode());
+            telemetry.addData("Motor Right", motorRight.isBusy());
+            telemetry.addData("Motor Left", motorLeft.isBusy());
+            telemetry.update();
             if (DEBUG) ((LinearOpMode) opMode).sleep(2000);
             while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout &&
                     (motorLeft.getCurrentPosition() >= leftPos + target
@@ -149,14 +142,14 @@ public class HardwareBobAlexanderIII extends Robot {
             }
             motorLeft.setPower(0);
             motorRight.setPower(0);
-            opMode.telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
-            opMode.telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
-            opMode.telemetry.update();
+            telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
+            telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
+            telemetry.update();
             if (DEBUG) ((LinearOpMode) opMode).sleep(2000);
             ((LinearOpMode)opMode).sleep(SLEEP_AFTER_DRIVE);
         } else {
-            opMode.telemetry.addData("Error", "Attempted to autodrive during teleop or when opmode is closed.");
-            opMode.telemetry.update();
+            telemetry.addData("Error", "Attempted to autodrive during teleop or when opmode is closed.");
+            telemetry.update();
             if (DEBUG) {
                 try {
                     Thread.sleep(2000);
@@ -213,8 +206,8 @@ public class HardwareBobAlexanderIII extends Robot {
 //
 //            }
 //        } else {
-//            opMode.telemetry.addData("Error", "Attempted to autoturn during teleop or when opmode is closed.");
-//            opMode.telemetry.update();
+//            telemetry.addData("Error", "Attempted to autoturn during teleop or when opmode is closed.");
+//            telemetry.update();
 //        }
         throw new UnsupportedOperationException("This method has not yet been implemented.");
         // TODO(Gabe Ruoff): Fill out
