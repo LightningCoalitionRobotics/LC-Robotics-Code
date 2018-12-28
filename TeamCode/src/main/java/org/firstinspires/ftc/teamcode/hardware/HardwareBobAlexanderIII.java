@@ -187,7 +187,7 @@ public class HardwareBobAlexanderIII extends Robot {
      */
     public void drive(boolean direction, double dist, double timeout) {
         if (direction) {
-            drive(dist, timeout);
+            drive(drive_speed, dist, timeout);
         } else {
             drive(-drive_speed, dist, timeout);
         }
