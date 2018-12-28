@@ -246,14 +246,14 @@ public class HardwareBobAlexanderIII extends Robot {
      * @param time In seconds, how long the motors should spin.
      */
     public void autoSpin(double speed, long time) {
-        if (opMode instanceof LinearOpMode) {
+        if (opMode instanceof LinearOpMode && ((LinearOpMode) opMode).opModeIsActive()) {
             leftSpinner.setPower(speed);
             rightSpinner.setPower(speed);
             ((LinearOpMode) opMode).sleep(time * 1000);
             leftSpinner.setPower(0);
             rightSpinner.setPower(0);
         } else {
-            throw new UnsupportedOperationException("Attempted to autospin during teleop.");
+            throw new UnsupportedOperationException("Attempted to autospin during teleop or when opMode closed.");
         }
     }
 
