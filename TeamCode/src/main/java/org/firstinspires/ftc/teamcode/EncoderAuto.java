@@ -64,7 +64,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  * face the rightmost mineral. It then scans the mineral and, if it's the correct one, drives
  * forward and hits it. Otherwise, it rotates one third of 45 degrees* to face the next mineral.
  *
- * *45 degrees is an estimate this will have to be measured.
+ * *45 degrees is an estimate. this will have to be measured.
  */
 
 @Autonomous(name="EncoderAuto", group="Autonomous")
@@ -75,7 +75,7 @@ public class EncoderAuto extends LinearOpMode {
 
     static final double turnErrorConstant = (1.75);
     static final double COUNTS_PER_INCH = 3.5;
-    static final double DRIVE_SPEED = 0.3;
+    static final double DRIVE_SPEED = 0.5;
 
     static final int sleep = 2000;
 
@@ -282,7 +282,7 @@ public class EncoderAuto extends LinearOpMode {
         telemetry.addData(">", "Vuforia/TFOD ready");
         telemetry.update();
 
-        sleep(500);
+        sleep(50);
 
         motorRight = hardwareMap.dcMotor.get("motorRight");
         motorLeft = hardwareMap.dcMotor.get("motorLeft");
@@ -330,8 +330,8 @@ public class EncoderAuto extends LinearOpMode {
         waitForStart();
 
         //detatch from hook
-        exactEncoderDrive(DRIVE_SPEED, (-2), (-2), 5);
-        sleep(100);
+        //exactEncoderDrive(DRIVE_SPEED, (-2), (-2), 5);
+        //sleep(100);
 
         //Turn 62 degrees from starting point to rightmost mineral
         encoderTurn(DRIVE_SPEED, 62, 7); // Turn 90 degrees
@@ -340,43 +340,64 @@ public class EncoderAuto extends LinearOpMode {
         boolean detectedGoldMineral = false;
 
         //Loop to position robot in front of gold mineral
-        while (!detectedGoldMineral) {
+        while (!detectedGoldMineral && opModeIsActive()) {
 
             //Observe mineral in front of the bot
-            if ((getObject() != null) && (getObject() == LABEL_GOLD_MINERAL)) {
+            if ((getObject() != null) && (getObject() == LABEL_GOLD_MINERAL) && opModeIsActive()) {
 
                 detectedGoldMineral = true;
+                telemetry.addData("Detected:", "gold mineral");
+                telemetry.update();
 
             } else {
 
-                encoderTurn(DRIVE_SPEED, (20), 7);
+                encoderTurn(DRIVE_SPEED, (18), 7);
+                telemetry.addData("Detected:", "silver mineral");
+                telemetry.update();
 
             }
 
         }
 
         //Move robot forward and hit mineral
-        encoderDrive(DRIVE_SPEED, 42, 7);
-        sleep(500);
+        encoderDrive(DRIVE_SPEED, 39, 7);
+        sleep(10);
 
         //go back from mineral
-        exactEncoderDrive(DRIVE_SPEED, -42, -42, 7);
+        exactEncoderDrive(DRIVE_SPEED, (-37), (-37), 7);
 
         //rotate back to original position then turn to face corner and drive forward 30 inches
-        encoderTurn(DRIVE_SPEED, -orientation, 7);
+        telemetry.addData("Turning", (-orientation+90) + "degrees");
+        telemetry.update();
+
+        if(Math.abs(orientation-90) < 2) {
+            encoderTurn(DRIVE_SPEED, (-orientation + 90), 7);
+        }
+
+        sleep(50);
+        encoderDrive(DRIVE_SPEED, 7, 5);
+        telemetry.addData("Driving", "5");
+        telemetry.update();
+        sleep(100);
 
         sleep(100);
-        encoderTurn(DRIVE_SPEED, 90, 7);
+        encoderTurn(DRIVE_SPEED, 67.5, 7);
+        telemetry.addData("Turning", "90");
+        telemetry.update();
 
         sleep(100);
         encoderDrive(DRIVE_SPEED, 30, 5);
+        telemetry.addData("Driving", "20");
+        telemetry.update();
 
         //find the first vumark
         //Turn left until it sees the vumark
-        while(visibleVumark(allTrackables) == "none") {
+        while((visibleVumark(allTrackables) == "none") && opModeIsActive()) {
 
-            encoderTurn(DRIVE_SPEED, 30, 2);
-            sleep(500);
+            //encoderTurn(DRIVE_SPEED, 25, 2);
+            telemetry.addData("Detecting", "...");
+            telemetry.update();
+            sleep(50);
 
         }
 
@@ -411,14 +432,32 @@ public class EncoderAuto extends LinearOpMode {
 
         }
 
+        //back up 20
+        sleep(50);
+        exactEncoderDrive(DRIVE_SPEED, -30, -30, 5);
+        telemetry.addData("Reversing", "20");
+        telemetry.update();
+        sleep(100);
+
         //Turn right so first vumark is out of view
-        encoderTurn(DRIVE_SPEED, -30, 5);
+        encoderTurn(DRIVE_SPEED, -140, 5);
+        telemetry.addData("Turning", "-110");
+        telemetry.update();
+        sleep(100);
+
+        //Drive 20
+        sleep(50);
+        encoderDrive(DRIVE_SPEED, 30, 5);
+        telemetry.addData("Driving", "20");
+        telemetry.update();
 
         //Keep turning until robot sees second vumark
         while(opModeIsActive() && (visibleVumark(allTrackables) == "none")) {
 
-            encoderTurn(DRIVE_SPEED, -30, 2);
-            sleep(500);
+            //encoderTurn(DRIVE_SPEED, -30, 2);
+            telemetry.addData("Detecting", "...");
+            telemetry.update();
+            sleep(50);
 
         }
 
@@ -456,9 +495,20 @@ public class EncoderAuto extends LinearOpMode {
 
         }
 
+        //back up 30
+        sleep(50);
+        exactEncoderDrive(DRIVE_SPEED, -30, -30, 5);
+        telemetry.addData("Reversing", "20");
+        telemetry.update();
+
+        //orientation
+        telemetry.addData("Orientation", orientation);
+        telemetry.update();
+        sleep(sleep);
+
         //revert back to original position facing the corner
         //Add because orientation will be negative
-        encoderTurn(DRIVE_SPEED, (90+orientation), 5);
+        encoderTurn(DRIVE_SPEED, (90-orientation), 5);
 
 
         //determine sign of vector components from the determined quadrant
@@ -515,9 +565,9 @@ public class EncoderAuto extends LinearOpMode {
         if((quadrant[0] == "FRONT" && quadrant[1] == "RED" || (quadrant[0] == "BACK" && quadrant[1] == "BLUE"))) {
 
             //turn, drive, and turn towards depot
-            encoderTurn(DRIVE_SPEED, 90, 5);
+            encoderTurn(DRIVE_SPEED, 45, 5);
 
-            encoderDrive(DRIVE_SPEED, 36, 5); //36 is an estimate
+            encoderDrive(DRIVE_SPEED, 33, 5); //36 is an estimate
             sleep(500);
 
             //add drive to translation vector
@@ -698,19 +748,41 @@ public class EncoderAuto extends LinearOpMode {
             // onto the next step, use (isBusy() || isBusy()) in the loop test.*/
             while (opModeIsActive() && (runtime.seconds() < timeoutS) && (!leftStop || !rightStop)) {
 
-                //Stop right motor if it's finished.
-                if (Math.abs(motorRight.getCurrentPosition()) >= newRightTarget) {
+                if(leftInches < 0) {
 
-                    motorRight.setPower(0);
-                    rightStop = true;
+                    //Stop right motor if it's finished.
+                    if (motorRight.getCurrentPosition() <= newRightTarget) {
 
-                }
+                        motorRight.setPower(0);
+                        rightStop = true;
 
-                //Stop left motor if it's finished.
-                if ((Math.abs(motorLeft.getCurrentPosition())) >= newLeftTarget) {
+                    }
 
-                    motorLeft.setPower(0);
-                    leftStop = true;
+                    //Stop left motor if it's finished.
+                    if (motorLeft.getCurrentPosition() <= newLeftTarget) {
+
+                        motorLeft.setPower(0);
+                        leftStop = true;
+
+                    }
+
+                } else {
+
+                    //Stop right motor if it's finished.
+                    if (Math.abs(motorRight.getCurrentPosition()) >= newRightTarget) {
+
+                        motorRight.setPower(0);
+                        rightStop = true;
+
+                    }
+
+                    //Stop left motor if it's finished.
+                    if ((Math.abs(motorLeft.getCurrentPosition())) >= newLeftTarget) {
+
+                        motorLeft.setPower(0);
+                        leftStop = true;
+
+                    }
 
                 }
 
