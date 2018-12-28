@@ -76,6 +76,8 @@ public class EncoderAuto extends LinearOpMode {
     static final double turnErrorConstant = (1.75);
     static final double COUNTS_PER_INCH = 3.5;
     static final double DRIVE_SPEED = 0.5;
+    static final double RUSH_SPEED = 0.8;
+    static final double TURN_SPEED = 0.3;
 
     static final int sleep = 2000;
 
@@ -334,7 +336,7 @@ public class EncoderAuto extends LinearOpMode {
         //sleep(100);
 
         //Turn 62 degrees from starting point to rightmost mineral
-        encoderTurn(DRIVE_SPEED, 62, 7); // Turn 90 degrees
+        encoderTurn(TURN_SPEED, 62, 7); // Turn 90 degrees
 
         //define exit bool for detection loop
         boolean detectedGoldMineral = false;
@@ -351,7 +353,7 @@ public class EncoderAuto extends LinearOpMode {
 
             } else {
 
-                encoderTurn(DRIVE_SPEED, (18), 7);
+                encoderTurn(TURN_SPEED, (18), 7);
                 telemetry.addData("Detected:", "silver mineral");
                 telemetry.update();
 
@@ -371,7 +373,7 @@ public class EncoderAuto extends LinearOpMode {
         telemetry.update();
 
         if(Math.abs(orientation-90) < 2) {
-            encoderTurn(DRIVE_SPEED, (-orientation + 90), 7);
+            encoderTurn(TURN_SPEED, (-orientation + 90), 7);
         }
 
         sleep(50);
@@ -381,7 +383,7 @@ public class EncoderAuto extends LinearOpMode {
         sleep(100);
 
         sleep(100);
-        encoderTurn(DRIVE_SPEED, 67.5, 7);
+        encoderTurn(TURN_SPEED, 67.5, 7);
         telemetry.addData("Turning", "90");
         telemetry.update();
 
@@ -394,7 +396,7 @@ public class EncoderAuto extends LinearOpMode {
         //Turn left until it sees the vumark
         while((visibleVumark(allTrackables) == "none") && opModeIsActive()) {
 
-            //encoderTurn(DRIVE_SPEED, 25, 2);
+            //encoderTurn(TURN_SPEED, 25, 2);
             telemetry.addData("Detecting", "...");
             telemetry.update();
             sleep(50);
@@ -440,7 +442,7 @@ public class EncoderAuto extends LinearOpMode {
         sleep(100);
 
         //Turn right so first vumark is out of view
-        encoderTurn(DRIVE_SPEED, -140, 5);
+        encoderTurn(TURN_SPEED, -140, 5);
         telemetry.addData("Turning", "-110");
         telemetry.update();
         sleep(100);
@@ -451,13 +453,11 @@ public class EncoderAuto extends LinearOpMode {
         telemetry.addData("Driving", "20");
         telemetry.update();
 
-        //Keep turning until robot sees second vumark
+        //wait untul robot sees the vumark
         while(opModeIsActive() && (visibleVumark(allTrackables) == "none")) {
 
-            //encoderTurn(DRIVE_SPEED, -30, 2);
             telemetry.addData("Detecting", "...");
             telemetry.update();
-            sleep(50);
 
         }
 
@@ -468,14 +468,14 @@ public class EncoderAuto extends LinearOpMode {
             quadrant[0] = "BACK";
             telemetry.addData("Detected", "Back-Space");
             telemetry.update();
-            sleep(1000);
+            sleep(500);
 
         } else if(visibleVumark(allTrackables) == "Front-Craters") {
 
             quadrant[0] = "FRONT";
             telemetry.addData("Detected", "Front-Craters");
             telemetry.update();
-            sleep(1000);
+            sleep(500);
 
         }
 
@@ -484,21 +484,20 @@ public class EncoderAuto extends LinearOpMode {
             quadrant[1] = "BLUE";
             telemetry.addData("Detected", "Blue-Rover");
             telemetry.update();
-            sleep(1000);
+            sleep(500);
 
         } else if(visibleVumark(allTrackables) == "Red-Footprint") {
 
             quadrant[1] = "RED";
             telemetry.addData("Detected", "Red-Footprint");
             telemetry.update();
-            sleep(1000);
+            sleep(500);
 
         }
 
         //back up 30
-        sleep(50);
         exactEncoderDrive(DRIVE_SPEED, -30, -30, 5);
-        telemetry.addData("Reversing", "20");
+        telemetry.addData("Reversing", "30");
         telemetry.update();
 
         //orientation
@@ -508,7 +507,7 @@ public class EncoderAuto extends LinearOpMode {
 
         //revert back to original position facing the corner
         //Add because orientation will be negative
-        encoderTurn(DRIVE_SPEED, (90-orientation), 5);
+        encoderTurn(TURN_SPEED, (90-orientation), 5);
 
 
         //determine sign of vector components from the determined quadrant
@@ -556,7 +555,8 @@ public class EncoderAuto extends LinearOpMode {
         currentPosition = addTranslationVector(currentPosition, translationVector);
 
         //tell the driver what the current position is
-        telemetry.addData("Position", "X:", currentPosition[0], "Y:", currentPosition[1]);
+        telemetry.addData("Position X", currentPosition[0]);
+        telemetry.addData("Position Y", currentPosition[1]);
         telemetry.update();
         sleep(3000);
 
@@ -565,9 +565,9 @@ public class EncoderAuto extends LinearOpMode {
         if((quadrant[0] == "FRONT" && quadrant[1] == "RED" || (quadrant[0] == "BACK" && quadrant[1] == "BLUE"))) {
 
             //turn, drive, and turn towards depot
-            encoderTurn(DRIVE_SPEED, 45, 5);
+            encoderTurn(TURN_SPEED, 45, 5);
 
-            encoderDrive(DRIVE_SPEED, 33, 5); //36 is an estimate
+            encoderDrive(DRIVE_SPEED, 31, 5); //31 is an estimate
             sleep(500);
 
             //add drive to translation vector
@@ -576,12 +576,12 @@ public class EncoderAuto extends LinearOpMode {
             currentPosition = addTranslationVector(currentPosition, translationVector);
 
             //Turn to face depot
-            encoderTurn(DRIVE_SPEED, -135, 5);
-            sleep(500);
+            encoderTurn(TURN_SPEED, -140, 5);
+            sleep(100);
 
             //Drive into depot
-            encoderDrive(DRIVE_SPEED, (5*12), 6); //5 feet is an estimate
-            sleep(500);
+            encoderDrive(RUSH_SPEED, (5*12), 6); //5 feet is an estimate
+            sleep(100);
 
             //add drive to translation vector
             translationVector[0] = (int)((5*12)*Math.cos((orientation*Math.PI)/180));
@@ -591,7 +591,7 @@ public class EncoderAuto extends LinearOpMode {
         } else if((quadrant[0] == "FRONT" && quadrant[1] == "BLUE") || (quadrant[0] == "BACK" && quadrant[1] == "RED")) {
 
             //turn, drive, and turn towards depot
-            encoderTurn(DRIVE_SPEED, -45, 5);
+            encoderTurn(TURN_SPEED, -45, 5);
 
             encoderDrive(DRIVE_SPEED, 36, 5); //36 is an estimate
             sleep(500);
@@ -602,11 +602,11 @@ public class EncoderAuto extends LinearOpMode {
             currentPosition = addTranslationVector(currentPosition, translationVector);
 
             //Turn to face depot
-            encoderTurn(DRIVE_SPEED, -45, 5);
+            encoderTurn(TURN_SPEED, -45, 5);
             sleep(500);
 
             //Drive into depot
-            encoderDrive(DRIVE_SPEED, (5*12), 6); //5 feet is an estimate
+            encoderDrive(RUSH_SPEED, (5*12), 6); //5 feet is an estimate
             sleep(500);
 
             //add drive to translation vector
@@ -624,10 +624,10 @@ public class EncoderAuto extends LinearOpMode {
 
         //Park in crater (same for all quadrants)
         //Turn to face crater
-        encoderTurn(DRIVE_SPEED, 180, 7);
+        encoderTurn(TURN_SPEED, 180, 7);
 
         //Drive into crater
-        encoderDrive(DRIVE_SPEED, (10*12), 10);
+        encoderDrive(RUSH_SPEED, (10*12), 10);
 
         //add drive to translation vector
         translationVector[0] = (int)((5*12)*Math.cos((orientation*Math.PI)/180));
