@@ -75,8 +75,8 @@ public class HardwareBobAlexanderIII extends Robot {
     @Override
     public void init(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
-        motorLeft = register("motorLeft", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
-        motorRight = register("motorRight", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
+        motorLeft = register("motorLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
+        motorRight = register("motorRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
         leftSpinner = register("leftSpinner", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightSpinner = register("rightSpinner", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         lifter = register("stronkBoi", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
