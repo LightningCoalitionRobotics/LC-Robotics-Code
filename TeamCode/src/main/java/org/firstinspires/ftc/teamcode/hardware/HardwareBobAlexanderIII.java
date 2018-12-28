@@ -16,8 +16,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 public class HardwareBobAlexanderIII extends Robot {
 
-    private static final boolean DEBUG = true;
-
     // All of the components we will need (e.g. motors, servos, sensors...) that are attached to the robot
     /**
      * Left drive motor for the robot.
@@ -117,8 +115,6 @@ public class HardwareBobAlexanderIII extends Robot {
         // Code adapted from org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive
         int leftPos = motorLeft.getCurrentPosition();
         int rightPos = motorRight.getCurrentPosition();
-        if (DEBUG) telemetry.addData("opMode is Autonomous", opMode instanceof LinearOpMode);
-        if (DEBUG && opMode instanceof LinearOpMode) telemetry.addData("opMode status", ((LinearOpMode) opMode).opModeIsActive());
         if(opMode instanceof LinearOpMode && ((LinearOpMode) opMode).opModeIsActive()) {
             double target = dist * COUNTS_PER_INCH; //Can be calculated without circumference, just CPI
             elapsedTime.reset();
@@ -134,7 +130,6 @@ public class HardwareBobAlexanderIII extends Robot {
             telemetry.addData("Motor Right", motorRight.isBusy());
             telemetry.addData("Motor Left", motorLeft.isBusy());
             telemetry.update();
-            if (DEBUG) ((LinearOpMode) opMode).sleep(2000);
             while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout &&
                     (motorLeft.getCurrentPosition() >= leftPos + target
                     || motorRight.getCurrentPosition() >= rightPos + target)) {
@@ -145,18 +140,10 @@ public class HardwareBobAlexanderIII extends Robot {
             telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
             telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
             telemetry.update();
-            if (DEBUG) ((LinearOpMode) opMode).sleep(2000);
             ((LinearOpMode)opMode).sleep(SLEEP_AFTER_DRIVE);
         } else {
             telemetry.addData("Error", "Attempted to autodrive during teleop or when opmode is closed.");
             telemetry.update();
-            if (DEBUG) {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            }
             opMode.requestOpModeStop();
         }
     }
