@@ -131,8 +131,8 @@ public class HardwareBobAlexanderIII extends Robot {
             telemetry.addData("Motor Left", motorLeft.isBusy());
             telemetry.update();
             while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout &&
-                    (motorLeft.getCurrentPosition() >= leftPos + target
-                    || motorRight.getCurrentPosition() >= rightPos + target)) {
+                    (motorLeft.getCurrentPosition() < leftPos + target
+                    || motorRight.getCurrentPosition() < rightPos + target)) {
                 ((LinearOpMode) opMode).idle();
             }
             motorLeft.setPower(0);
