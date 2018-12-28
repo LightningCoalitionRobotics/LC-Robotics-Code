@@ -83,7 +83,7 @@ public class HardwareBobAlexanderIII extends Robot {
     public void init(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
         motorLeft = register("motorLeft", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
-        motorRight = register("motorRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
+        motorRight = register("motorRight", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
         leftSpinner = register("leftSpinner", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightSpinner = register("rightSpinner", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         lifter = register("stronkBoi", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -142,12 +142,13 @@ public class HardwareBobAlexanderIII extends Robot {
             opMode.telemetry.addData("Motor Left", motorLeft.isBusy());
             opMode.telemetry.update();
             if (DEBUG) ((LinearOpMode) opMode).sleep(2000);
-            while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-                if (motorLeft.getCurrentPosition() >= leftPos + target
-                        || motorRight.getCurrentPosition() >= rightPos + target) break;
+            while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout &&
+                    (motorLeft.getCurrentPosition() >= leftPos + target
+                    || motorRight.getCurrentPosition() >= rightPos + target)) {
+                ((LinearOpMode) opMode).idle();
             }
-//            motorLeft.setPower(0);
-//            motorRight.setPower(0);
+            motorLeft.setPower(0);
+            motorRight.setPower(0);
             opMode.telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
             opMode.telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
             opMode.telemetry.update();

@@ -18,17 +18,9 @@ public class HardwareTestAutonomous extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
 
-        telemetry.addData("active", this.opModeIsActive());
-        telemetry.update();
-        sleep(1000);
-
         robot.moveMotor(robot.lifter, 0.5, 2000);
         telemetry.addData("Status1", "Landed, On ground");
         telemetry.update();
-
-        telemetry.addData("active", this.opModeIsActive());
-        telemetry.update();
-        sleep(1000);
 
         robot.drive(30, 10);
         telemetry.addData("Status2", "Finished drive.");
