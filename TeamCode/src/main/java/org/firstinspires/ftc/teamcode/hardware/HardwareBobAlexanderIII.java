@@ -111,12 +111,12 @@ public class HardwareBobAlexanderIII extends Robot {
      */
 
     @Override
-    public void drive(double speed, double dist, double timeout) {
+    public void drive(double speed, double dist, double timeout) { // Speed = -0.5, dist = 100
         // Code adapted from org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive
-        int leftPos = motorLeft.getCurrentPosition();
-        int rightPos = motorRight.getCurrentPosition();
+        int leftPos = motorLeft.getCurrentPosition(); // 0
+        int rightPos = motorRight.getCurrentPosition(); // 0
         if(opMode instanceof LinearOpMode && ((LinearOpMode) opMode).opModeIsActive()) {
-            double target = dist * COUNTS_PER_INCH; //Can be calculated without circumference, just CPI
+            double target = dist * COUNTS_PER_INCH; //Can be calculated without circumference, just CPI // 100*3.5 = 350
             elapsedTime.reset();
             motorLeft.setPower(speed);
             motorRight.setPower(speed);
@@ -130,6 +130,7 @@ public class HardwareBobAlexanderIII extends Robot {
             telemetry.addData("Motor Right", motorRight.isBusy());
             telemetry.addData("Motor Left", motorLeft.isBusy());
             telemetry.update();
+            // TODO: Fix logic so backwards input doesn't mess stuff up
             while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout &&
                     (motorLeft.getCurrentPosition() < leftPos + target
                     || motorRight.getCurrentPosition() < rightPos + target)) {
