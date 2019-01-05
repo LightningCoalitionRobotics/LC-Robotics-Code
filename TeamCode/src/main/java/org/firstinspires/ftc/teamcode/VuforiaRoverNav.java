@@ -313,7 +313,7 @@ public class VuforiaRoverNav extends LinearOpMode {
 /*
     public static void moveToDesiredLocation(Robot robot, double targetX, double targetY) {
         robot.init();
-        for (DesiredXLocation /= translation.get(0) / mmPerInch, DesiredXLocation - translation.get(0) / mmPerInch = 4) {
+        for (TargetX /= translation.get(0) / mmPerInch, DesiredXLocation - translation.get(0) / mmPerInch = 4) {
             for (rotation.ThirdAngle /=0, rotation.thirdAngle /= 0){
                 robot.turn(1, 1;
                 telemetry.update();
@@ -327,7 +327,7 @@ public class VuforiaRoverNav extends LinearOpMode {
         robot.turn(90, 3);
         telemetry.update();
 
-        for (DesiredYLocation /= translation.get(1) / mmPerInch, DesiredYLocation - translation.get(1) / mmPerInch = 4) {
+        for (TargetY /= translation.get(1) / mmPerInch, DesiredYLocation - translation.get(1) / mmPerInch = 4) {
             for (rotation.ThirdAngle /=0, rotation.thirdAngle /= 0){
                 robot.turn(1, 1);
                 telemetry.update();
