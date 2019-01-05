@@ -34,12 +34,16 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoController;
 import com.qualcomm.robotcore.util.Range;
 import java.lang.Boolean;
 
 import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
+import static java.lang.Thread.sleep;
 
 /**
  * TeleOp Mode
@@ -52,11 +56,12 @@ public class lcTeleOp extends OpMode {
 	
 
 
-// motor controllers
+	// motor controllers
     DcMotorController wheelController;
     DcMotorController stronkBoiController;
     DcMotorController spinnerController;
-// motors
+
+	// motors
 	DcMotor motorRight;
 	DcMotor motorLeft;
 
@@ -64,13 +69,15 @@ public class lcTeleOp extends OpMode {
 
 	DcMotor leftSpinner, rightSpinner;
 
-    // slow mode settings
+	// Servo Controller
+    ServoController servoController;
 
+    // Servo
+    CRServo idol;
+
+    // slow mode settings
     int slowModeType = 1;
     String displaySlowModeType = "Full Speed";
-
-
-
 
 
     /**
@@ -88,7 +95,6 @@ public class lcTeleOp extends OpMode {
 	@Override
 	public void init() {
 
-
 		/*
 		 * Use the hardwareMap to get the dc motors and servos by name. Note
 		 * that the names of the devices must match the names used when you
@@ -105,6 +111,11 @@ public class lcTeleOp extends OpMode {
 
 		leftSpinner = hardwareMap.dcMotor.get("leftSpinner");
 		rightSpinner = hardwareMap.dcMotor.get("rightSpinner");
+
+		servoController = hardwareMap.servoController.get("servoController");
+
+		idol = hardwareMap.crservo.get("idol");
+
 	}
 
 	/*
@@ -139,8 +150,8 @@ public class lcTeleOp extends OpMode {
             if(gamepad1.x || gamepad2.x) {
 				slowModeType = 8;
 			}
-            //tank drive:
 
+            //tank drive:
             float right = -gamepad1.right_stick_y;
             float left = -gamepad1.left_stick_y;
 
@@ -160,7 +171,7 @@ public class lcTeleOp extends OpMode {
 
             float spinner1Float = 0, spinner2Float = 0;
 
-            //spinner collect
+            //spinner collect / dispense
 			if(gamepad1.right_bumper) {
 
 				spinner1Float = 1;
@@ -174,6 +185,23 @@ public class lcTeleOp extends OpMode {
 				spinner2Float = -1;
 
 			}
+
+			//idol servo
+            if(gamepad1.a) {
+
+                idol.setPower(0.75);
+                try {
+                    sleep(50);
+                } catch (InterruptedException e) {
+                }
+                idol.setPower(0.25);
+                try {
+                    sleep(50);
+                } catch (InterruptedException e) {
+                }
+                idol.setPower(0.5);
+
+            }
 
             // clip the right/left values so that the values never exceed +/- 1
             right = Range.clip(right, -1, 1);

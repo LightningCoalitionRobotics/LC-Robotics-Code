@@ -353,7 +353,7 @@ public class EncoderAuto extends LinearOpMode {
 
             } else {
 
-                encoderTurn(TURN_SPEED, (18), 7);
+                encoderTurn(TURN_SPEED, (19), 7);
                 telemetry.addData("Detected:", "silver mineral");
                 telemetry.update();
 
@@ -366,15 +366,15 @@ public class EncoderAuto extends LinearOpMode {
         sleep(10);
 
         //go back from mineral
-        exactEncoderDrive(DRIVE_SPEED, (-37), (-37), 7);
+        exactEncoderDrive(DRIVE_SPEED, (-35), (-35), 7);
 
         //rotate back to original position then turn to face corner and drive forward 30 inches
         telemetry.addData("Turning", (-orientation+90) + "degrees");
         telemetry.update();
 
-        if(Math.abs(orientation-90) < 2) {
+        //if(Math.abs(orientation-90) < 5) {
             encoderTurn(TURN_SPEED, (-orientation + 90), 7);
-        }
+        //}
 
         sleep(50);
         encoderDrive(DRIVE_SPEED, 7, 5);
@@ -506,7 +506,6 @@ public class EncoderAuto extends LinearOpMode {
         sleep(sleep);
 
         //revert back to original position facing the corner
-        //Add because orientation will be negative
         encoderTurn(TURN_SPEED, (90-orientation), 5);
 
 
@@ -692,7 +691,7 @@ public class EncoderAuto extends LinearOpMode {
                     motorLeft.setPower(0);
                     leftStop = true;
 
-                }
+                    }
 
                 // Display it for the driver.
                 telemetry.addData("Path1 Right, Left", "Running to %7d :%7d", ((int) newRightTarget), ((int) newLeftTarget));
@@ -792,6 +791,8 @@ public class EncoderAuto extends LinearOpMode {
 
                         motorRight.getCurrentPosition(),
                         (Math.abs((motorLeft.getCurrentPosition()))));
+
+                telemetry.addData("Motor powers:", ((Math.abs(rightInches) / rightInches) * speed));
 
                 telemetry.addData("Mode Right", motorRight.getMode());
                 telemetry.addData("Mode Left", motorLeft.getMode());
