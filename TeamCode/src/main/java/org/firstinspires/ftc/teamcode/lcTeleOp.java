@@ -75,7 +75,7 @@ public class lcTeleOp extends OpMode {
     ServoController servoController;
 
     // Servo
-    CRServo idol;
+    Servo idol;
 
     // slow mode settings
     int slowModeType = 1;
@@ -124,7 +124,9 @@ public class lcTeleOp extends OpMode {
 
 		servoController = hardwareMap.servoController.get("servoController");
 
-		idol = hardwareMap.crservo.get("idol");
+		idol = hardwareMap.servo.get("idol");
+
+		idol.setPosition(1);
 
         motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -138,6 +140,11 @@ public class lcTeleOp extends OpMode {
 
 	}
 
+	/*
+	 * This method will be called repeatedly in a loop
+	 *
+	 * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#run()
+	 */
 	@Override
     public void init_loop(){
 
@@ -228,17 +235,16 @@ public class lcTeleOp extends OpMode {
 			//idol servo
             if(gamepad1.a) {
 
-                idol.setPower(0.75);
+                idol.setPosition(0.25);
                 try {
-                    sleep(50);
+                    sleep(500);
                 } catch (InterruptedException e) {
                 }
-                idol.setPower(0.25);
+                idol.setPosition(1);
                 try {
-                    sleep(50);
+                    sleep(500);
                 } catch (InterruptedException e) {
                 }
-                idol.setPower(0.5);
 
             }
 
