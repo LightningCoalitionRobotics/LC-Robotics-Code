@@ -34,6 +34,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoController;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -51,6 +53,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
+import static java.lang.Thread.sleep;
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
@@ -77,15 +80,22 @@ public class EncoderAuto extends LinearOpMode {
     static final double COUNTS_PER_INCH = 3.5;
     static final double DRIVE_SPEED = 0.5;
     static final double RUSH_SPEED = 0.8;
-    static final double TURN_SPEED = 0.3;
+    static final double TURN_SPEED = 0.25;
 
     static final int sleep = 2000;
 
     // motor controllers
     DcMotorController wheelController;
+
+    // Servo controllers
+    ServoController idolController;
+
     // motors
     DcMotor motorRight;
     DcMotor motorLeft;
+
+    // Servos
+    Servo idol;
 
     /*
      *
@@ -123,7 +133,7 @@ public class EncoderAuto extends LinearOpMode {
     int[] translationVector = new int[2];
 
     //initialize orientation variable
-    private static double orientation;
+    static double orientation = 0.0;
 
     //initialize signs for vectors
     private static int iSign, jSign = 1;
@@ -265,7 +275,6 @@ public class EncoderAuto extends LinearOpMode {
         /** Wait for the game to begin */
         telemetry.addData(">", "Press Play to start tracking");
         telemetry.update();
-        waitForStart();
 
         /** Start tracking the data sets we care about. */
         targetsRoverRuckus.activate();
@@ -273,6 +282,7 @@ public class EncoderAuto extends LinearOpMode {
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
 
             initTfod();
+
         } else {
 
             telemetry.addData("Sorry!", "This device is not compatible with TFOD");
@@ -284,11 +294,15 @@ public class EncoderAuto extends LinearOpMode {
         telemetry.addData(">", "Vuforia/TFOD ready");
         telemetry.update();
 
-        sleep(50);
+        idolController = hardwareMap.servoController.get("servo" +
+                "Controller");
+
+        wheelController = hardwareMap.dcMotorController.get("wheelController");
 
         motorRight = hardwareMap.dcMotor.get("motorRight");
         motorLeft = hardwareMap.dcMotor.get("motorLeft");
 
+        idol = hardwareMap.servo.get("idol");
 
         //reverse the right motor
         motorRight.setDirection(REVERSE);
@@ -297,6 +311,8 @@ public class EncoderAuto extends LinearOpMode {
          * Initialize the drive system variables.
          * The init() method of the hardware class does all the work here
          */
+
+        idol.setPosition(1);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");
@@ -326,6 +342,11 @@ public class EncoderAuto extends LinearOpMode {
         telemetry.addData("Path0", "Starting at %7d :%7d",
                 motorRight.getCurrentPosition(),
                 motorLeft.getCurrentPosition());
+
+        //reset orientation
+        orientation = 0;
+
+        telemetry.addData("Orientation:", orientation);
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
@@ -356,6 +377,7 @@ public class EncoderAuto extends LinearOpMode {
                 encoderTurn(TURN_SPEED, (19), 7);
                 telemetry.addData("Detected:", "silver mineral");
                 telemetry.update();
+                sleep(75);
 
             }
 
@@ -369,27 +391,32 @@ public class EncoderAuto extends LinearOpMode {
         exactEncoderDrive(DRIVE_SPEED, (-35), (-35), 7);
 
         //rotate back to original position then turn to face corner and drive forward 30 inches
-        telemetry.addData("Turning", (-orientation+90) + "degrees");
+        telemetry.addData("Turning", (-orientation+90));
+        telemetry.addData("From orientation", orientation);
         telemetry.update();
+        sleep(500);
 
-        //if(Math.abs(orientation-90) < 5) {
+        //if(Math.abs(90-orientation) > 5) {
+            telemetry.addData("turning", (-orientation+90));
+            telemetry.update();
+            sleep(500);
             encoderTurn(TURN_SPEED, (-orientation + 90), 7);
         //}
 
         sleep(50);
-        encoderDrive(DRIVE_SPEED, 7, 5);
-        telemetry.addData("Driving", "5");
+        encoderDrive(DRIVE_SPEED, 8, 5);
+        telemetry.addData("Driving", "8");
         telemetry.update();
-        sleep(100);
+        sleep(750);
 
-        sleep(100);
-        encoderTurn(TURN_SPEED, 67.5, 7);
-        telemetry.addData("Turning", "90");
+        sleep(750);
+        encoderTurn(TURN_SPEED, 60, 7);
+        telemetry.addData("Turning", "60");
         telemetry.update();
 
-        sleep(100);
+        sleep(750);
         encoderDrive(DRIVE_SPEED, 30, 5);
-        telemetry.addData("Driving", "20");
+        telemetry.addData("Driving", "30");
         telemetry.update();
 
         //find the first vumark
@@ -409,48 +436,48 @@ public class EncoderAuto extends LinearOpMode {
             quadrant[0] = "BACK";
             telemetry.addData("Detected", "Back-Space");
             telemetry.update();
-            sleep(1000);
+            sleep(100);
 
         } else if(visibleVumark(allTrackables) == "Front-Craters") {
 
             quadrant[0] = "FRONT";
             telemetry.addData("Detected", "Front-Craters");
             telemetry.update();
-            sleep(1000);
+            sleep(100);
 
         } else if(visibleVumark(allTrackables) == "Blue-Rover") {
 
             quadrant[1] = "BLUE";
             telemetry.addData("Detected", "Blue-Rover");
             telemetry.update();
-            sleep(1000);
+            sleep(100);
 
         } else {
 
             quadrant[1] = "RED";
             telemetry.addData("Detected", "Red-Footprint");
             telemetry.update();
-            sleep(1000);
+            sleep(100);
 
         }
 
-        //back up 20
+        //back up 30
         sleep(50);
         exactEncoderDrive(DRIVE_SPEED, -30, -30, 5);
-        telemetry.addData("Reversing", "20");
+        telemetry.addData("Reversing", "30");
         telemetry.update();
-        sleep(100);
+        sleep(750);
 
         //Turn right so first vumark is out of view
         encoderTurn(TURN_SPEED, -140, 5);
-        telemetry.addData("Turning", "-110");
+        telemetry.addData("Turning", "-140");
         telemetry.update();
-        sleep(100);
+        sleep(750);
 
         //Drive 20
-        sleep(50);
+        sleep(500);
         encoderDrive(DRIVE_SPEED, 30, 5);
-        telemetry.addData("Driving", "20");
+        telemetry.addData("Driving", "30");
         telemetry.update();
 
         //wait untul robot sees the vumark
@@ -564,9 +591,9 @@ public class EncoderAuto extends LinearOpMode {
         if((quadrant[0] == "FRONT" && quadrant[1] == "RED" || (quadrant[0] == "BACK" && quadrant[1] == "BLUE"))) {
 
             //turn, drive, and turn towards depot
-            encoderTurn(TURN_SPEED, 45, 5);
+            encoderTurn(TURN_SPEED, -80, 5);
 
-            encoderDrive(DRIVE_SPEED, 31, 5); //31 is an estimate
+            encoderDrive(DRIVE_SPEED, 42, 5); //31 is an estimate
             sleep(500);
 
             //add drive to translation vector
@@ -575,7 +602,7 @@ public class EncoderAuto extends LinearOpMode {
             currentPosition = addTranslationVector(currentPosition, translationVector);
 
             //Turn to face depot
-            encoderTurn(TURN_SPEED, -140, 5);
+            encoderTurn(TURN_SPEED, -55, 5);
             sleep(100);
 
             //Drive into depot
@@ -590,9 +617,9 @@ public class EncoderAuto extends LinearOpMode {
         } else if((quadrant[0] == "FRONT" && quadrant[1] == "BLUE") || (quadrant[0] == "BACK" && quadrant[1] == "RED")) {
 
             //turn, drive, and turn towards depot
-            encoderTurn(TURN_SPEED, -45, 5);
+            encoderTurn(TURN_SPEED, 80, 5);
 
-            encoderDrive(DRIVE_SPEED, 36, 5); //36 is an estimate
+            encoderDrive(DRIVE_SPEED, 42, 5); //36 is an estimate
             sleep(500);
 
             //add drive to translation vector
@@ -601,7 +628,7 @@ public class EncoderAuto extends LinearOpMode {
             currentPosition = addTranslationVector(currentPosition, translationVector);
 
             //Turn to face depot
-            encoderTurn(TURN_SPEED, -45, 5);
+            encoderTurn(TURN_SPEED, 55, 5);
             sleep(500);
 
             //Drive into depot
@@ -620,6 +647,14 @@ public class EncoderAuto extends LinearOpMode {
          * Place object in depot
          *
          */
+        idol.setPosition(0.25);
+
+        sleep(500);
+
+        idol.setPosition(1);
+
+        sleep(500);
+
 
         //Park in crater (same for all quadrants)
         //Turn to face crater
@@ -699,6 +734,8 @@ public class EncoderAuto extends LinearOpMode {
 
                         motorRight.getCurrentPosition(),
                         (Math.abs((motorLeft.getCurrentPosition()))));
+
+                telemetry.addData("Motor power:", ((Math.abs(inches) / inches) * speed));
 
                 telemetry.addData("Mode Right", motorRight.getMode());
                 telemetry.addData("Mode Left", motorLeft.getMode());
@@ -786,13 +823,13 @@ public class EncoderAuto extends LinearOpMode {
                 }
 
                 // Display robot position and target position information for the driver during the turn.
-                telemetry.addData("Path1 Right, Left", "Running to %7d :%7d", ((int) newRightTarget), ((int) newLeftTarget));
+                telemetry.addData("Path1 Right, Left", "Running to %7d :%7d", ((int) newLeftTarget), ((int) newRightTarget));
                 telemetry.addData("Status Right, Left", "Running at %7d :%7d",
 
                         motorRight.getCurrentPosition(),
                         (Math.abs((motorLeft.getCurrentPosition()))));
 
-                telemetry.addData("Motor powers:", ((Math.abs(rightInches) / rightInches) * speed));
+                telemetry.addData("Motor power:", ((Math.abs(rightInches) / rightInches) * speed));
 
                 telemetry.addData("Mode Right", motorRight.getMode());
                 telemetry.addData("Mode Left", motorLeft.getMode());
