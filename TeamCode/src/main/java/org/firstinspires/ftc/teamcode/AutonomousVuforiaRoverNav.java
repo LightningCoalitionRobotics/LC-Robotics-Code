@@ -30,41 +30,41 @@ import java.util.List;
 
 
 /**
- * An autonomous program to test the features in {@link org.firstinspires.ftc.teamcode.hardware.HardwareBobAlexanderIII}.
- * @author Noah Simon
+ * An autonomous program to test the features in {@link org.firstinspires.ftc.teamcode.vuforia}.
+ * @author William Nolan
  */
 @Autonomous(name="AutonomousVuforiaRoverNav", group="autonomous")
 public class AutonomousVuforiaRoverNav extends LinearOpMode {
-//private HardwareBobAlexanderIII robot = new HardwareBobAlexanderIII(this, 0.5);
-//int DesiredXLocation = 5;
-//int DesiredYLocation = 6;
-//
+private HardwareBobAlexanderIII robot = new HardwareBobAlexanderIII(this, 0.5);
+int DesiredXLocation = 5;
+int DesiredYLocation = 6;
+
     @Override
     public void runOpMode() {
-//        robot.init();
-//        for (DesiredXLocation /= translation.get(0) / mmPerInch, DesiredXLocation - translation.get(0) / mmPerInch = 4) {
-//            for (rotation.ThirdAngle /=0, rotation.thirdAngle /= 0){
-//                robot.turn(1, 1);
-//                telemetry.update();
-//            }
-//
-//            robot.drive(3,1);
-//            telemetry.update();
-//
-//        }
-//
-//        robot.turn(90, 3);
-//        telemetry.update();
-//
-//        for (DesiredYLocation /= translation.get(1) / mmPerInch, DesiredYLocation - translation.get(1) / mmPerInch = 4) {
-//            for (rotation.ThirdAngle /=0, rotation.thirdAngle /= 0){
-//                robot.turn(1, 1);
-//                telemetry.update();
-//            }
-//
-//            robot.drive(3,1);
-//            telemetry.update();
-//
-//        }
+        robot.init();
+        for (DesiredXLocation /= translation.get(0) / mmPerInch, DesiredXLocation - translation.get(0) / mmPerInch = 4) {
+            for (rotation.ThirdAngle /=0, rotation.thirdAngle /= 0){
+                robot.turn(1, 1);
+                telemetry.update();
+            }
+
+            robot.drive(3,1);
+            telemetry.update();
+
+        }
+
+        robot.turn(90, 3);
+        telemetry.update();
+
+        for (DesiredYLocation /= translation.get(1) / mmPerInch, DesiredYLocation - translation.get(1) / mmPerInch = 4) {
+            for (rotation.ThirdAngle /=0, rotation.thirdAngle /= 0){
+                robot.turn(1, 1);
+                telemetry.update();
+            }
+
+            robot.drive(3,1);
+            telemetry.update();
+
+        }
     }
 }
