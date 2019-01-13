@@ -43,6 +43,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import java.lang.Boolean;
 import java.util.ArrayList;
+import java.util.concurrent.TimeoutException;
 
 import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
 import static java.lang.Thread.sleep;
@@ -90,6 +91,8 @@ public class lcTeleOp extends OpMode {
     ArrayList<Float> rightSpeedList = new ArrayList<Float>();
     ElapsedTime timer = new ElapsedTime();
 
+    boolean spinnerStatus = false;
+
     /**
 	 * Constructor
 	 */
@@ -128,6 +131,16 @@ public class lcTeleOp extends OpMode {
 
 		idol.setPosition(1);
 
+        motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        telemetry.addData("Mode Right", motorRight.getMode());
+        telemetry.addData("Mode Left", motorLeft.getMode());
+        telemetry.update();
+        try {
+            sleep(2000);   //pause
+        } catch(InterruptedException e) {}
+
         motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -156,8 +169,21 @@ public class lcTeleOp extends OpMode {
 	    //Check if we want to record
         if(gamepad1.dpad_up) {
 
+
+            telemetry.addData("dpad up pressed", null);
+            telemetry.update();
+            try {
+                sleep(500);
+            } catch(InterruptedException e) {}
+
             //if not already recording
             if(!recording) {
+
+                telemetry.addData("!recording triggered", null);
+                telemetry.update();
+                try {
+                    sleep(500);
+                } catch(InterruptedException e) {}
 
                 //start recording
                 recording = true;
@@ -169,6 +195,12 @@ public class lcTeleOp extends OpMode {
                 rightSpeedList.clear();
 
             } else {
+
+                telemetry.addData("entered else", null);
+                telemetry.update();
+                try {
+                    sleep(500);
+                } catch(InterruptedException e) {}
 
                 //stop recording
                 recording = false;
@@ -218,22 +250,48 @@ public class lcTeleOp extends OpMode {
             float spinner1Float = 0, spinner2Float = 0;
 
             //spinner collect / dispense
-			if(gamepad1.right_bumper) {
+			if(gamepad1.a) {
 
-				spinner1Float = 1;
-				spinner2Float = 1;
+			    if(spinnerStatus) {
+
+			        spinner1Float = 0;
+			        spinner2Float = 0;
+
+			        spinnerStatus = false;
+
+                } else {
+
+			        spinner1Float = 1;
+			        spinner2Float = 1;
+
+			        spinnerStatus = true;
+
+                }
 
 			}
 
-			if(gamepad1.left_bumper) {
+        if(gamepad1.b) {
 
-				spinner1Float = -1;
-				spinner2Float = -1;
+            if(spinnerStatus) {
 
-			}
+                spinner1Float = 0;
+                spinner2Float = 0;
+
+                spinnerStatus = false;
+
+            } else {
+
+                spinner1Float = -1;
+                spinner2Float = -1;
+
+                spinnerStatus = true;
+
+            }
+
+        }
 
 			//idol servo
-            if(gamepad1.a) {
+            if(gamepad2.a) {
 
                 idol.setPosition(0.25);
                 try {
@@ -337,6 +395,7 @@ public class lcTeleOp extends OpMode {
 
 	public void displayRecordedData(int oldPositionLeft, int oldPositionRight, ElapsedTime timer, ArrayList<Float> leftSpeedList, ArrayList<Float> rightSpeedList) {
 
+
 	    int avSpeedLeft = 0;
 	    int avSpeedRight = 0;
 
@@ -382,12 +441,12 @@ public class lcTeleOp extends OpMode {
         telemetry.addData("Average Right Speed:", avSpeedRight);
 
         telemetry.addData("Average move speed:", (avSpeedLeft+avSpeedRight)/2);
-        telemetry.update();
+
+            telemetry.update();
 
         //wait at this screen until driver presses dpad_down or one minute has elapsed
-        while(!gamepad1.dpad_down && (timer.seconds()<60)) {
+        while(timer.seconds() < 5) {
 
-            //do nothing
 
         }
 

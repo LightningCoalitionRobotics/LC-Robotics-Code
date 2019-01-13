@@ -86,6 +86,7 @@ public class EncoderAuto extends LinearOpMode {
 
     // motor controllers
     DcMotorController wheelController;
+    DcMotorController stronkBoiController;
 
     // Servo controllers
     ServoController idolController;
@@ -93,6 +94,7 @@ public class EncoderAuto extends LinearOpMode {
     // motors
     DcMotor motorRight;
     DcMotor motorLeft;
+    DcMotor stronkBoi;
 
     // Servos
     Servo idol;
@@ -299,10 +301,16 @@ public class EncoderAuto extends LinearOpMode {
 
         wheelController = hardwareMap.dcMotorController.get("wheelController");
 
+        stronkBoiController = hardwareMap.dcMotorController.get("stronkboiController");
+
         motorRight = hardwareMap.dcMotor.get("motorRight");
         motorLeft = hardwareMap.dcMotor.get("motorLeft");
+        stronkBoi = hardwareMap.dcMotor.get("stronkBoi");
+
 
         idol = hardwareMap.servo.get("idol");
+
+
 
         //reverse the right motor
         motorRight.setDirection(REVERSE);
@@ -353,11 +361,14 @@ public class EncoderAuto extends LinearOpMode {
         waitForStart();
 
         //detatch from hook
-        //exactEncoderDrive(DRIVE_SPEED, (-2), (-2), 5);
-        //sleep(100);
+        /*stronkBoi.setPower(1);
+        sleep(3000);
+
+        exactEncoderDrive(DRIVE_SPEED, (-3), (-3), 5);
+        sleep(100);*/
 
         //Turn 62 degrees from starting point to rightmost mineral
-        encoderTurn(TURN_SPEED, 62, 7); // Turn 90 degrees
+        encoderTurn(TURN_SPEED, 60, 7); // Turn 90 degrees
 
         //define exit bool for detection loop
         boolean detectedGoldMineral = false;
@@ -374,7 +385,7 @@ public class EncoderAuto extends LinearOpMode {
 
             } else {
 
-                encoderTurn(TURN_SPEED, (19), 7);
+                encoderTurn(TURN_SPEED, (17), 7);
                 telemetry.addData("Detected:", "silver mineral");
                 telemetry.update();
                 sleep(75);
@@ -388,7 +399,7 @@ public class EncoderAuto extends LinearOpMode {
         sleep(10);
 
         //go back from mineral
-        exactEncoderDrive(DRIVE_SPEED, (-35), (-35), 7);
+        exactEncoderDrive(DRIVE_SPEED, (-34), (-34), 7);
 
         //rotate back to original position then turn to face corner and drive forward 30 inches
         telemetry.addData("Turning", (-orientation+90));
@@ -404,13 +415,13 @@ public class EncoderAuto extends LinearOpMode {
         //}
 
         sleep(50);
-        encoderDrive(DRIVE_SPEED, 8, 5);
+        encoderDrive(DRIVE_SPEED, 10, 5);
         telemetry.addData("Driving", "8");
         telemetry.update();
         sleep(750);
 
         sleep(750);
-        encoderTurn(TURN_SPEED, 60, 7);
+        encoderTurn(TURN_SPEED, 50, 7);
         telemetry.addData("Turning", "60");
         telemetry.update();
 
@@ -593,7 +604,7 @@ public class EncoderAuto extends LinearOpMode {
             //turn, drive, and turn towards depot
             encoderTurn(TURN_SPEED, -80, 5);
 
-            encoderDrive(DRIVE_SPEED, 42, 5); //31 is an estimate
+            encoderDrive(DRIVE_SPEED, 66, 5); //31 is an estimate
             sleep(500);
 
             //add drive to translation vector
@@ -602,11 +613,11 @@ public class EncoderAuto extends LinearOpMode {
             currentPosition = addTranslationVector(currentPosition, translationVector);
 
             //Turn to face depot
-            encoderTurn(TURN_SPEED, -55, 5);
+            encoderTurn(TURN_SPEED, 130, 5);
             sleep(100);
 
             //Drive into depot
-            encoderDrive(RUSH_SPEED, (5*12), 6); //5 feet is an estimate
+            encoderDrive(RUSH_SPEED, (4.5*12), 6); //5 feet is an estimate
             sleep(100);
 
             //add drive to translation vector
@@ -661,7 +672,7 @@ public class EncoderAuto extends LinearOpMode {
         encoderTurn(TURN_SPEED, 180, 7);
 
         //Drive into crater
-        encoderDrive(RUSH_SPEED, (10*12), 10);
+        encoderDrive(RUSH_SPEED, (8*12), 10);
 
         //add drive to translation vector
         translationVector[0] = (int)((5*12)*Math.cos((orientation*Math.PI)/180));
