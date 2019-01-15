@@ -30,7 +30,7 @@ import java.util.List;
 
 
 /**
- * An autonomous program to test the features in {@link org.firstinspires.ftc.teamcode.vuforia}.
+ * An autonomous program to test the navigation features in {@link org.firstinspires.ftc.teamcode.vuforia}.
  * @author William Nolan
 
 @Autonomous(name="AutonomousVuforiaRoverNav", group="autonomous")
