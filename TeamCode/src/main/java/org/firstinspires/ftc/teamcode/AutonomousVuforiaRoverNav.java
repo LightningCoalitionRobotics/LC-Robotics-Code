@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * An autonomous program to test the features in {@link org.firstinspires.ftc.teamcode.vuforia}.
  * @author William Nolan
- */
+
 @Autonomous(name="AutonomousVuforiaRoverNav", group="autonomous")
 public class AutonomousVuforiaRoverNav extends LinearOpMode {
 private HardwareBobAlexanderIII robot = new HardwareBobAlexanderIII(this, 0.5);
@@ -68,3 +68,4 @@ int DesiredYLocation = 6;
         }
     }
 }
+*/
