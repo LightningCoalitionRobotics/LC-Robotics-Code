@@ -133,6 +133,7 @@ public class lcTeleOp extends OpMode {
 
         motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    stronkBoi.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         telemetry.addData("Mode Right", motorRight.getMode());
         telemetry.addData("Mode Left", motorLeft.getMode());
@@ -143,6 +144,7 @@ public class lcTeleOp extends OpMode {
 
         motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        stronkBoi.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         telemetry.addData("Mode Right", motorRight.getMode());
         telemetry.addData("Mode Left", motorLeft.getMode());
@@ -167,7 +169,7 @@ public class lcTeleOp extends OpMode {
     public void loop() {
 
 	    //Check if we want to record
-        if(gamepad1.dpad_up) {
+        /*if(gamepad1.dpad_up) {
 
 
             telemetry.addData("dpad up pressed", null);
@@ -208,7 +210,7 @@ public class lcTeleOp extends OpMode {
 
             }
 
-        }
+        }*/
 
 		/*
 		 * Gamepad 1
@@ -237,61 +239,35 @@ public class lcTeleOp extends OpMode {
 			float stronkBoiMove = 0;
 
 			//Conditional makes it possible to use triggers instead of sticks to consolidate to one controller
-			if(gamepad1.left_trigger > gamepad1.right_trigger) {
+			if(gamepad2.left_trigger > gamepad2.right_trigger) {
 
-			    stronkBoiMove = -gamepad1.left_trigger;
+			    stronkBoiMove = -gamepad2.left_trigger;
 
             } else {
 
-			    stronkBoiMove = gamepad1.right_trigger;
+			    stronkBoiMove = gamepad2.right_trigger;
 
             }
 
             float spinner1Float = 0, spinner2Float = 0;
 
             //spinner collect / dispense
-			if(gamepad1.a) {
-
-			    if(spinnerStatus) {
-
-			        spinner1Float = 0;
-			        spinner2Float = 0;
-
-			        spinnerStatus = false;
-
-                } else {
+			if(gamepad2.right_bumper) {
 
 			        spinner1Float = 1;
 			        spinner2Float = 1;
 
-			        spinnerStatus = true;
-
-                }
-
 			}
+			if(gamepad2.left_bumper) {
 
-        if(gamepad1.b) {
-
-            if(spinnerStatus) {
-
-                spinner1Float = 0;
-                spinner2Float = 0;
-
-                spinnerStatus = false;
-
-            } else {
-
-                spinner1Float = -1;
-                spinner2Float = -1;
-
-                spinnerStatus = true;
+			    spinner1Float = -1;
+			    spinner2Float = -1;
 
             }
 
-        }
 
 			//idol servo
-            if(gamepad2.a) {
+            /*if(gamepad2.a) {
 
                 idol.setPosition(0.25);
                 try {
@@ -304,7 +280,7 @@ public class lcTeleOp extends OpMode {
                 } catch (InterruptedException e) {
                 }
 
-            }
+            }*/
 
             // clip the right/left values so that the values never exceed +/- 1
             right = Range.clip(right, -1, 1);
@@ -371,7 +347,9 @@ public class lcTeleOp extends OpMode {
             telemetry.addData("left tgt pwr", "left  pwr: " + String.format("%.2f", left));
             telemetry.addData("right tgt pwr", "right pwr: " + String.format("%.2f", right));
             telemetry.addData("Recording: ", recording);
-        }
+        telemetry.addData("stronkboi position", stronkBoi.getCurrentPosition()/3.5);
+
+	    }
 
 
 
