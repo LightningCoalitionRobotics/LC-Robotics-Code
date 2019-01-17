@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * The class for the LCR 2018-19 robot.
@@ -36,7 +36,11 @@ public class HardwareBobAlexanderIII extends Robot {
     /**
      * Arm motor for the robot.
      */
-    public DcMotor lifter;
+    public DcMotor stronkboi;
+    /**
+     * Marker servo for the robot.
+     */
+    public Servo idolArm;
 
     // Constants
     /**
@@ -73,21 +77,22 @@ public class HardwareBobAlexanderIII extends Robot {
     @Override
     public void init(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
-        motorLeft = register("motorLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
-        motorRight = register("motorRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
-        leftSpinner = register("leftSpinner", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightSpinner = register("rightSpinner", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        lifter = register("stronkBoi", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorLeft = registerMotor("motorLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
+        motorRight = registerMotor("motorRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
+        leftSpinner = registerMotor("leftSpinner", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightSpinner = registerMotor("rightSpinner", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        stronkboi = registerMotor("stronkBoi", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        idolArm = registerServo("idol");
     }
 
     /**
-     * A convenience function to configure a {@link DcMotor} in order to use it in an {@link com.qualcomm.robotcore.eventloop.opmode.OpMode}.
+     * A convenience function to configure a {@link DcMotor} in order to use it in an {@link OpMode}.
      * @param name The name of the motor configured on the Android devices.
      * @param direction The motor direction that should be set as positive.
      * @param runMode How the motor should interpret commands from the OpMode.
      * @return The motor created.
      */
-    private DcMotor register(String name, DcMotorSimple.Direction direction, DcMotor.RunMode runMode) {
+    private DcMotor registerMotor(String name, DcMotorSimple.Direction direction, DcMotor.RunMode runMode) {
         DcMotor motor = hardwareMap.get(DcMotor.class, name);
         motor.setDirection(direction);
         motor.setPower(0);
@@ -96,6 +101,17 @@ public class HardwareBobAlexanderIII extends Robot {
         }
         motor.setMode(runMode);
         return motor;
+    }
+
+    /**
+     * A convenience function to configure a {@link Servo} in order to use it in an {@link OpMode}
+     * @param name The name of the servo configured on the Android devices.
+     * @return The servo created.
+     */
+    private Servo registerServo(String name) {
+        Servo servo = hardwareMap.get(Servo.class, name);
+        servo.setPosition(0.5);
+        return servo;
     }
 
 //    /**
@@ -248,7 +264,7 @@ public class HardwareBobAlexanderIII extends Robot {
     /**
      * Spin the spinners for a specified amount of time at the default speed.
      * @param time In seconds, how long the motors should spin.
-     * @param direction True if forward, false if backward.
+     * @param direction True if inward, false if outward.
      */
     public void autoSpin(boolean direction, long time) {
         autoSpin(direction ? drive_speed : -drive_speed, time);
