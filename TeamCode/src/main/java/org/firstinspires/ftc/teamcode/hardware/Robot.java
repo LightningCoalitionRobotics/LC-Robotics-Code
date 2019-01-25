@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode.hardware;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -13,6 +15,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  * what a hardware class should have.
  * @author Noah Simon
  */
+@SuppressWarnings({"WeakerAccess","unused"})
 public abstract class Robot {
     /**
      * Before using the robot, always call this function with the argument <b>hardwareMap</b>.
@@ -86,15 +89,15 @@ public abstract class Robot {
         /**
          * A factor of 0.5.
          */
-        HALF(1/2),
+        HALF(0.5F),
         /**
          * A factor of 0.25.
          */
-        QUARTER(1/4),
+        QUARTER(0.25F),
         /**
          * A factor of 0.125.
          */
-        EIGHTH(1/8);
+        EIGHTH(0.125F);
 
         /**
          * Create a new value in this enum.
@@ -190,4 +193,48 @@ public abstract class Robot {
      * The telemetry object belonging to the opMode.
      */
     protected Telemetry telemetry;
+
+    /**
+     * A convenience function to configure a {@link DcMotor} in order to use it in an {@link OpMode}.
+     * @param name The name of the motor configured on the Android devices.
+     * @param direction The motor direction that should be set as positive.
+     * @param runMode How the motor should interpret commands from the OpMode.
+     * @return The motor created.
+     */
+    protected DcMotor registerMotor(String name, DcMotorSimple.Direction direction, DcMotor.RunMode runMode) {
+        DcMotor motor = hardwareMap.get(DcMotor.class, name);
+        motor.setDirection(direction);
+        motor.setPower(0);
+        if (runMode == DcMotor.RunMode.RUN_USING_ENCODER) {
+            motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // Make sure encoders are reset
+        }
+        motor.setMode(runMode);
+        return motor;
+    }
+
+    /**
+     * A convenience function to configure a {@link Servo} in order to use it in an {@link OpMode}.
+     *
+     * Automatically sets the servo to the start point of 0.
+     * @param name The name of the servo configured on the Android devices.
+     * @return The servo created.
+     */
+    @SuppressWarnings("SameParameterValue") // Temporary
+    protected Servo registerServo(String name) {
+        Servo servo = hardwareMap.get(Servo.class, name);
+        servo.setPosition(0);
+        return servo;
+    }
+
+    /**
+     * A convenience function to configure a {@link Servo} in order to use it in an {@link OpMode}.
+     * @param name The name of the servo configured on the Android devices.
+     * @param position A value from -1 to 1 determining the start location of the servo.
+     * @return The servo created.
+     */
+    protected Servo registerServo(String name, float position) {
+        Servo servo = hardwareMap.get(Servo.class, name);
+        servo.setPosition(position);
+        return servo;
+    }
 }

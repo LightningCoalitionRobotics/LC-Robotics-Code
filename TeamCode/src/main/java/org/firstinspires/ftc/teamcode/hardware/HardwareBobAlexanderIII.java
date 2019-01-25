@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  *
  * @author Noah Simon
  */
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class HardwareBobAlexanderIII extends Robot {
 
     // All of the components we will need (e.g. motors, servos, sensors...) that are attached to the robot
@@ -74,6 +75,10 @@ public class HardwareBobAlexanderIII extends Robot {
         this.drive_speed = drive_speed;
     }
 
+    public HardwareBobAlexanderIII(OpMode opMode) {
+        super(opMode);
+    }
+
     @Override
     public void init(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
@@ -86,53 +91,17 @@ public class HardwareBobAlexanderIII extends Robot {
     }
 
     /**
-     * A convenience function to configure a {@link DcMotor} in order to use it in an {@link OpMode}.
-     * @param name The name of the motor configured on the Android devices.
-     * @param direction The motor direction that should be set as positive.
-     * @param runMode How the motor should interpret commands from the OpMode.
-     * @return The motor created.
+     *
+     * {@inheritDoc}
+     * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive(double, double, double)
      */
-    private DcMotor registerMotor(String name, DcMotorSimple.Direction direction, DcMotor.RunMode runMode) {
-        DcMotor motor = hardwareMap.get(DcMotor.class, name);
-        motor.setDirection(direction);
-        motor.setPower(0);
-        if (runMode == DcMotor.RunMode.RUN_USING_ENCODER) {
-            motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // Make sure encoders are reset
-        }
-        motor.setMode(runMode);
-        return motor;
-    }
-
-    /**
-     * A convenience function to configure a {@link Servo} in order to use it in an {@link OpMode}
-     * @param name The name of the servo configured on the Android devices.
-     * @return The servo created.
-     */
-    private Servo registerServo(String name) {
-        Servo servo = hardwareMap.get(Servo.class, name);
-        servo.setPosition(0.5);
-        return servo;
-    }
-
-//    /**
-//     *
-//     * {@inheritDoc}
-//     * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive(double, double, double, double)
-//     */
-
-
-    /*
-     *   This function needs to be able to account for prior movements
-     *   TODO(Noah Simon) ^
-     */
-
     @Override
-    public void drive(double speed, double dist, double timeout) { // Speed = -0.5, dist = 100
+    public void drive(double speed, double dist, double timeout) {
         // Code adapted from org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive
-        int leftPos = motorLeft.getCurrentPosition(); // 0
-        int rightPos = motorRight.getCurrentPosition(); // 0
+        int leftPos = motorLeft.getCurrentPosition();
+        int rightPos = motorRight.getCurrentPosition();
         if(opMode instanceof LinearOpMode && ((LinearOpMode) opMode).opModeIsActive()) {
-            double target = dist * COUNTS_PER_INCH; //Can be calculated without circumference, just CPI // 100*3.5 = 350
+            double target = dist * COUNTS_PER_INCH; //Can be calculated without circumference, just CPI
             elapsedTime.reset();
             motorLeft.setPower(speed);
             motorRight.setPower(speed);
@@ -146,10 +115,17 @@ public class HardwareBobAlexanderIII extends Robot {
             telemetry.addData("Motor Right", motorRight.isBusy());
             telemetry.addData("Motor Left", motorLeft.isBusy());
             telemetry.update();
-            // TODO: Fix logic so backwards input doesn't mess stuff up
-            while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout &&
-                    (motorLeft.getCurrentPosition() < leftPos + target
-                    || motorRight.getCurrentPosition() < rightPos + target)) {
+            // TODO: Simplify logic
+            while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
+                if (speed > 0) {
+                    if (motorLeft.getCurrentPosition() >= leftPos + target || motorRight.getCurrentPosition() >= rightPos + target) {
+                        break;
+                    }
+                } else if (speed < 0) {
+                    if (motorLeft.getCurrentPosition() <= leftPos - target || motorRight.getCurrentPosition() <= rightPos - target) {
+                        break;
+                    }
+                }
                 ((LinearOpMode) opMode).idle();
             }
             motorLeft.setPower(0);
@@ -157,7 +133,7 @@ public class HardwareBobAlexanderIII extends Robot {
             telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
             telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
             telemetry.update();
-            ((LinearOpMode)opMode).sleep(SLEEP_AFTER_DRIVE);
+            ((LinearOpMode) opMode).sleep(SLEEP_AFTER_DRIVE);
         } else {
             telemetry.addData("Error", "Attempted to autodrive during teleop or when opmode is closed.");
             telemetry.update();
