@@ -45,9 +45,13 @@ public class HardwareBobAlexanderIII extends Robot {
 
     // Constants
     /**
-     *
+     * Number of motor counts to move robot one inch.
      */
     public static final double COUNTS_PER_INCH = 3.5;
+    /* * TODO
+     * Number of motor counts to turn robot 360 degrees.
+     */
+//    public static final double COUNTS_PER_REVOLUTION =
     /**
      * In milliseconds, how long the robot should wait after each autodrive.
      */
@@ -168,29 +172,24 @@ public class HardwareBobAlexanderIII extends Robot {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderTurn(double, double, double)
-     */
     @Override
     public void turn(double speed, double angle, double timeout) {
-//        double leftPos = motorLeft.getCurrentPosition();
-//        double rightPos = motorRight.getCurrentPosition();
-//        if (opMode instanceof LinearOpMode && ((LinearOpMode) opMode).opModeIsActive()) {
-//            int leftTarget;
-//            int rightTarget;
-//
-//            if (angle > 0) {
-//
-//            } else {
-//
-//            }
-//        } else {
-//            telemetry.addData("Error", "Attempted to autoturn during teleop or when opmode is closed.");
-//            telemetry.update();
-//        }
-        throw new UnsupportedOperationException("This method has not yet been implemented.");
-        // TODO(Gabe Ruoff): Fill out
+        double leftPos = motorLeft.getCurrentPosition();
+        double rightPos = motorRight.getCurrentPosition();
+        if (opMode instanceof LinearOpMode && ((LinearOpMode) opMode).opModeIsActive()) {
+            int leftTarget;
+            int rightTarget;
+
+            if (angle > 0) {
+
+            } else {
+
+            }
+        } else {
+            telemetry.addData("Error", "Attempted to autoturn during teleop or when opmode is closed.");
+            telemetry.update();
+            opMode.requestOpModeStop();
+        }
     }
 
     /**
@@ -233,7 +232,9 @@ public class HardwareBobAlexanderIII extends Robot {
             leftSpinner.setPower(0);
             rightSpinner.setPower(0);
         } else {
-            throw new UnsupportedOperationException("Attempted to autospin during teleop or when opMode closed.");
+            telemetry.addData("Error", "Attempted to autoturn during teleop or when opmode is closed.");
+            telemetry.update();
+            opMode.requestOpModeStop();
         }
     }
 

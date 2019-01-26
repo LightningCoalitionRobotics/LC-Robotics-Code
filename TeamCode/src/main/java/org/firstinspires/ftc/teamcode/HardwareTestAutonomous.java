@@ -37,5 +37,9 @@ public class HardwareTestAutonomous extends LinearOpMode {
         robot.autoSpin(0.5, 3);
         telemetry.addData("Status4", "Finished spin.");
         telemetry.update();
+
+        robot.idolArm.setPosition(1);
+        telemetry.addData("Status5", "Finished idol raise");
+        telemetry.update();
     }
 }
