@@ -215,21 +215,21 @@ public abstract class Robot {
     /**
      * A convenience function to configure a {@link Servo} in order to use it in an {@link OpMode}.
      *
-     * Automatically sets the servo to the start point of 0.
+     * Automatically sets the servo to the start point of 0.5.
      * @param name The name of the servo configured on the Android devices.
      * @return The servo created.
      */
     @SuppressWarnings("SameParameterValue") // Temporary
     protected Servo registerServo(String name) {
         Servo servo = hardwareMap.get(Servo.class, name);
-        servo.setPosition(0);
+        servo.setPosition(0.5);
         return servo;
     }
 
     /**
      * A convenience function to configure a {@link Servo} in order to use it in an {@link OpMode}.
      * @param name The name of the servo configured on the Android devices.
-     * @param position A value from -1 to 1 determining the start location of the servo.
+     * @param position A value from 0 to 1 determining the start location of the servo.
      * @return The servo created.
      */
     protected Servo registerServo(String name, float position) {
