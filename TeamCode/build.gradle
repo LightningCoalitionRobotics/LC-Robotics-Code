@@ -13,14 +13,6 @@ apply from: '../build.common.gradle'
 android {
     compileSdkVersion 19
     buildToolsVersion '28.0.3'
-    // TODO(William Nolan) Delete the entire sourceSets method call when your code is fixed.
-    sourceSets {
-        main {
-            java {
-                exclude "**VuforiaRoverNav.java"
-            }
-        }
-    }
 }
 dependencies {
 }
