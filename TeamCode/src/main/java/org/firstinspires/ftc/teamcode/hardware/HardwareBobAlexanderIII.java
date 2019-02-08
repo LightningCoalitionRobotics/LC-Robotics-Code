@@ -37,10 +37,10 @@ public class HardwareBobAlexanderIII extends Robot {
     /**
      * Arm motor for the robot.
      */
-    public DcMotor stronkboi;
-    /**
-     * Marker servo for the robot.
-     */
+//    public DcMotor stronkboi;
+//    /**
+//     * Marker servo for the robot.
+//     */
     public Servo idolArm;
 
     // Constants
@@ -90,7 +90,7 @@ public class HardwareBobAlexanderIII extends Robot {
         motorRight = registerMotor("motorRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
         leftSpinner = registerMotor("leftSpinner", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightSpinner = registerMotor("rightSpinner", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        stronkboi = registerMotor("stronkBoi", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        stronkboi = registerMotor("stronkBoi", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         idolArm = registerServo("idol");
     }
 

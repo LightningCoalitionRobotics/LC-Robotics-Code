@@ -18,9 +18,9 @@ public class HardwareTestAutonomous extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
 
-        robot.moveMotor(robot.stronkboi, 0.5, 2000);
-        telemetry.addData("Status1", "Landed, On ground");
-        telemetry.update();
+//        robot.moveMotor(robot.stronkboi, 0.5, 2000);
+//        telemetry.addData("Status1", "Landed, On ground");
+//        telemetry.update();
 
         robot.drive(30, 10);
         telemetry.addData("Status2", "Finished drive.");
@@ -41,5 +41,7 @@ public class HardwareTestAutonomous extends LinearOpMode {
         robot.idolArm.setPosition(1);
         telemetry.addData("Status5", "Finished idol raise");
         telemetry.update();
+
+
     }
 }

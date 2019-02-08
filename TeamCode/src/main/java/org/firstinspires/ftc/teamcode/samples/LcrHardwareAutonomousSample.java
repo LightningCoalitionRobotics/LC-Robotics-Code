@@ -27,7 +27,7 @@ public class LcrHardwareAutonomousSample extends LinearOpMode {
         waitForStart();
 
         // Things you can do:
-        robot.moveMotor(robot.stronkboi, DRIVE_SPEED, 2); // Extend stronkboi for two seconds.
+//        robot.moveMotor(robot.stronkboi, DRIVE_SPEED, 2); // Extend stronkboi for two seconds.
         robot.drive(30, 5); // Move thirty inches with a timeout of five seconds.
         robot.turn(40, 5); // Turn forty degrees counterclockwise with a timeout of five seconds.
         robot.autoSpin(1, 2); // Spin the front spinners inward for two seconds.
