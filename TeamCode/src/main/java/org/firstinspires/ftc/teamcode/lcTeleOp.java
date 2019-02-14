@@ -77,6 +77,7 @@ public class lcTeleOp extends OpMode {
 
     // Servo
     Servo idol;
+    Servo boxServo;
 
     // slow mode settings
     int slowModeType = 1;
@@ -128,8 +129,10 @@ public class lcTeleOp extends OpMode {
 		servoController = hardwareMap.servoController.get("servoController");
 
 		idol = hardwareMap.servo.get("idol");
+		boxServo = hardwareMap.servo.get("boxServo");
 
 		idol.setPosition(1);
+		boxServo.setPosition(0);
 
         motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -281,6 +284,23 @@ public class lcTeleOp extends OpMode {
                 }
 
             }*/
+
+            if (gamepad2.a) {
+                boxServo.setPosition(1);
+                try {
+                    sleep(500);
+                } catch (InterruptedException e) {
+                    telemetry.addData("Exception", "Sleep interrupted");
+                }
+            }
+            if (gamepad2.b) {
+                boxServo.setPosition(0);
+                try {
+                    sleep(500);
+                } catch (InterruptedException e) {
+                    telemetry.addData("Exception", "Sleep interrupted");
+                }
+            }
 
             // clip the right/left values so that the values never exceed +/- 1
             right = Range.clip(right, -1, 1);
