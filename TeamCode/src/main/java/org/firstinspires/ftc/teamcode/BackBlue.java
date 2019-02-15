@@ -371,6 +371,39 @@ public class BackBlue extends LinearOpMode {
 
         encoderTurn(TURN_SPEED, 50, 5);
 
+        //Create array with mineral locations
+        String[] Minerals = {getObject(),getObject(),getObject()};
+
+        //Print out list for debugging
+        for(String mineral : Minerals) {
+
+            telemetry.addData("Mineral: ", mineral);
+            telemetry.update();
+            sleep(1000);
+
+        }
+
+        int goldPosition = 0;
+
+        //Find the gold mineral in the array
+        for(int i = 0; i < 3; i++) {
+
+            if(Minerals[i] == LABEL_GOLD_MINERAL) {
+
+                //set goldPosition to the position of the gold mineral
+                goldPosition = i;
+
+            }
+
+        }
+
+        telemetry.addData("Gold block in position: ", goldPosition);
+        telemetry.update();
+        sleep(1000);
+
+        //Turn the robot to the position of the gold mineral
+        encoderTurn(0.2, ((goldPosition+1)*12), 7);
+/*
         //define exit bool for detection loop
         boolean detectedGoldMineral = false;
 
@@ -393,7 +426,7 @@ public class BackBlue extends LinearOpMode {
 
             }
 
-        }
+        }*/
        //Move robot forward and hit mineral
         encoderDrive(DRIVE_SPEED, 60, 7);
         sleep(10);
