@@ -53,9 +53,9 @@ import static java.lang.Thread.sleep;
  * <p>
  * Enables control of the robot via the gamepad
  */
-@TeleOp(name="Drive", group="Teleops")
+@TeleOp(name="Drive - Rec", group="Teleops")
 
-public class lcTeleOp extends OpMode {
+public class lcTeleOpRec extends OpMode {
 
     //Declare hardware
 	// motor controllers
@@ -95,7 +95,7 @@ public class lcTeleOp extends OpMode {
     /**
 	 * Constructor
 	 */
-	public lcTeleOp() {
+	public lcTeleOpRec() {
 
 	}
 
@@ -107,30 +107,52 @@ public class lcTeleOp extends OpMode {
 	@Override
 	public void init() {
 
-        /*
-         * Use the hardwareMap to get the dc motors and servos by name. Note
-         * that the names of the devices must match the names used when you
-         * configured your robot and created the configuration file.
-         */
+		/*
+		 * Use the hardwareMap to get the dc motors and servos by name. Note
+		 * that the names of the devices must match the names used when you
+		 * configured your robot and created the configuration file.
+		 */
 
         motorRight = hardwareMap.dcMotor.get("motorRight");
-        motorLeft = hardwareMap.dcMotor.get("motorLeft");
+		motorLeft = hardwareMap.dcMotor.get("motorLeft");
 
-        //reverse the right motor
-        motorRight.setDirection(REVERSE);
+		//reverse the right motor
+		motorRight.setDirection(REVERSE);
 
-        stronkBoi = hardwareMap.dcMotor.get("stronkBoi");
+		stronkBoi = hardwareMap.dcMotor.get("stronkBoi");
 
-        leftSpinner = hardwareMap.dcMotor.get("leftSpinner");
-        rightSpinner = hardwareMap.dcMotor.get("rightSpinner");
+		leftSpinner = hardwareMap.dcMotor.get("leftSpinner");
+		rightSpinner = hardwareMap.dcMotor.get("rightSpinner");
 
-        servoController = hardwareMap.servoController.get("servoController");
+		servoController = hardwareMap.servoController.get("servoController");
 
-        idol = hardwareMap.servo.get("idol");
+		idol = hardwareMap.servo.get("idol");
 
-        idol.setPosition(1);
+		idol.setPosition(1);
 
-    }
+       motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    stronkBoi.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        telemetry.addData("Mode Right", motorRight.getMode());
+        telemetry.addData("Mode Left", motorLeft.getMode());
+        telemetry.update();
+        try {
+            sleep(2000);   //pause
+        } catch(InterruptedException e) {}
+
+        motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        stronkBoi.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        telemetry.addData("Mode Right", motorRight.getMode());
+        telemetry.addData("Mode Left", motorLeft.getMode());
+        telemetry.update();
+        try {
+            sleep(700);   //pause
+        } catch(InterruptedException e) {}
+
+	}
 
 	/*
 	 * This method will be called repeatedly in a loop
@@ -144,7 +166,53 @@ public class lcTeleOp extends OpMode {
 
     public void loop() {
 
+	    //Check if we want to record
+        if(gamepad1.dpad_up) {
+
+
+            telemetry.addData("dpad up pressed", null);
+            telemetry.update();
+            try {
+                sleep(500);
+            } catch(InterruptedException e) {}
+
+            //if not already recording
+            if(!recording) {
+
+                telemetry.addData("!recording triggered", null);
+                telemetry.update();
+                try {
+                    sleep(500);
+                } catch(InterruptedException e) {}
+
+                //start recording
+                recording = true;
+                //reset timer, speed lists, and encoder counts.
+                timer.reset();
+                oldPositionLeft = motorLeft.getCurrentPosition();
+                oldPositionRight = motorRight.getCurrentPosition();
+                leftSpeedList.clear();
+                rightSpeedList.clear();
+
+            } else {
+
+                telemetry.addData("entered else", null);
+                telemetry.update();
+                try {
+                    sleep(500);
+                } catch(InterruptedException e) {}
+
+                //stop recording
+                recording = false;
+                displayRecordedData(oldPositionLeft, oldPositionRight, timer, leftSpeedList, rightSpeedList);
+
+            }
+
+        }
+
 		/*
+		 * Gamepad 1
+		 * 
 		 * Gamepad 1 controls the motors via the left stick and right stick (tank drive)
 		 */
             // slow mode type
@@ -261,6 +329,65 @@ public class lcTeleOp extends OpMode {
 	public void stop() {
 
 	}
+
+	public void displayRecordedData(int oldPositionLeft, int oldPositionRight, ElapsedTime timer, ArrayList<Float> leftSpeedList, ArrayList<Float> rightSpeedList) {
+
+
+	    int avSpeedLeft = 0;
+	    int avSpeedRight = 0;
+
+	    //display move time
+        telemetry.addData("Move time:", timer.seconds());
+        //reset time
+        timer.reset();
+
+        //display distance traveled
+        telemetry.addData("Left motor displacement:", (motorLeft.getCurrentPosition()-oldPositionLeft)/3.5);
+        telemetry.addData("Right motor displacement:", (motorRight.getCurrentPosition()-oldPositionRight)/3.5);
+        telemetry.addData("Average displacement: ", (((motorLeft.getCurrentPosition()-oldPositionLeft)/3.5)+(motorRight.getCurrentPosition()-oldPositionRight)/3.5)/2);
+
+	    //find the average speed of the left motor
+        int counter = 0;
+
+	    for(Float speed : leftSpeedList) {
+
+            avSpeedLeft += speed;
+            counter++;
+
+        }
+
+        //display average left speed
+        avSpeedLeft /= counter;
+        telemetry.addData("Average Left Speed:", avSpeedLeft);
+
+        //find the average speed of the left motor
+
+        //reset variables
+        counter = 0;
+        avSpeedRight = 0;
+
+        for(Float speed : rightSpeedList) {
+
+            avSpeedRight += speed;
+            counter++;
+
+        }
+
+        avSpeedRight /= counter;
+        //display average left speed
+        telemetry.addData("Average Right Speed:", avSpeedRight);
+
+        telemetry.addData("Average move speed:", (avSpeedLeft+avSpeedRight)/2);
+
+            telemetry.update();
+
+        //wait at this screen until driver presses dpad_down or one minute has elapsed
+        while(timer.seconds() < 5) {
+
+
+        }
+
+    }
 
 	/*
 	 * This method scales the joystick input so for low joystick values, the
