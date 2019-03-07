@@ -396,7 +396,7 @@ public class BackBlue extends LinearOpMode {
             }
 
         }
-
+        //Aiming robot based on gold mineral
         switch(goldPosition) {
 
             case 0:
