@@ -367,7 +367,7 @@ public class EncoderAuto extends LinearOpMode {
         exactEncoderDrive(DRIVE_SPEED, (-3), (-3), 5);
         sleep(100);
 
-        //Turn 62 degrees from starting point to rightmost mineral
+        //Turn 60 degrees from starting point to rightmost mineral
         encoderTurn(TURN_SPEED, 60, 7); // Turn 90 degrees
 
         //define exit bool for detection loop
@@ -658,7 +658,7 @@ public class EncoderAuto extends LinearOpMode {
          * Place object in depot
          *
          */
-        /*idol.setPosition(0.25);
+        idol.setPosition(0.25);
 
         sleep(500);
 
@@ -677,7 +677,7 @@ public class EncoderAuto extends LinearOpMode {
         translationVector[0] = (int)((5*12)*Math.cos((orientation*Math.PI)/180));
         translationVector[1] = (int)((5*12)*Math.sin((orientation*Math.PI)/180));
         currentPosition = addTranslationVector(currentPosition, translationVector);
-*/
+
         //Notify driver that path is complete
         telemetry.addData("Path", "Complete");
         telemetry.addData("Current Orientation:", orientation);
@@ -874,7 +874,7 @@ public class EncoderAuto extends LinearOpMode {
         boolean leftStop = false;
         boolean rightStop = false;
 
-        double angleToInches = ((((angle) * (Math.PI) / 180.0) * (5.66) * turnErrorConstant)); // Needs to be calibrated (angle -> radians * radius * constant.
+        double angleToInches = ((((angle) * (Math.PI) / 180.0) * (5.66) * turnErrorConstant)); // Experimentally determined (angle -> radians * radius * constant).
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
