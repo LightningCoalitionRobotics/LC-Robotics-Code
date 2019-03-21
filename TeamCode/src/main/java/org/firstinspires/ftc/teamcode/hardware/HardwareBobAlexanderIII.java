@@ -48,10 +48,10 @@ public class HardwareBobAlexanderIII extends Robot {
      * Number of motor counts to move robot one inch.
      */
     public static final double COUNTS_PER_INCH = 3.5;
-    /* * TODO
+    /*
      * Number of motor counts to turn robot 360 degrees.
      */
-//    public static final double COUNTS_PER_REVOLUTION =
+    public static final double COUNTS_PER_REVOLUTION = 215;
     /**
      * In milliseconds, how long the robot should wait after each autodrive.
      */
@@ -177,8 +177,8 @@ public class HardwareBobAlexanderIII extends Robot {
         double leftPos = motorLeft.getCurrentPosition();
         double rightPos = motorRight.getCurrentPosition();
         if (opMode instanceof LinearOpMode && ((LinearOpMode) opMode).opModeIsActive()) {
-            int leftTarget;
-            int rightTarget;
+            double leftTarget;
+            double rightTarget;
             elapsedTime.reset();
             if (angle > 0) {
                 rightTarget = COUNTS_PER_REVOLUTION / 360 * angle / 2; // Split angle between both motors
