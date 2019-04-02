@@ -70,7 +70,9 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  * *45 degrees is an estimate. this will have to be measured.
  */
 
+
 @Autonomous(name="EncoderAuto", group="Autonomous")
+@Disabled
 public class EncoderAuto extends LinearOpMode {
 
     /* Declare OpMode members. */

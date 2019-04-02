@@ -95,6 +95,7 @@ public class BackBlue extends LinearOpMode {
     DcMotor motorRight;
     DcMotor motorLeft;
     DcMotor stronkBoi;
+    DcMotor tensioner;
 
     // Servos
     Servo idol;
@@ -307,7 +308,6 @@ public class BackBlue extends LinearOpMode {
         motorLeft = hardwareMap.dcMotor.get("motorLeft");
         stronkBoi = hardwareMap.dcMotor.get("stronkBoi");
 
-
         idol = hardwareMap.servo.get("idol");
 
 
@@ -363,16 +363,18 @@ public class BackBlue extends LinearOpMode {
         waitForStart();
 
         //detatch from hook
-        stronkBoiDrive(1, 815, 6);
-        sleep(500);
 
-        exactEncoderDrive(0.2, (-3), (-3), 5);
-        sleep(100);
-
-        encoderTurn(TURN_SPEED, 50, 5);
 
         //Create array with mineral locations
-        String[] Minerals = {getObject(),getObject(),getObject()};
+        String[] Minerals = new String[3];
+        encoderDrive(0.5,3,3);
+        encoderTurn(0.2, 45,5);
+        Minerals[0] = getObject();
+        encoderTurn(0.2, (-45), 5);
+        Minerals[1] = getObject();
+        encoderTurn(0.2, (-40), 5);
+        Minerals[2] = getObject();
+        encoderTurn(0.2, 45, 3 );
 
         //Print out list for debugging
         for(String mineral : Minerals) {
@@ -388,7 +390,7 @@ public class BackBlue extends LinearOpMode {
         //Find the gold mineral in the array
         for(int i = 0; i < 3; i++) {
 
-            if(Minerals[i] == LABEL_GOLD_MINERAL) {
+            if(Minerals[i] == "Gold Mineral") {
 
                 //set goldPosition to the position of the gold mineral
                 goldPosition = i;
@@ -400,12 +402,12 @@ public class BackBlue extends LinearOpMode {
         switch(goldPosition) {
 
             case 0:
-                    encoderTurn(0.2, 17, 3);
+                    encoderTurn(0.2, 50, 3);
                     telemetry.addData("Location:", "Left");
             case 2:
-                    encoderTurn(0.2, (-17), 3);
+                    encoderTurn(0.2, (-50), 3);
                     telemetry.addData("Location:", "Right");
-            default:
+            case 1:
                     telemetry.addData("Location:", "Straight ahead");
 
         }
@@ -414,7 +416,6 @@ public class BackBlue extends LinearOpMode {
         sleep(1000);
 
         //Turn the robot to the position of the gold mineral
-        encoderTurn(0.2, ((goldPosition+1)*12), 7);
 /*
         //define exit bool for detection loop
         boolean detectedGoldMineral = false;
@@ -443,7 +444,7 @@ public class BackBlue extends LinearOpMode {
         encoderDrive(DRIVE_SPEED, 60, 7);
         sleep(10);
 
-
+/*
         //rotate back to original position then turn to face corner and drive forward 30 inches
         telemetry.addData("Turning", (-orientation+90));
         telemetry.addData("From orientation", orientation);
@@ -471,7 +472,7 @@ public class BackBlue extends LinearOpMode {
          *
          */
 
-        idol.setPosition(0.25);
+       /* idol.setPosition(0.25);
 
         sleep(500);
 
@@ -483,7 +484,7 @@ public class BackBlue extends LinearOpMode {
         telemetry.addData("Path", "Complete");
         telemetry.addData("Current Orientation:", orientation);
         telemetry.addData("Current Position X", Integer.toString(currentPosition[0]), "Y:", Integer.toString(currentPosition[1]));
-        telemetry.update();
+        telemetry.update();*/
     }
 
     /*

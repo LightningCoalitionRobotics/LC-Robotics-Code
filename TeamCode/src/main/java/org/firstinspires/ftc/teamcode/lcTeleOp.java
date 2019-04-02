@@ -66,6 +66,7 @@ public class lcTeleOp extends OpMode {
 	// motors
 	DcMotor motorRight;
 	DcMotor motorLeft;
+	DcMotor tensioner;
 
 	DcMotor stronkBoi;
 
@@ -115,6 +116,7 @@ public class lcTeleOp extends OpMode {
 
         motorRight = hardwareMap.dcMotor.get("motorRight");
         motorLeft = hardwareMap.dcMotor.get("motorLeft");
+        tensioner = hardwareMap.dcMotor.get("tensioner");
 
         //reverse the right motor
         motorRight.setDirection(REVERSE);
@@ -206,18 +208,11 @@ public class lcTeleOp extends OpMode {
 
             stronkBoiMove = (float) scaleInput(stronkBoiMove);
 
+            tensioner.setPower(scaleInput(Range.clip((float)gamepad2.left_stick_x, -1, 1)));
 
             //write the values to the motors
             motorRight.setPower(right/slowModeType);
             motorLeft.setPower(left/slowModeType);
-
-            //update the speed list if we're recording
-            if(recording) {
-
-                leftSpeedList.add(left/slowModeType);
-                rightSpeedList.add(right/slowModeType);
-
-            }
 
 			stronkBoi.setPower(stronkBoiMove);
 
