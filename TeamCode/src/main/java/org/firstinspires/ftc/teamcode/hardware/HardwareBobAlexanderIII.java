@@ -48,10 +48,10 @@ public class HardwareBobAlexanderIII extends Robot {
      * Number of motor counts to move robot one inch.
      */
     public static final double COUNTS_PER_INCH = 3.5;
-    /* * TODO
+    /*
      * Number of motor counts to turn robot 360 degrees.
      */
-//    public static final double COUNTS_PER_REVOLUTION =
+    public static final double COUNTS_PER_REVOLUTION = 215;
     /**
      * In milliseconds, how long the robot should wait after each autodrive.
      */
@@ -177,14 +177,40 @@ public class HardwareBobAlexanderIII extends Robot {
         double leftPos = motorLeft.getCurrentPosition();
         double rightPos = motorRight.getCurrentPosition();
         if (opMode instanceof LinearOpMode && ((LinearOpMode) opMode).opModeIsActive()) {
-            int leftTarget;
-            int rightTarget;
-
+            double leftTarget;
+            double rightTarget;
+            elapsedTime.reset();
             if (angle > 0) {
-
+                rightTarget = COUNTS_PER_REVOLUTION / 360 * angle / 2; // Split angle between both motors
+                leftTarget = -COUNTS_PER_REVOLUTION / 360 * angle / 2;
+                motorRight.setPower(speed);
+                motorLeft.setPower(-speed);
             } else {
-
+                rightTarget = -COUNTS_PER_REVOLUTION / 360 * angle / 2;
+                leftTarget = COUNTS_PER_REVOLUTION / 360 * angle / 2;
+                motorRight.setPower(-speed);
+                motorLeft.setPower(speed);
             }
+
+            while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
+                if (angle > 0) {
+                    if (motorLeft.getCurrentPosition() <= leftPos + leftTarget || motorRight.getCurrentPosition() >= rightPos + rightTarget) {
+                        break;
+                    }
+                } else {
+                    if (motorLeft.getCurrentPosition() >= leftPos + leftTarget || motorRight.getCurrentPosition() <= rightPos + rightTarget) {
+                        break;
+                    }
+                }
+            }
+
+            motorLeft.setPower(0);
+            motorRight.setPower(0);
+            telemetry.addData("Final position left:", motorLeft.getCurrentPosition());
+            telemetry.addData("Final position right:", motorRight.getCurrentPosition());
+            telemetry.update();
+
+            ((LinearOpMode) opMode).sleep(SLEEP_AFTER_DRIVE);
         } else {
             telemetry.addData("Error", "Attempted to autoturn during teleop or when opmode is closed.");
             telemetry.update();

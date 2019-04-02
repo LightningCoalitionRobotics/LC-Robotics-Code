@@ -38,7 +38,7 @@ public abstract class Robot {
     /**
      * Use the drive motors to turn the robot in place.
      *
-     * @param speed A value from -1 to 1, a higher absolute value meaning a higher speed.
+     * @param speed A value from 0 to 1, a higher value meaning a higher speed.
      * @param angle In degrees, how far the robot should turn. A positive amount is counterclockwise.
      * @param timeout In seconds, how long the robot should attempt to reach the target angle.
      */
