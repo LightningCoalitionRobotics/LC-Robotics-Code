@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.code201819;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -70,8 +70,8 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  * *45 degrees is an estimate. this will have to be measured.
  */
 
-@Autonomous(name="FrontRed", group="Autonomous")
-public class FrontRed extends LinearOpMode {
+@Autonomous(name="BackBlue", group="Autonomous")
+public class BackBlue extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
@@ -95,6 +95,7 @@ public class FrontRed extends LinearOpMode {
     DcMotor motorRight;
     DcMotor motorLeft;
     DcMotor stronkBoi;
+    DcMotor tensioner;
 
     // Servos
     Servo idol;
@@ -307,7 +308,6 @@ public class FrontRed extends LinearOpMode {
         motorLeft = hardwareMap.dcMotor.get("motorLeft");
         stronkBoi = hardwareMap.dcMotor.get("stronkBoi");
 
-
         idol = hardwareMap.servo.get("idol");
 
 
@@ -363,15 +363,60 @@ public class FrontRed extends LinearOpMode {
         waitForStart();
 
         //detatch from hook
-        stronkBoiDrive(1, 877, 6);
-        sleep(500);
 
-        exactEncoderDrive(DRIVE_SPEED, (-3), (-3), 5);
-        sleep(100);
 
-        //Turn 62 degrees from starting point to rightmost mineral
-        encoderTurn(TURN_SPEED, 60, 7); // Turn 90 degrees
+        //Create array with mineral locations
+        String[] Minerals = new String[3];
+        encoderDrive(0.5,3,3);
+        encoderTurn(0.2, 45,5);
+        Minerals[0] = getObject();
+        encoderTurn(0.2, (-45), 5);
+        Minerals[1] = getObject();
+        encoderTurn(0.2, (-40), 5);
+        Minerals[2] = getObject();
+        encoderTurn(0.2, 45, 3 );
 
+        //Print out list for debugging
+        for(String mineral : Minerals) {
+
+            telemetry.addData("Mineral: ", mineral);
+            telemetry.update();
+            sleep(1000);
+
+        }
+
+        int goldPosition = 0;
+
+        //Find the gold mineral in the array
+        for(int i = 0; i < 3; i++) {
+
+            if(Minerals[i] == "Gold Mineral") {
+
+                //set goldPosition to the position of the gold mineral
+                goldPosition = i;
+
+            }
+
+        }
+        //Aiming robot based on gold mineral posistion
+        switch(goldPosition) {
+
+            case 0:
+                    encoderTurn(0.2, 50, 3);
+                    telemetry.addData("Location:", "Left");
+            case 2:
+                    encoderTurn(0.2, (-50), 3);
+                    telemetry.addData("Location:", "Right");
+            case 1:
+                    telemetry.addData("Location:", "Straight ahead");
+
+        }
+        telemetry.addData("Gold block in position: ", goldPosition);
+        telemetry.update();
+        sleep(1000);
+
+        //Turn the robot to the position of the gold mineral
+/*
         //define exit bool for detection loop
         boolean detectedGoldMineral = false;
 
@@ -387,22 +432,19 @@ public class FrontRed extends LinearOpMode {
 
             } else {
 
-                encoderTurn(TURN_SPEED, (17), 7);
+                encoderTurn(0.2, (10), 7);
                 telemetry.addData("Detected:", "silver mineral");
                 telemetry.update();
-                sleep(75);
+                sleep(50);
 
             }
 
-        }
-
-        //Move robot forward and hit mineral
-        encoderDrive(DRIVE_SPEED, 39, 7);
+        }*/
+       //Move robot forward and hit mineral
+        encoderDrive(DRIVE_SPEED, 60, 7);
         sleep(10);
 
-        //go back from mineral
-        exactEncoderDrive(DRIVE_SPEED, (-34), (-34), 7);
-
+/*
         //rotate back to original position then turn to face corner and drive forward 30 inches
         telemetry.addData("Turning", (-orientation+90));
         telemetry.addData("From orientation", orientation);
@@ -413,226 +455,24 @@ public class FrontRed extends LinearOpMode {
         telemetry.addData("turning", (-orientation+90));
         telemetry.update();
         sleep(500);
-        encoderTurn(TURN_SPEED, (-orientation + 90), 7);
-        //}
+        if(90-orientation > 10) {
+            encoderTurn(TURN_SPEED, 80, 7);
+        }
+        if(90-orientation < -10) {
 
-        sleep(50);
-        encoderDrive(DRIVE_SPEED, 10, 5);
-        telemetry.addData("Driving", "8");
-        telemetry.update();
-        sleep(750);
-/*
-        sleep(750);
-        encoderTurn(TURN_SPEED, 50, 7);
-        telemetry.addData("Turning", "60");
-        telemetry.update();
-
-        sleep(750);
-        encoderDrive(DRIVE_SPEED, 30, 5);
-        telemetry.addData("Driving", "30");
-        telemetry.update();
-
-        //find the first vumark
-        //Turn left until it sees the vumark
-        while((visibleVumark(allTrackables) == "none") && opModeIsActive()) {
-
-            //encoderTurn(TURN_SPEED, 25, 2);
-            telemetry.addData("Detecting", "...");
-            telemetry.update();
-            sleep(50);
+            encoderTurn(TURN_SPEED, -85, 7);
 
         }
 
-        //Set quadrant entry depending on the vumark it sees
-        if(visibleVumark(allTrackables) == "Back-Space") {
-
-            quadrant[0] = "BACK";
-            telemetry.addData("Detected", "Back-Space");
-            telemetry.update();
-            sleep(100);
-
-        } else if(visibleVumark(allTrackables) == "Front-Craters") {
-
-            quadrant[0] = "FRONT";
-            telemetry.addData("Detected", "Front-Craters");
-            telemetry.update();
-            sleep(100);
-
-        } else if(visibleVumark(allTrackables) == "Blue-Rover") {
-
-            quadrant[1] = "BLUE";
-            telemetry.addData("Detected", "Blue-Rover");
-            telemetry.update();
-            sleep(100);
-
-        } else {
-
-            quadrant[1] = "RED";
-            telemetry.addData("Detected", "Red-Footprint");
-            telemetry.update();
-            sleep(100);
-
-        }
-
-        //back up 30
-        sleep(50);
-        exactEncoderDrive(DRIVE_SPEED, -30, -30, 5);
-        telemetry.addData("Reversing", "30");
-        telemetry.update();
-        sleep(750);
-
-        //Turn right so first vumark is out of view
-        encoderTurn(TURN_SPEED, -140, 5);
-        telemetry.addData("Turning", "-140");
-        telemetry.update();
-        sleep(750);
-
-        //Drive 20
-        sleep(500);
-        encoderDrive(DRIVE_SPEED, 30, 5);
-        telemetry.addData("Driving", "30");
-        telemetry.update();
-
-        //wait untul robot sees the vumark
-        while(opModeIsActive() && (visibleVumark(allTrackables) == "none")) {
-
-            telemetry.addData("Detecting", "...");
-            telemetry.update();
-
-        }
-
-        //When second vumark is found, see what it is
-        //Set quadrant entry depending on the vumark it sees
-        if(visibleVumark(allTrackables) == "Back-Space") {
-
-            quadrant[0] = "BACK";
-            telemetry.addData("Detected", "Back-Space");
-            telemetry.update();
-            sleep(500);
-
-        } else if(visibleVumark(allTrackables) == "Front-Craters") {
-
-            quadrant[0] = "FRONT";
-            telemetry.addData("Detected", "Front-Craters");
-            telemetry.update();
-            sleep(500);
-
-        }
-
-        if(visibleVumark(allTrackables) == "Blue-Rover") {
-
-            quadrant[1] = "BLUE";
-            telemetry.addData("Detected", "Blue-Rover");
-            telemetry.update();
-            sleep(500);
-
-        } else if(visibleVumark(allTrackables) == "Red-Footprint") {
-
-            quadrant[1] = "RED";
-            telemetry.addData("Detected", "Red-Footprint");
-            telemetry.update();
-            sleep(500);
-
-        }
-
-        //back up 30
-        exactEncoderDrive(DRIVE_SPEED, -30, -30, 5);
-        telemetry.addData("Reversing", "30");
-        telemetry.update();
-
-        //orientation
-        telemetry.addData("Orientation", orientation);
-        telemetry.update();
-        sleep(sleep);
-
-        //revert back to original position facing the corner
-        encoderTurn(TURN_SPEED, (90-orientation), 5);
-*/
-
-        //determine sign of vector components from the determined quadrant
-        if(quadrant[0] == "FRONT") {
-
-            jSign = 1;
-
-            if(quadrant[1] == "RED") {
-
-                orientation += 45;
-                iSign = -1;
-
-            } else {
-
-                orientation -= 135;
-                iSign = 1;
-
-            }
-
-        } else {
-
-            jSign = -1;
-
-            if(quadrant[1] == "RED") {
-
-                orientation -= 135;
-                iSign = -1;
-
-            } else {
-
-                orientation +=45;
-                iSign = 1;
-
-            }
-
-        }
-
-        //update vector array based on how far the robot has moved, adding the width of the lander. (11.65 is the distance from
-        //the center of the lander to where the robot initially starts). The next operation uses 45,45,90 triangle to find the distance
-        //in inches the bot has moved from its starting position. Averages currentPositions of both motors.
-        translationVector[0] = (iSign)*(int)(11.65+(((motorLeft.getCurrentPosition()+motorRight.getCurrentPosition())/2)/3.5)/Math.sqrt(2.0));
-        translationVector[1] = (jSign)*(int)(11.65+(((motorLeft.getCurrentPosition()+motorRight.getCurrentPosition())/2)/3.5)/Math.sqrt(2.0));
-
-        //Update position array
-        currentPosition = addTranslationVector(currentPosition, translationVector);
-
-        //tell the driver what the current position is
-        telemetry.addData("Position X", currentPosition[0]);
-        telemetry.addData("Position Y", currentPosition[1]);
-        telemetry.update();
-        sleep(3000);
-
-        //turn, drive, and turn towards depot
-        encoderTurn(TURN_SPEED, 80, 5);
-
-        encoderDrive(DRIVE_SPEED, 36, 5); //36 is an estimate
-        sleep(500);
-
-        //add drive to translation vector
-        translationVector[0] = (int)((5*12)*Math.cos((orientation*Math.PI)/180));
-        translationVector[1] = (int)((5*12)*Math.sin((orientation*Math.PI)/180));
-        currentPosition = addTranslationVector(currentPosition, translationVector);
-
-        //Turn to face depot
-        encoderTurn(TURN_SPEED, 55, 5);
-        sleep(500);
-
-        //Drive into depot
-        encoderDrive(RUSH_SPEED, (5*12), 6); //5 feet is an estimate
-        sleep(500);
-
-        //add drive to translation vector
-        translationVector[0] = (int)((5*12)*Math.cos((orientation*Math.PI)/180));
-        translationVector[1] = (int)((5*12)*Math.sin((orientation*Math.PI)/180));
-        currentPosition = addTranslationVector(currentPosition, translationVector);
-
-        //Park in crater (same for all quadrants)
-        //Turn to face crater
-        encoderTurn(TURN_SPEED, 180, 7);
+        encoderDrive(DRIVE_SPEED, 12, 5);
 
         /*
          *
          * Place object in depot
          *
          */
-        idol.setPosition(0.25);
+
+       /* idol.setPosition(0.25);
 
         sleep(500);
 
@@ -640,21 +480,11 @@ public class FrontRed extends LinearOpMode {
 
         sleep(500);
 
-
-        //Drive into crater
-        encoderDrive(RUSH_SPEED, (7*12), 10);
-        encoderTurn(1, 2*12, 10);
-
-        //add drive to translation vector
-        translationVector[0] = (int)((5*12)*Math.cos((orientation*Math.PI)/180));
-        translationVector[1] = (int)((5*12)*Math.sin((orientation*Math.PI)/180));
-        currentPosition = addTranslationVector(currentPosition, translationVector);
-
         //Notify driver that path is complete
         telemetry.addData("Path", "Complete");
         telemetry.addData("Current Orientation:", orientation);
         telemetry.addData("Current Position X", Integer.toString(currentPosition[0]), "Y:", Integer.toString(currentPosition[1]));
-        telemetry.update();
+        telemetry.update();*/
     }
 
     /*
@@ -687,11 +517,6 @@ public class FrontRed extends LinearOpMode {
             motorLeft.setPower(((Math.abs(inches) / inches) * speed));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
-            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
-            // its target position, the motion will stop.  This is "safer" in the event that the robot will
-            // always end the motion as soon as possible.
-            // However, if you require that BOTH motors have finished their moves before the robot continues
-            // onto the next step, use (isBusy() || isBusy()) in the loop test.*/
             while (opModeIsActive() && (runtime.seconds() < timeoutS) && (!leftStop || !rightStop)) {
 
                 //Stop right motor if it's finished.
@@ -758,12 +583,6 @@ public class FrontRed extends LinearOpMode {
             motorRight.setPower(((Math.abs(rightInches) / rightInches) * speed));
             motorLeft.setPower(((Math.abs(rightInches) / rightInches) * speed));
 
-            // keep looping while we are still active, and there is time left, and both motors are running.
-            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
-            // its target position, the motion will stop.  This is "safer" in the event that the robot will
-            // always end the motion as soon as possible.
-            // However, if you require that BOTH motors have finished their moves before the robot continues
-            // onto the next step, use (isBusy() || isBusy()) in the loop test.*/
             while (opModeIsActive() && (runtime.seconds() < timeoutS) && (!leftStop || !rightStop)) {
 
                 if(leftInches < 0) {
@@ -1078,8 +897,8 @@ public class FrontRed extends LinearOpMode {
                 }
 
                 // Display it for the driver.
-                telemetry.addData("Path1 Right, Left", "Running to %7d :%7d", ((int) target));
-                telemetry.addData("Status Right, Left", "Running at %7d :%7d",
+                telemetry.addData("Path1 Right, Left", "Running to", ((int) target));
+                telemetry.addData("Status Right, Left", "Running at ",
 
                         motorRight.getCurrentPosition(),
                         (Math.abs((motorLeft.getCurrentPosition()))));
@@ -1096,8 +915,6 @@ public class FrontRed extends LinearOpMode {
             // Stop all motion;
             stronkBoi.setPower(0);
 
-            telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
-            telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
             telemetry.update();
 
         }

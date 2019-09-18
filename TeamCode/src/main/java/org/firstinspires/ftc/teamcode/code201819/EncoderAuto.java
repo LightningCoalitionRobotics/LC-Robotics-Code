@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.code201819;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -70,8 +70,10 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  * *45 degrees is an estimate. this will have to be measured.
  */
 
-@Autonomous(name="FrontBlue", group="Autonomous")
-public class FrontBlue extends LinearOpMode {
+
+@Autonomous(name="EncoderAuto", group="Autonomous")
+@Disabled
+public class EncoderAuto extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
@@ -332,7 +334,6 @@ public class FrontBlue extends LinearOpMode {
 
         motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        stronkBoi.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         telemetry.addData("Mode Right", motorRight.getMode());
         telemetry.addData("Mode Left", motorLeft.getMode());
@@ -341,7 +342,6 @@ public class FrontBlue extends LinearOpMode {
 
         motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        stronkBoi.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         telemetry.addData("Mode Right", motorRight.getMode());
         telemetry.addData("Mode Left", motorLeft.getMode());
@@ -363,13 +363,13 @@ public class FrontBlue extends LinearOpMode {
         waitForStart();
 
         //detatch from hook
-        stronkBoiDrive(1, 877, 6);
-        sleep(500);
+        stronkBoi.setPower(1);
+        sleep(3000);
 
         exactEncoderDrive(DRIVE_SPEED, (-3), (-3), 5);
         sleep(100);
 
-        //Turn 62 degrees from starting point to rightmost mineral
+        //Turn 60 degrees from starting point to rightmost mineral
         encoderTurn(TURN_SPEED, 60, 7); // Turn 90 degrees
 
         //define exit bool for detection loop
@@ -410,10 +410,10 @@ public class FrontBlue extends LinearOpMode {
         sleep(500);
 
         //if(Math.abs(90-orientation) > 5) {
-        telemetry.addData("turning", (-orientation+90));
-        telemetry.update();
-        sleep(500);
-        encoderTurn(TURN_SPEED, (-orientation + 90), 7);
+            telemetry.addData("turning", (-orientation+90));
+            telemetry.update();
+            sleep(500);
+            encoderTurn(TURN_SPEED, (-orientation + 90), 7);
         //}
 
         sleep(50);
@@ -421,7 +421,7 @@ public class FrontBlue extends LinearOpMode {
         telemetry.addData("Driving", "8");
         telemetry.update();
         sleep(750);
-/*
+
         sleep(750);
         encoderTurn(TURN_SPEED, 50, 7);
         telemetry.addData("Turning", "60");
@@ -547,7 +547,7 @@ public class FrontBlue extends LinearOpMode {
 
         //revert back to original position facing the corner
         encoderTurn(TURN_SPEED, (90-orientation), 5);
-*/
+
 
         //determine sign of vector components from the determined quadrant
         if(quadrant[0] == "FRONT") {
@@ -599,10 +599,14 @@ public class FrontBlue extends LinearOpMode {
         telemetry.update();
         sleep(3000);
 
-            //turn, drive, and turn towards depot
-            encoderTurn(TURN_SPEED, 80, 5);
 
-            encoderDrive(DRIVE_SPEED, 36, 5); //36 is an estimate
+        //Go to depot depending on what quadrant bot is in. Opposite quadrants have the same moves.
+        if((quadrant[0] == "FRONT" && quadrant[1] == "RED" || (quadrant[0] == "BACK" && quadrant[1] == "BLUE"))) {
+
+            //turn, drive, and turn towards depot
+            encoderTurn(TURN_SPEED, -80, 5);
+
+            encoderDrive(DRIVE_SPEED, 66, 5); //31 is an estimate
             sleep(500);
 
             //add drive to translation vector
@@ -611,7 +615,33 @@ public class FrontBlue extends LinearOpMode {
             currentPosition = addTranslationVector(currentPosition, translationVector);
 
             //Turn to face depot
-            encoderTurn(TURN_SPEED, -110, 5);
+            encoderTurn(TURN_SPEED, 130, 5);
+            sleep(100);
+
+            //Drive into depot
+            encoderDrive(RUSH_SPEED, (4.5*12), 6); //5 feet is an estimate
+            sleep(100);
+
+            //add drive to translation vector
+            translationVector[0] = (int)((5*12)*Math.cos((orientation*Math.PI)/180));
+            translationVector[1] = (int)((5*12)*Math.sin((orientation*Math.PI)/180));
+            currentPosition = addTranslationVector(currentPosition, translationVector);
+
+        } else if((quadrant[0] == "FRONT" && quadrant[1] == "BLUE") || (quadrant[0] == "BACK" && quadrant[1] == "RED")) {
+
+            //turn, drive, and turn towards depot
+            encoderTurn(TURN_SPEED, 80, 5);
+
+            encoderDrive(DRIVE_SPEED, 42, 5); //36 is an estimate
+            sleep(500);
+
+            //add drive to translation vector
+            translationVector[0] = (int)((5*12)*Math.cos((orientation*Math.PI)/180));
+            translationVector[1] = (int)((5*12)*Math.sin((orientation*Math.PI)/180));
+            currentPosition = addTranslationVector(currentPosition, translationVector);
+
+            //Turn to face depot
+            encoderTurn(TURN_SPEED, 55, 5);
             sleep(500);
 
             //Drive into depot
@@ -623,9 +653,7 @@ public class FrontBlue extends LinearOpMode {
             translationVector[1] = (int)((5*12)*Math.sin((orientation*Math.PI)/180));
             currentPosition = addTranslationVector(currentPosition, translationVector);
 
-        //Park in crater (same for all quadrants)
-        //Turn to face crater
-        encoderTurn(TURN_SPEED, 180, 7);
+        }
 
         /*
          *
@@ -641,10 +669,12 @@ public class FrontBlue extends LinearOpMode {
         sleep(500);
 
 
-        //Drive into crater
-        encoderDrive(RUSH_SPEED, (7*12), 10);
-        encoderTurn(1, 2*12, 10);
+        //Park in crater (same for all quadrants)
+        //Turn to face crater
+        encoderTurn(TURN_SPEED, 180, 7);
 
+        //Drive into crater
+        encoderDrive(RUSH_SPEED, (8*12), 10);
         //add drive to translation vector
         translationVector[0] = (int)((5*12)*Math.cos((orientation*Math.PI)/180));
         translationVector[1] = (int)((5*12)*Math.sin((orientation*Math.PI)/180));
@@ -708,7 +738,7 @@ public class FrontBlue extends LinearOpMode {
                     motorLeft.setPower(0);
                     leftStop = true;
 
-                }
+                    }
 
                 // Display it for the driver.
                 telemetry.addData("Path1 Right, Left", "Running to %7d :%7d", ((int) newRightTarget), ((int) newLeftTarget));
@@ -833,10 +863,10 @@ public class FrontBlue extends LinearOpMode {
     }
 
     /*
-     *
-     * Method to turn to a certain angle. Can be used with both positive
-     * and negative angles.
-     *
+    *
+    * Method to turn to a certain angle. Can be used with both positive
+    * and negative angles.
+    *
      */
     public void encoderTurn(double speed, double angle, double timeoutS) {
 
@@ -846,7 +876,7 @@ public class FrontBlue extends LinearOpMode {
         boolean leftStop = false;
         boolean rightStop = false;
 
-        double angleToInches = ((((angle) * (Math.PI) / 180.0) * (5.66) * turnErrorConstant)); // Needs to be calibrated (angle -> radians * radius * constant.
+        double angleToInches = ((((angle) * (Math.PI) / 180.0) * (5.66) * turnErrorConstant)); // Experimentally determined (angle -> radians * radius * constant).
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
@@ -1042,65 +1072,6 @@ public class FrontBlue extends LinearOpMode {
 
         return position;
 
-    }
-
-    public void stronkBoiDrive(double speed, double inches, double timeoutS) {
-
-        double target;
-
-        boolean stop = false;
-
-        // Ensure that the opmode is still active
-        if (opModeIsActive()) {
-
-
-            // Determine new target position, and pass to motor controller
-            target = stronkBoi.getCurrentPosition() + (inches * COUNTS_PER_INCH);
-
-            // reset the timeout time and start motion.
-            runtime.reset();
-            stronkBoi.setPower(((Math.abs(inches) / inches) * speed));
-
-            // keep looping while we are still active, and there is time left, and both motors are running.
-            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
-            // its target position, the motion will stop.  This is "safer" in the event that the robot will
-            // always end the motion as soon as possible.
-            // However, if you require that BOTH motors have finished their moves before the robot continues
-            // onto the next step, use (isBusy() || isBusy()) in the loop test.*/
-            while (opModeIsActive() && (runtime.seconds() < timeoutS) && (!stop)) {
-
-                //Stop right motor if it's finished.
-                if (stronkBoi.getCurrentPosition() >= target) {
-
-                    stronkBoi.setPower(0);
-                    stop = true;
-
-                }
-
-                // Display it for the driver.
-                telemetry.addData("Path1 Right, Left", "Running to %7d :%7d", ((int) target));
-                telemetry.addData("Status Right, Left", "Running at %7d :%7d",
-
-                        motorRight.getCurrentPosition(),
-                        (Math.abs((motorLeft.getCurrentPosition()))));
-
-                telemetry.addData("Motor power:", ((Math.abs(inches) / inches) * speed));
-
-                telemetry.addData("Mode Right", motorRight.getMode());
-                telemetry.addData("Mode Left", motorLeft.getMode());
-                telemetry.addData("Motor Right", motorRight.isBusy());
-                telemetry.addData("Motor Left", motorLeft.isBusy());
-                telemetry.update();
-            }
-
-            // Stop all motion;
-            stronkBoi.setPower(0);
-
-            telemetry.addData("Final position Left: ", motorLeft.getCurrentPosition());
-            telemetry.addData("Final position Right: ", motorRight.getCurrentPosition());
-            telemetry.update();
-
-        }
     }
 
 }

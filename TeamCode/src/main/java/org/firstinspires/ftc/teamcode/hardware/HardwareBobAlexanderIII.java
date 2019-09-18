@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.code201819.EncoderAuto;
+
 /**
  * The class for the LCR 2018-19 robot.
  *
@@ -97,7 +99,7 @@ public class HardwareBobAlexanderIII extends Robot {
     /**
      *
      * {@inheritDoc}
-     * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderDrive(double, double, double)
+     * @see EncoderAuto#encoderDrive(double, double, double)
      */
     @Override
     public void drive(double speed, double dist, double timeout) {
@@ -223,7 +225,7 @@ public class HardwareBobAlexanderIII extends Robot {
      * @param angle In degrees, how far the robot should turn. A positive amount is counterclockwise.
      * @param timeout In seconds, how long the robot should attempt to reach the target angle.
      * @see #turn(double, double, double)
-     * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderTurn(double, double, double)
+     * @see EncoderAuto#encoderTurn(double, double, double)
      */
     public void turn(double angle, double timeout) {
         turn(drive_speed, angle, timeout);
@@ -235,7 +237,7 @@ public class HardwareBobAlexanderIII extends Robot {
      * @param angle In degrees, how far the robot should turn.
      * @param timeout In seconds, how long the robot should attempt to reach the target angle.
      * @see #turn(double, double, double)
-     * @see org.firstinspires.ftc.teamcode.EncoderAuto#encoderTurn(double, double, double)
+     * @see EncoderAuto#encoderTurn(double, double, double)
      */
     public void turn(boolean direction, double angle, double timeout) {
         if (direction) {

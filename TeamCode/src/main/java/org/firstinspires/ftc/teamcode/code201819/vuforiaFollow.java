@@ -27,12 +27,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.code201819;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorController;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -42,8 +43,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.teamcode.hardware.Robot;
 
+import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
@@ -59,8 +60,6 @@ import java.util.List;
  * This 2018-2019 OpMode illustrates the basics of using the Vuforia localizer to determine
  * positioning and orientation of robot on the FTC field.
  * The code is structured as a LinearOpMode
- *
- * Contributor: William Nolan
  *
  * Vuforia uses the phone's camera to inspect it's surroundings, and attempt to locate target images.
  *
@@ -94,8 +93,8 @@ import java.util.List;
  * is explained below.
  */
 
-@Autonomous(name="VuforiaRoverNav", group ="Autonomous")
-public class VuforiaRoverNav extends LinearOpMode {
+@TeleOp(name="VuforiaFollow", group ="Autonomous")
+public class vuforiaFollow extends LinearOpMode {
 
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
@@ -130,8 +129,34 @@ public class VuforiaRoverNav extends LinearOpMode {
      */
     VuforiaLocalizer vuforia;
 
-    @Override
-    public void runOpMode() {
+    //sleep variable (2 seconds)
+    static final int sleep = 2000;
+
+    // motor controllers
+    DcMotorController wheelController;
+    // motors
+    DcMotor motorRight;
+    DcMotor motorLeft;
+
+    @Override public void runOpMode() {
+
+        /*
+        Initialize/define all robot hardware
+         */
+        motorRight = hardwareMap.dcMotor.get("motorRight");
+        motorLeft = hardwareMap.dcMotor.get("motorLeft");
+
+
+        //motorLeft.setDirection(REVERSE);
+        motorRight.setDirection(REVERSE);
+
+        //we don't care about encoders here
+        motorLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        //wait half a second to make sure runmode is set
+        sleep(sleep/4);
+
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
          * We can pass Vuforia the handle to a camera preview resource (on the RC phone);
@@ -275,68 +300,84 @@ public class VuforiaRoverNav extends LinearOpMode {
 
         /** Start tracking the data sets we care about. */
         targetsRoverRuckus.activate();
+
+
         while (opModeIsActive()) {
 
             // check all the trackable target to see which one (if any) is visible.
             targetVisible = false;
             for (VuforiaTrackable trackable : allTrackables) {
-                if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
+                if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
                     telemetry.addData("Visible Target", trackable.getName());
                     targetVisible = true;
 
                     // getUpdatedRobotLocation() will return null if no new information is available since
                     // the last time that call was made, or if the trackable is not currently visible.
-                    OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
+                    OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
                     if (robotLocationTransform != null) {
                         lastLocation = robotLocationTransform;
+
+                        Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+
+
+
+                        //if the camera is not facing the image within a standard degree of error
+                        if(Math.abs(rotation.thirdAngle) > 10) {
+
+                            //map heading value to between -1 and 1
+                            double scaledHeading = scale(rotation.thirdAngle, -180
+                                    , 180, -1, 1);
+
+                            //compensate in case power is over 1
+                            if(Math.abs(scaledHeading) > 1) {
+
+                                //Map down to 1 or -1 if scaledHeading is greater/less than 1/-1
+                                scaledHeading -= (scaledHeading-(scaledHeading/Math.abs(scaledHeading)));
+
+                            }
+
+                            motorLeft.setPower(-scaledHeading);
+                            motorRight.setPower(scaledHeading);
+
+                        } else {
+
+                            //if it's in the range of error turn off the motors
+                            motorLeft.setPower(0);
+                            motorRight.setPower(0);
+
+                        }
+
                     }
-                    break;
+
                 }
+                break;
             }
-
-            // Provide feedback as to where the robot is located (if we know).
-            if (targetVisible) {
-                // express position (translation) of robot in inches.
-                VectorF translation = lastLocation.getTranslation();
-                telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
-                        translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
-
-                // express the rotation of the robot in degrees.
-                Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-                telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
-            }
-            else {
-                telemetry.addData("Visible Target", "none");
-            }
-            telemetry.update();
-        }
-    }
-/*
-    public static void moveToDesiredLocation(Robot robot, double targetX, double targetY) {
-        robot.init();
-        for (TargetX /= translation.get(0) / mmPerInch, DesiredXLocation - translation.get(0) / mmPerInch = 4) {
-            for (rotation.ThirdAngle /=0, rotation.thirdAngle /= 0){
-                robot.turn(1, 1;
-                telemetry.update();
-            }
-
-            robot.drive(3,1);
-            telemetry.update();
-
         }
 
-        robot.turn(90, 3);
+        // Provide feedback as to where the robot is located (if we know).
+        if (targetVisible) {
+            // express position (translation) of robot in inches.
+            VectorF translation = lastLocation.getTranslation();
+            telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
+                    translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
+
+            Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+
+            // express the rotation of the robot in degrees.
+            telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+        } else {
+            telemetry.addData("Visible Target", "none");
+        }
         telemetry.update();
 
-        for (TargetY /= translation.get(1) / mmPerInch, DesiredYLocation - translation.get(1) / mmPerInch = 4) {
-            for (rotation.ThirdAngle /=0, rotation.thirdAngle /= 0){
-                robot.turn(1, 1);
-                telemetry.update();
-            }
+        //Set rotation variable
 
-            robot.drive(3,1);
-            telemetry.update();
+    }
 
-        }
-    }*/
+    //Function to return a scaled value
+    double scale(double input, double in_min, double in_max, double out_min, double out_max) {
+
+        return (((input - in_min) * (out_max - out_min) / (in_max - in_min)) + out_min);
+
+    }
 }

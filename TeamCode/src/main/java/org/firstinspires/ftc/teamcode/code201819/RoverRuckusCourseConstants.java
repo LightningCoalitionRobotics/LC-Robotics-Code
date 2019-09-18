@@ -1,4 +1,6 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.code201819;
+
+import org.firstinspires.ftc.teamcode.code201819.CourseConstants;
 
 /**
  * A series of useful constants relating to distances on the course.
