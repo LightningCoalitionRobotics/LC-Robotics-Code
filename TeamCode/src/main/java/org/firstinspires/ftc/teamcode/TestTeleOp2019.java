@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
+@TeleOp(name="TestTeleOp", group="TeleOp")
 public class TestTeleOp2019 extends OpMode {
     HardwareLilPanini robot = new HardwareLilPanini(this);
 
