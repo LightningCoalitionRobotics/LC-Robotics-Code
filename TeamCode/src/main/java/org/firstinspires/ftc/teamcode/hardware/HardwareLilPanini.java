@@ -43,6 +43,10 @@ public class HardwareLilPanini extends Robot {
 
         frontController = hardwareMap.get(DcMotorController.class, "frontController");
         rearController = hardwareMap.get(DcMotorController.class, "rearController");
+        frontController.setMotorMode(1, DcMotor.RunMode.RUN_USING_ENCODER);
+        frontController.setMotorMode(2, DcMotor.RunMode.RUN_USING_ENCODER);
+        rearController.setMotorMode(1, DcMotor.RunMode.RUN_USING_ENCODER);
+        rearController.setMotorMode(2, DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     @Override
