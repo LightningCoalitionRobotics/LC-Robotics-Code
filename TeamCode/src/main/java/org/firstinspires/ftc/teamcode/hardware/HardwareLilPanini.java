@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 /**
@@ -47,6 +46,7 @@ public class HardwareLilPanini extends Robot {
         frontController.setMotorMode(2, DcMotor.RunMode.RUN_USING_ENCODER);
         rearController.setMotorMode(1, DcMotor.RunMode.RUN_USING_ENCODER);
         rearController.setMotorMode(2, DcMotor.RunMode.RUN_USING_ENCODER);
+
     }
 
     @Override
@@ -74,5 +74,24 @@ public class HardwareLilPanini extends Robot {
     public enum HorizontalDirection {
         RIGHT,
         LEFT;
+    }
+
+    public class TeleOpUtil {
+
+    }
+
+    public class AutonomousUtil {
+        public void drive(double speed, double dist, double timeout) {
+            frontController.setMotorPower(1, speed);
+            frontController.setMotorPower(2, speed);
+            rearController.setMotorPower(1, speed);
+            rearController.setMotorPower(2, speed);
+            ((LinearOpMode) opMode).sleep((long)timeout);
+            frontController.setMotorPower(1, 0);
+            frontController.setMotorPower(2, 0);
+            rearController.setMotorPower(1, 0);
+            rearController.setMotorPower(2, 0);
+        }
+
     }
 }
