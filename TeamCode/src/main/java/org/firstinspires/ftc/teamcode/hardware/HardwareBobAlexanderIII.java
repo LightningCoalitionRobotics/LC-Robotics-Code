@@ -36,13 +36,13 @@ public class HardwareBobAlexanderIII extends Robot {
      * Right lift motor for the robot.
      */
     public DcMotor rightSpinner;
-    /**
-     * Arm motor for the robot.
-     */
-//    public DcMotor stronkboi;
 //    /**
-//     * Marker servo for the robot.
+//     * Arm motor for the robot.
 //     */
+//    public DcMotor stronkboi;
+    /**
+     * Marker servo for the robot.
+     */
     public Servo idolArm;
 
     // Constants
