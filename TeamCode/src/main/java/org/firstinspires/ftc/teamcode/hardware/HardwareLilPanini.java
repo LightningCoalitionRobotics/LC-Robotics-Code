@@ -62,7 +62,7 @@ public class HardwareLilPanini extends Robot {
         rearController.setMotorPower(2, 0);
     }
 
-    public void crabDrive(HorizontalDirection direction, double speed, double dist, double timeout) {
+    public void strafe(HorizontalDirection direction, double speed, double dist, double timeout) {
 
     }
 
