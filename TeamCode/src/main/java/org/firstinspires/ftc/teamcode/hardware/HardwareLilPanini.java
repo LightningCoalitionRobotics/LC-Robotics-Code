@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
@@ -46,7 +47,15 @@ public class HardwareLilPanini extends Robot {
 
     @Override
     public void drive(double speed, double dist, double timeout) {
-        int
+        frontController.setMotorPower(1, speed);
+        frontController.setMotorPower(2, speed);
+        rearController.setMotorPower(1, speed);
+        rearController.setMotorPower(2, speed);
+        ((LinearOpMode) opMode).sleep((long)timeout);
+        frontController.setMotorPower(1, 0);
+        frontController.setMotorPower(2, 0);
+        rearController.setMotorPower(1, 0);
+        rearController.setMotorPower(2, 0);
     }
 
     public void crabDrive(HorizontalDirection direction, double speed, double dist, double timeout) {
