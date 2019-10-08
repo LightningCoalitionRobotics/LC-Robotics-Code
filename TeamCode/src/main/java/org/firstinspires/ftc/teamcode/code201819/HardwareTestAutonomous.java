@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareBobAlexanderIII;
  * @author Noah Simon
  */
 @Autonomous(name="HardwareTestAutonomous", group="autonomous")
+@Disabled
 public class HardwareTestAutonomous extends LinearOpMode {
     private HardwareBobAlexanderIII robot = new HardwareBobAlexanderIII(this, 0.5);
 

@@ -71,6 +71,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  */
 
 @Autonomous(name="BackBlue", group="Autonomous")
+@Disabled
 public class BackBlue extends LinearOpMode {
 
     /* Declare OpMode members. */

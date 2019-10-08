@@ -71,6 +71,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  */
 
 @Autonomous(name="EncoderAuto", group="Autonomous")
+@Disabled
 public class VuforiaLocalizationDemo extends LinearOpMode {
 
     /* Declare OpMode members. */

@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
 @TeleOp(name="TestTeleOp", group="TeleOp")
 public class TestTeleOp2019 extends OpMode {
-    HardwareLilPanini robot = new HardwareLilPanini(this);
+    private HardwareLilPanini robot = new HardwareLilPanini(this);
 
     public void init() {
         robot.init(hardwareMap);

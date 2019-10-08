@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode.code201819;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-
+@Disabled
 @TeleOp(name="MotorCounter", group="Teleops")
 public class MotorCounter extends OpMode {
     private DcMotor motorLeft;

@@ -54,7 +54,7 @@ import static java.lang.Thread.sleep;
  * Enables control of the robot via the gamepad
  */
 @TeleOp(name="Drive - Rec", group="Teleops")
-
+@Disabled
 public class lcTeleOpRec extends OpMode {
 
     //Declare hardware
