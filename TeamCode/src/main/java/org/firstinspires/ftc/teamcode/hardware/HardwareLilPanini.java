@@ -42,10 +42,10 @@ public class HardwareLilPanini extends Robot {
 
         frontController = hardwareMap.get(DcMotorController.class, "frontController");
         rearController = hardwareMap.get(DcMotorController.class, "rearController");
-        frontController.setMotorMode(1, DcMotor.RunMode.RUN_USING_ENCODER);
-        frontController.setMotorMode(2, DcMotor.RunMode.RUN_USING_ENCODER);
-        rearController.setMotorMode(1, DcMotor.RunMode.RUN_USING_ENCODER);
-        rearController.setMotorMode(2, DcMotor.RunMode.RUN_USING_ENCODER);
+        frontController.setMotorMode(1, DcMotor.RunMode.RUN_USING_ENCODER); // RIGHT
+        frontController.setMotorMode(2, DcMotor.RunMode.RUN_USING_ENCODER); // LEFT
+        rearController.setMotorMode(1, DcMotor.RunMode.RUN_USING_ENCODER); // LEFT
+        rearController.setMotorMode(2, DcMotor.RunMode.RUN_USING_ENCODER); // RIGHT
 
     }
 
@@ -55,7 +55,23 @@ public class HardwareLilPanini extends Robot {
     }
 
     public void strafe(HorizontalDirection direction, double speed, double dist, double timeout) {
-        
+        int correctDirection;
+        if (direction == HorizontalDirection.LEFT) {
+            correctDirection = 1;
+        } else {
+            correctDirection = -1;
+        }
+        frontController.setMotorPower(1, -speed * correctDirection); // Move forward
+        frontController.setMotorPower(2, -speed * correctDirection); // Move backward
+        rearController.setMotorPower(1, speed * correctDirection); // Move forward
+        rearController.setMotorPower(2, speed * correctDirection); // Move backward
+
+        // DO STUFF HERE
+
+        frontController.setMotorPower(1, 0);
+        frontController.setMotorPower(2, 0);
+        rearController.setMotorPower(1, 0);
+        rearController.setMotorPower(2, 0);
     }
 
     @Override
