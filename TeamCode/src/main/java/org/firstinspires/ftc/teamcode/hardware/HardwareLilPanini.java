@@ -51,19 +51,11 @@ public class HardwareLilPanini extends Robot {
 
     @Override
     public void drive(double speed, double dist, double timeout) {
-        frontController.setMotorPower(1, speed);
-        frontController.setMotorPower(2, speed);
-        rearController.setMotorPower(1, speed);
-        rearController.setMotorPower(2, speed);
-        ((LinearOpMode) opMode).sleep((long)timeout);
-        frontController.setMotorPower(1, 0);
-        frontController.setMotorPower(2, 0);
-        rearController.setMotorPower(1, 0);
-        rearController.setMotorPower(2, 0);
+
     }
 
     public void strafe(HorizontalDirection direction, double speed, double dist, double timeout) {
-
+        
     }
 
     @Override
