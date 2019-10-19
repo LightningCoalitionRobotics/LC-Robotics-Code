@@ -15,8 +15,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  */
 public class HardwareLilPanini extends Robot {
 
-    public static final int COUNTS_PER_REVOLUTION = 1400;
-    public static final int COUNTS_PER_INCH = COUNTS_PER_REVOLUTION / 12; // 1 revolution is very close to 1 foot
+    private static final int COUNTS_PER_REVOLUTION = 1400;
+    private static final int COUNTS_PER_INCH = COUNTS_PER_REVOLUTION / 12; // 1 revolution is very close to 1 foot
 
     // All of the components we will need (e.g. motors, servos, sensors...) that are attached to the robot
 
@@ -76,18 +76,37 @@ public class HardwareLilPanini extends Robot {
      * @param timeout If dist is never reached, how many seconds to wait before stopping.
      */
     public void strafe(HorizontalDirection direction, double speed, double dist, double timeout) {
+        int distInCounts = (int)(dist * COUNTS_PER_INCH);
+
         int correctDirection;
         if (direction == HorizontalDirection.LEFT) {
             correctDirection = 1;
         } else {
             correctDirection = -1;
         }
+
+        int topRightTarget = frontController.getMotorCurrentPosition(1) - correctDirection * distInCounts;
+        int topLeftTarget = frontController.getMotorCurrentPosition(2) - correctDirection * distInCounts;
+        int bottomLeftTarget = rearController.getMotorCurrentPosition(1) + correctDirection * distInCounts;
+        int bottomRightTarget = rearController.getMotorCurrentPosition(2) + correctDirection * distInCounts;
+
         frontController.setMotorPower(1, -speed * correctDirection); // Move forward
         frontController.setMotorPower(2, -speed * correctDirection); // Move backward
         rearController.setMotorPower(1, speed * correctDirection); // Move forward
         rearController.setMotorPower(2, speed * correctDirection); // Move backward
 
-        // DO STUFF HERE
+        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
+            if (direction == HorizontalDirection.LEFT) {
+                if (frontController.getMotorCurrentPosition(1) <= topRightTarget || frontController.getMotorCurrentPosition(2) <= topLeftTarget || rearController.getMotorCurrentPosition(1) >= bottomLeftTarget || rearController.getMotorCurrentPosition(2) >= bottomRightTarget) {
+                    break;
+                }
+            } else {
+                if (frontController.getMotorCurrentPosition(1) >= topRightTarget || frontController.getMotorCurrentPosition(2) >= topLeftTarget || rearController.getMotorCurrentPosition(1) <= bottomLeftTarget || rearController.getMotorCurrentPosition(2) <= bottomRightTarget) {
+                    break;
+                }
+            }
+            ((LinearOpMode) opMode).idle();
+        }
 
         frontController.setMotorPower(1, 0);
         frontController.setMotorPower(2, 0);
