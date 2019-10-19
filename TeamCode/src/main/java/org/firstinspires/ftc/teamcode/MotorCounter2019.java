@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.Hardware;
 
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
@@ -34,11 +33,6 @@ public class MotorCounter2019 extends OpMode {
         bottomRightPos = robot.rearController.getMotorCurrentPosition(2);
     }
 
-    private int countsPerRevolutionTopLeft = 0;
-    private int countsPerRevolutionTopRight = 0;
-    private int countsPerRevolutionBottomLeft = 0;
-    private int countsPerRevolutionBottomRight = 0;
-
     private int topLeftPos;
     private int topRightPos;
     private int bottomLeftPos;
@@ -46,6 +40,12 @@ public class MotorCounter2019 extends OpMode {
 
     @Override
     public void loop() {
+
+        int countsPerRevolutionTopLeft;
+        int countsPerRevolutionTopRight;
+        int countsPerRevolutionBottomLeft;
+        int countsPerRevolutionBottomRight;
+
         if (gamepad1.a) {
             robot.frontController.setMotorPower(2, 0.1);
             robot.frontController.setMotorPower(1, 0.1);
@@ -77,7 +77,7 @@ public class MotorCounter2019 extends OpMode {
         telemetry.addData("Counts per revolution (top right)", countsPerRevolutionTopRight);
         telemetry.addData("Counts per revolution (bottom left)", countsPerRevolutionBottomLeft);
         telemetry.addData("Counts per revolution (bottom right)", countsPerRevolutionBottomRight);
-        
+
         telemetry.update();
     }
 }
