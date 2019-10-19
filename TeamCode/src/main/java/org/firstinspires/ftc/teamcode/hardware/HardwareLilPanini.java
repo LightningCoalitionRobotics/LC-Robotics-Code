@@ -15,6 +15,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  */
 public class HardwareLilPanini extends Robot {
 
+    public static final int COUNTS_PER_REVOLUTION = 1400;
+    public static final int COUNTS_PER_INCH = COUNTS_PER_REVOLUTION / 12; // 1 revolution is very close to 1 foot
+
     // All of the components we will need (e.g. motors, servos, sensors...) that are attached to the robot
 
     public DcMotorController frontController;
@@ -54,6 +57,24 @@ public class HardwareLilPanini extends Robot {
 
     }
 
+    /**
+     * Drive the robot at a particular angle.
+     * @param degrees The angle at which to move the robot. Measured in degrees above the positive X axis.
+     * @param speed How fast the robot should move. Number should be in range (0, 1].
+     * @param dist How far, in inches, to move the robot.
+     * @param timeout If dist is never reached, how many seconds to wait before stopping.
+     */
+    public void driveAngle(double degrees, double speed, double dist, double timeout) {
+
+    }
+
+    /**
+     * Strafe the robot left or right.
+     * @param direction The direction in which to move the robot.
+     * @param speed How fast the robot should move. Number should be in range (0, 1].
+     * @param dist How far, in inches, to move the robot.
+     * @param timeout If dist is never reached, how many seconds to wait before stopping.
+     */
     public void strafe(HorizontalDirection direction, double speed, double dist, double timeout) {
         int correctDirection;
         if (direction == HorizontalDirection.LEFT) {
@@ -81,25 +102,6 @@ public class HardwareLilPanini extends Robot {
 
     public enum HorizontalDirection {
         RIGHT,
-        LEFT;
-    }
-
-    public class TeleOpUtil {
-
-    }
-
-    public class AutonomousUtil {
-        public void drive(double speed, double dist, double timeout) {
-            frontController.setMotorPower(1, speed);
-            frontController.setMotorPower(2, speed);
-            rearController.setMotorPower(1, speed);
-            rearController.setMotorPower(2, speed);
-            ((LinearOpMode) opMode).sleep((long)timeout);
-            frontController.setMotorPower(1, 0);
-            frontController.setMotorPower(2, 0);
-            rearController.setMotorPower(1, 0);
-            rearController.setMotorPower(2, 0);
-        }
-
+        LEFT
     }
 }
