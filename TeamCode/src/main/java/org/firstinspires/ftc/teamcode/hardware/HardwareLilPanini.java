@@ -16,7 +16,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class HardwareLilPanini extends Robot {
 
     private static final int COUNTS_PER_REVOLUTION = 1400;
-    private static final int COUNTS_PER_INCH = COUNTS_PER_REVOLUTION / 12; // 1 revolution is very close to 1 foot
+    private static final int COUNTS_PER_FORWARD_INCH = COUNTS_PER_REVOLUTION / 12; // 1 revolution is very close to 1 foot
+
+    private static final int COUNTS_PER_360 = 10000;
+
+    private static final int COUNTS_PER_SIDE_FOOT = 2000;
+    private static final int COUNTS_PER_SIDE_INCH = COUNTS_PER_SIDE_FOOT/12;
 
     // All of the components we will need (e.g. motors, servos, sensors...) that are attached to the robot
 
@@ -76,7 +81,7 @@ public class HardwareLilPanini extends Robot {
      * @param timeout If dist is never reached, how many seconds to wait before stopping.
      */
     public void strafe(HorizontalDirection direction, double speed, double dist, double timeout) {
-        int distInCounts = (int)(dist * COUNTS_PER_INCH);
+        int distInCounts = (int)(dist * COUNTS_PER_SIDE_INCH);
 
         int correctDirection;
         if (direction == HorizontalDirection.LEFT) {
