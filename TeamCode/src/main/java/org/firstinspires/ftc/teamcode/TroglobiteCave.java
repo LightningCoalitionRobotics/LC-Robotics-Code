@@ -17,7 +17,7 @@ public class TroglobiteCave extends LinearOpMode {
         robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,1, 4, 5 );
         sleep(20);
         robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,1, 4, 5 );
-        sleep(30);
+        sleep(20);
         robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT,1, 4, 5 );
         sleep(20);
         robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT,1, 4, 5 );
@@ -31,8 +31,8 @@ public class TroglobiteCave extends LinearOpMode {
         robot.rearController.setMotorPower(2, 1);
         sleep(500);
         //kicks right side forward
-        robot.frontController.setMotorPower(1, -1);
         robot.rearController.setMotorPower(2, -1);
+        robot.frontController.setMotorPower(1, -1);
         sleep(500);
         //kicks right side back
         robot.frontController.setMotorPower(1, 0);
@@ -42,8 +42,8 @@ public class TroglobiteCave extends LinearOpMode {
         robot.rearController.setMotorPower(1, -1);
         sleep(500);
         //kicks left side forward
-        robot.frontController.setMotorPower(2, 1);
         robot.rearController.setMotorPower(1, 1);
+        robot.frontController.setMotorPower(2, 1);
         sleep(500);
         //kick left side back
         robot.frontController.setMotorPower(2, 0);
@@ -52,16 +52,16 @@ public class TroglobiteCave extends LinearOpMode {
         robot.frontController.setMotorPower(1, 1);
         robot.rearController.setMotorPower(2, 1);
         sleep(500);
-        robot.frontController.setMotorPower(1, -1);
         robot.rearController.setMotorPower(2, -1);
+        robot.frontController.setMotorPower(1, -1);
         sleep(500);
         robot.frontController.setMotorPower(1, 0);
         robot.rearController.setMotorPower(2, 0);
         robot.frontController.setMotorPower(2, -1);
         robot.rearController.setMotorPower(1, -1);
         sleep(500);
-        robot.frontController.setMotorPower(2, 1);
         robot.rearController.setMotorPower(1, 1);
+        robot.frontController.setMotorPower(2, 1);
         sleep(500);
         robot.frontController.setMotorPower(2, 0);
         robot.rearController.setMotorPower(1, 0);
