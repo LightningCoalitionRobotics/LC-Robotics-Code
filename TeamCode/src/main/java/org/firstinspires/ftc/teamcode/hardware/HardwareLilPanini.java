@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 /**
@@ -25,17 +26,13 @@ public class HardwareLilPanini extends Robot {
 
     // All of the components we will need (e.g. motors, servos, sensors...) that are attached to the robot
 
-    public DcMotorController frontController;
+    public DcMotor motorFrontLeft;
 
-    public DcMotorController rearController;
+    public DcMotor motorFrontRight;
 
-//    public DcMotor motorFrontLeft;
-//
-//    public DcMotor motorFrontRight;
-//
-//    public DcMotor motorBackLeft;
-//
-//    public DcMotor motorBackRight;
+    public DcMotor motorBackLeft;
+
+    public DcMotor motorBackRight;
 
     public HardwareLilPanini(OpMode opMode) {
         super(opMode);
@@ -43,18 +40,10 @@ public class HardwareLilPanini extends Robot {
 
     @Override
     public void init(HardwareMap hardwareMap) {
-//        motorFrontLeft = registerMotor("motorFrontLeft", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
-//        motorFrontRight = registerMotor("motorFrontRight", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
-//        motorBackLeft = registerMotor("motorBackLeft", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
-//        motorBackRight = registerMotor("motorBackRight", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
-
-        frontController = hardwareMap.get(DcMotorController.class, "frontController");
-        rearController = hardwareMap.get(DcMotorController.class, "rearController");
-        frontController.setMotorMode(1, DcMotor.RunMode.RUN_USING_ENCODER); // RIGHT
-        frontController.setMotorMode(2, DcMotor.RunMode.RUN_USING_ENCODER); // LEFT
-        rearController.setMotorMode(1, DcMotor.RunMode.RUN_USING_ENCODER); // LEFT
-        rearController.setMotorMode(2, DcMotor.RunMode.RUN_USING_ENCODER); // RIGHT
-
+        motorFrontLeft = registerMotor("motorFrontLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontRight = registerMotor("motorFrontRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackLeft = registerMotor("motorRearLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackRight = registerMotor("motorRearRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     @Override
@@ -90,23 +79,23 @@ public class HardwareLilPanini extends Robot {
             correctDirection = -1;
         }
 
-        int topRightTarget = frontController.getMotorCurrentPosition(1) - correctDirection * distInCounts;
-        int topLeftTarget = frontController.getMotorCurrentPosition(2) - correctDirection * distInCounts;
-        int bottomLeftTarget = rearController.getMotorCurrentPosition(1) + correctDirection * distInCounts;
-        int bottomRightTarget = rearController.getMotorCurrentPosition(2) + correctDirection * distInCounts;
+        int topRightTarget = motorFrontRight.getCurrentPosition() + correctDirection * distInCounts;
+        int topLeftTarget = motorFrontLeft.getCurrentPosition() - correctDirection * distInCounts;
+        int bottomLeftTarget = motorBackLeft.getCurrentPosition() + correctDirection * distInCounts;
+        int bottomRightTarget = motorBackRight.getCurrentPosition() - correctDirection * distInCounts;
 
-        frontController.setMotorPower(1, -speed * correctDirection); // Move forward
-        frontController.setMotorPower(2, -speed * correctDirection); // Move backward
-        rearController.setMotorPower(1, speed * correctDirection); // Move forward
-        rearController.setMotorPower(2, speed * correctDirection); // Move backward
+        motorFrontRight.setPower(speed * correctDirection);
+        motorFrontLeft.setPower(-speed * correctDirection);
+        motorBackLeft.setPower(speed * correctDirection);
+        motorBackRight.setPower(-speed * correctDirection);
 
         while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
             if (direction == HorizontalDirection.LEFT) {
-                if (frontController.getMotorCurrentPosition(1) <= topRightTarget || frontController.getMotorCurrentPosition(2) <= topLeftTarget || rearController.getMotorCurrentPosition(1) >= bottomLeftTarget || rearController.getMotorCurrentPosition(2) >= bottomRightTarget) {
+                if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget) {
                     break;
                 }
             } else {
-                if (frontController.getMotorCurrentPosition(1) >= topRightTarget || frontController.getMotorCurrentPosition(2) >= topLeftTarget || rearController.getMotorCurrentPosition(1) <= bottomLeftTarget || rearController.getMotorCurrentPosition(2) <= bottomRightTarget) {
+                if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
                     break;
                 }
             }
