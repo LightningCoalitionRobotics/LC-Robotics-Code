@@ -115,7 +115,7 @@ public class HardwareLilPanini extends Robot {
     }
 
     @Override
-    public void turn(double speed, double dist, double timeout) {
+    public void turn(double speed, double angle, double timeout) {
 
     }
 
