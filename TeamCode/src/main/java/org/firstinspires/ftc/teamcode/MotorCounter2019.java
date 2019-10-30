@@ -48,15 +48,20 @@ public class MotorCounter2019 extends OpMode {
         int countsPerRevolutionBottomLeft;
         int countsPerRevolutionBottomRight;
 
-        if (gamepad1.a) {
+        if (gamepad1.a) { // Turn
             robot.frontController.setMotorPower(2, 0.1);
             robot.frontController.setMotorPower(1, 0.1);
             robot.rearController.setMotorPower(2, 0.1);
             robot.rearController.setMotorPower(1, 0.1);
-        } else if (gamepad1.y) {
+        } else if (gamepad1.y) { // Forward
             robot.frontController.setMotorPower(2, 0.1);
             robot.frontController.setMotorPower(1, -0.1);
             robot.rearController.setMotorPower(2, -0.1);
+            robot.rearController.setMotorPower(1, 0.1);
+        } else if (gamepad1.x) { // Left
+            robot.frontController.setMotorPower(2, -0.1);
+            robot.frontController.setMotorPower(1, -0.1);
+            robot.rearController.setMotorPower(2, 0.1);
             robot.rearController.setMotorPower(1, 0.1);
         } else {
             robot.frontController.setMotorPower(2, 0);
