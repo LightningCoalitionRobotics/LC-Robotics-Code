@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
-@Autonomous(name="TrogloditeCave", group = "autonomous")
-public class TrogloditeCave extends LinearOpMode {
+@Autonomous(name="TroglobiteCave", group = "autonomous")
+public class TroglobiteCave extends LinearOpMode {
     private HardwareLilPanini robot = new HardwareLilPanini(this);
 
     private void cupidShuffle(){
