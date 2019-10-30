@@ -10,21 +10,21 @@ public class TrogloditeCave extends LinearOpMode {
     private HardwareLilPanini robot = new HardwareLilPanini(this);
 
     private void cupidShuffle(){
-        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,1, 4, 5 );
-        sleep(10);
-        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,1, 4, 5 );
-        sleep(10);
-        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,1, 4, 5 );
-        sleep(10);
-        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,1, 4, 5 );
-        sleep(10);
-        robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT,1, 4, 5 );
-        sleep(10);
-        robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT,1, 4, 5 );
-        sleep(10);
-        robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT,1, 4, 5 );
-        sleep(10);
-        robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT,1, 4, 5 );
+        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,1, 8, 5 );
+        sleep(20);
+        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,1, 8, 5 );
+        sleep(20);
+        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,1, 8, 5 );
+        sleep(20);
+        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,1, 8, 5 );
+        sleep(30);
+        robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT,1, 8, 5 );
+        sleep(20);
+        robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT,1, 8, 5 );
+        sleep(20);
+        robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT,1, 8, 5 );
+        sleep(20);
+        robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT,1, 8, 5 );
     }
     @Override
     public void runOpMode(){
