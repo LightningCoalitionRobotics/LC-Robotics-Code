@@ -62,124 +62,125 @@ public class TroglobiteCave extends LinearOpMode {
         robot.motorFrontLeft.setPower(-1);
         sleep(500);
         robot.stop();
-        sleep(100);
+        sleep(500);
 
-
-
-
-        robot.turn(-1, 30, 3);
+        robot.turn(1, -30, 3);
         sleep(500);
         robot.turn(1, 60, 3);
         sleep(500);
         //makes the robot turn side to side
-        robot.turn(-1, 60, 3);
+        robot.turn(1, -60, 3);
         sleep(500);
         robot.turn(1, 60, 3);
         sleep(500);
-        robot.turn(-1, 60, 3);
+        robot.turn(-1, -60, 3);
         sleep(500);
         robot.turn(1, 60, 3);
         sleep(500);
-        robot.turn(-1, 60, 3);
+        robot.turn(1, -60, 3);
         sleep(500);
 
         robot.turn(1, 60, 3);
         sleep(500);
-        robot.turn(-1, 30, 3);
+        robot.turn(1, -30, 3);
         sleep(500);
         robot.turn(1, 60, 3);
         sleep(500);
-        robot.turn(-1, 30, 3);
+        robot.turn(1, -30, 3);
         sleep(500);
         robot.turn(1, 60, 3);
-        sleep(500);
-        robot.turn(-1, 30, 3);
         sleep(500);
         //robot does a quarter turn
 
-        robot.turn(-1, 30, 3);
+        robot.turn(1, -30, 3);
         sleep(500);
         robot.turn(1, 60, 3);
         sleep(500);
-        robot.turn(-1, 60, 3);
+        robot.turn(1, -60, 3);
         sleep(500);
         robot.turn(1, 60, 3);
         sleep(500);
-        robot.turn(-1, 60, 3);
+        robot.turn(1, -60, 3);
         sleep(500);
         robot.turn(1, 60, 3);
         sleep(500);
-        robot.turn(-1, 60, 3);
+        robot.turn(1, -60, 3);
+        sleep(500);
+
+        robot.turn(1, 60, 3);
+        sleep(500);
+        robot.turn(1, -30, 3);
         sleep(500);
         robot.turn(1, 60, 3);
         sleep(500);
-        robot.turn(-1, 30, 3);
+        robot.turn(1, -30, 3);
         sleep(500);
         robot.turn(1, 60, 3);
         sleep(500);
-        robot.turn(-1, 30, 3);
+
+        robot.turn(1, -30, 3);
         sleep(500);
         robot.turn(1, 60, 3);
         sleep(500);
-        robot.turn(-1, 30, 3);
-        sleep(500);
-        robot.turn(-1, 30, 3);
+        robot.turn(1, -60, 3);
         sleep(500);
         robot.turn(1, 60, 3);
         sleep(500);
-        robot.turn(-1, 60, 3);
+        robot.turn(1, -60, 3);
         sleep(500);
         robot.turn(1, 60, 3);
         sleep(500);
-        robot.turn(-1, 60, 3);
+        robot.turn(1, -60, 3);
+        sleep(500);
+
+        robot.turn(1, 60, 3);
+        sleep(500);
+        robot.turn(1, -30, 3);
         sleep(500);
         robot.turn(1, 60, 3);
         sleep(500);
-        robot.turn(-1, 60, 3);
+        robot.turn(1, -30, 3);
         sleep(500);
         robot.turn(1, 60, 3);
         sleep(500);
-        robot.turn(-1, 30, 3);
+
+        robot.turn(1, -30, 3);
         sleep(500);
         robot.turn(1, 60, 3);
         sleep(500);
-        robot.turn(-1, 30, 3);
+        robot.turn(-1, -60, 3);
         sleep(500);
         robot.turn(1, 60, 3);
         sleep(500);
-        robot.turn(-1, 30, 3);
-        sleep(500);
-        robot.turn(-1, 30, 3);
+        robot.turn(1, -60, 3);
         sleep(500);
         robot.turn(1, 60, 3);
         sleep(500);
-        robot.turn(-1, 60, 3);
+        robot.turn(1, -60, 3);
+        sleep(500);
+
+        robot.turn(1, 60, 3);
+        sleep(500);
+        robot.turn(1, -30, 3);
         sleep(500);
         robot.turn(1, 60, 3);
         sleep(500);
-        robot.turn(-1, 60, 3);
+        robot.turn(1, -30, 3);
         sleep(500);
         robot.turn(1, 60, 3);
         sleep(500);
-        robot.turn(-1, 60, 3);
-        sleep(500);
-        robot.turn(1, 60, 3);
-        sleep(500);
-        robot.turn(-1, 30, 3);
-        sleep(500);
-        robot.turn(1, 60, 3);
-        sleep(500);
-        robot.turn(-1, 30, 3);
-        sleep(500);
-        robot.turn(1, 60, 3);
-        sleep(500);
-        robot.turn(-1, 30, 3);
+        robot.turn(1, -30, 3);
         sleep(500);
             }
     @Override
     public void runOpMode(){
         robot.init(hardwareMap);
         waitForStart();
+
+        robot.turn(1, 30, 3);
+        robot.turn(0.5, -30, 3);
+
+        sleep(100000);
         cupidShuffle();
     }
 }
