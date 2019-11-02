@@ -48,7 +48,43 @@ public class HardwareLilPanini extends Robot {
     }
 
     @Override
+    /**
+     * Drive the robot forward or backwards.
+     * @param speed An integer between -1 and 1, greater distance from origin is greater speed, negative is backwards and positive is forwards
+     * @param dist Distance, in inches, that you want the robot to go
+     * @param timeout If dist is never reached for whatever reason, how many seconds before stopping where it is
+     */
     public void drive(double speed, double dist, double timeout) {
+        int distInCounts = (int)(dist * COUNTS_PER_FORWARD_INCH);
+
+        // Target count value for each motor given dist, calulated from current position plus distance in counts
+        int topRightTargetForward = motorFrontRight.getCurrentPosition() + distInCounts;
+        int topLeftTargetForward = motorFrontLeft.getCurrentPosition() + distInCounts;
+        int bottomRightTargetForward = motorBackRight.getCurrentPosition() + distInCounts;
+        int bottomLeftTargetForward = motorBackLeft.getCurrentPosition() + distInCounts;
+        int topRightTargetBackward = motorFrontRight.getCurrentPosition() - distInCounts;
+        int topLeftTargetBackward = motorFrontLeft.getCurrentPosition() - distInCounts;
+        int bottomRightTargetBackward = motorBackRight.getCurrentPosition() - distInCounts;
+        int bottomLeftTargetBackward = motorBackLeft.getCurrentPosition() - distInCounts;
+
+        if (speed < 0) { // if forwards
+
+            while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) { //while thing going
+                if (motorFrontRight.getCurrentPosition() <= topRightTargetForward || motorFrontLeft.getCurrentPosition() <= topLeftTargetForward || motorBackRight.getCurrentPosition() <= bottomRightTargetForward  || motorBackLeft.getCurrentPosition() <= bottomLeftTargetForward) {
+                    motorFrontRight.setPower(speed);
+                    motorFrontLeft.setPower(speed);
+                    motorBackRight.setPower(speed);
+                    motorBackLeft.setPower(speed);
+                }
+            }
+        }
+        else (speed > 0) {
+
+        }
+        motorFrontRight.setPower(0);
+        motorFrontLeft.setPower(0);
+        motorBackRight.setPower(0);
+        motorBackLeft.setPower(0);
 
     }
 
