@@ -20,6 +20,7 @@ public class HardwareLilPanini extends Robot {
     private static final int COUNTS_PER_FORWARD_INCH = COUNTS_PER_REVOLUTION / 12; // 1 revolution is very close to 1 foot
 
     private static final int COUNTS_PER_360 = 10000;
+    private static final int COUNTS_PER_DEGREE = COUNTS_PER_360 / 360;
 
     private static final int COUNTS_PER_SIDE_FOOT = 2000;
     private static final int COUNTS_PER_SIDE_INCH = COUNTS_PER_SIDE_FOOT/12;
@@ -107,7 +108,44 @@ public class HardwareLilPanini extends Robot {
 
     @Override
     public void turn(double speed, double angle, double timeout) {
+    int angleInCounts = (int)(angle * COUNTS_PER_DEGREE);
+    //changes the angle variable from degrees to counts
 
+    int topRightTarget = motorFrontRight.getCurrentPosition() + angleInCounts;
+    int topLeftTarget = motorFrontLeft.getCurrentPosition() - angleInCounts;
+    int bottomLeftTarget = motorBackLeft.getCurrentPosition() - angleInCounts;
+    int bottomRightTarget = motorBackRight.getCurrentPosition() + angleInCounts;
+    //finds target number of counts for each motor
+
+    if (angle > 0) {
+        motorFrontRight.setPower(speed);
+        motorFrontLeft.setPower(-speed);
+        motorBackLeft.setPower(-speed);
+        motorBackRight.setPower(speed);
+    //sets rights motors to positive and left to negtive for counterclockwise turn
+    } else {
+        motorFrontRight.setPower(-speed);
+        motorFrontLeft.setPower(speed);
+        motorBackLeft.setPower(speed);
+        motorBackRight.setPower(-speed);
+    //sets left motors to positive and right to negative for clockwise turn
+    }
+
+
+        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout){
+            if (angle > 0){
+                if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
+                    break;
+                }
+            } else {
+                if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget) {
+                    break;
+                }
+            }
+            ((LinearOpMode) opMode).idle();
+        }
+        stop();
+        //tells motors to stop if they've reached target number of counts
     }
 
     public void stop() {
