@@ -102,10 +102,10 @@ public class HardwareLilPanini extends Robot {
             ((LinearOpMode) opMode).idle();
         }
 
-        frontController.setMotorPower(1, 0);
-        frontController.setMotorPower(2, 0);
-        rearController.setMotorPower(1, 0);
-        rearController.setMotorPower(2, 0);
+        motorFrontRight.setPower(0);
+        motorFrontLeft.setPower(0);
+        motorBackLeft.setPower(0);
+        motorBackRight.setPower(0);
     }
 
     @Override
