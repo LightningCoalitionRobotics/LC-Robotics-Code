@@ -63,6 +63,9 @@ public class MotorCounter2019 extends OpMode {
             robot.motorFrontRight.setPower(0.1);
             robot.motorBackRight.setPower(0.1);
             robot.motorBackLeft.setPower(0.1);
+        } else if (gamepad1.b) { // Diagonally right
+            robot.motorFrontLeft.setPower(0.1);
+            robot.motorBackRight.setPower(0.1);
         } else {
             robot.motorFrontLeft.setPower(0);
             robot.motorFrontRight.setPower(0);
