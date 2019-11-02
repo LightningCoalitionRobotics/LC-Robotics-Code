@@ -55,7 +55,7 @@ public class HardwareLilPanini extends Robot {
      * @param timeout If dist is never reached for whatever reason, how many seconds before stopping where it is
      */
     public void drive(double speed, double dist, double timeout) {
-        int distInCounts = (int)(dist * COUNTS_PER_FORWARD_INCH);
+        int distInCounts = (int) (dist * COUNTS_PER_FORWARD_INCH);
 
         // Target count value for each motor given dist, calulated from current position plus distance in counts
         int topRightTargetForward = motorFrontRight.getCurrentPosition() + distInCounts;
@@ -69,23 +69,30 @@ public class HardwareLilPanini extends Robot {
 
         if (speed < 0) { // if forwards
 
-            while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) { //while thing going
-                if (motorFrontRight.getCurrentPosition() <= topRightTargetForward || motorFrontLeft.getCurrentPosition() <= topLeftTargetForward || motorBackRight.getCurrentPosition() <= bottomRightTargetForward  || motorBackLeft.getCurrentPosition() <= bottomLeftTargetForward) {
+            while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) { //while opmode active and timeout not reached
+                if (motorFrontRight.getCurrentPosition() <= topRightTargetForward || motorFrontLeft.getCurrentPosition() <= topLeftTargetForward || motorBackRight.getCurrentPosition() <= bottomRightTargetForward || motorBackLeft.getCurrentPosition() <= bottomLeftTargetForward) {
                     motorFrontRight.setPower(speed);
                     motorFrontLeft.setPower(speed);
                     motorBackRight.setPower(speed);
                     motorBackLeft.setPower(speed);
+                } else {
+                    stop();
+
                 }
             }
         }
-        else (speed > 0) {
-
+        if (speed > 0) { //if backwards
+            while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) { //while opmode active and timeout not reached
+                if (motorFrontRight.getCurrentPosition() >= topRightTargetBackward || motorFrontLeft.getCurrentPosition() >= topLeftTargetBackward || motorBackRight.getCurrentPosition() >= bottomRightTargetBackward || motorBackLeft.getCurrentPosition() >= bottomLeftTargetBackward) {
+                    motorFrontRight.setPower(speed);
+                    motorFrontLeft.setPower(speed);
+                    motorBackRight.setPower(speed);
+                    motorBackLeft.setPower(speed);
+                } else {
+                    stop();
+                }
+            }
         }
-        motorFrontRight.setPower(0);
-        motorFrontLeft.setPower(0);
-        motorBackRight.setPower(0);
-        motorBackLeft.setPower(0);
-
     }
 
     /**
