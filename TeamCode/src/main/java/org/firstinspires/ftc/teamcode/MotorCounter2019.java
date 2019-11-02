@@ -13,10 +13,10 @@ public class MotorCounter2019 extends OpMode {
     public void init() {
         robot.init(hardwareMap);
 
-        robot.frontController.setMotorMode(1, DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.frontController.setMotorMode(2, DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.rearController.setMotorMode(1, DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.rearController.setMotorMode(2, DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         try {
             Thread.sleep(2000);
@@ -24,15 +24,15 @@ public class MotorCounter2019 extends OpMode {
             telemetry.addData("Exception",e);
         }
 
-        robot.frontController.setMotorMode(1, DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.frontController.setMotorMode(2, DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rearController.setMotorMode(1, DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rearController.setMotorMode(2, DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        topLeftPos = robot.frontController.getMotorCurrentPosition(2);
-        topRightPos = robot.frontController.getMotorCurrentPosition(1);
-        bottomLeftPos = robot.frontController.getMotorCurrentPosition(1);
-        bottomRightPos = robot.rearController.getMotorCurrentPosition(2);
+        topLeftPos = robot.motorFrontLeft.getCurrentPosition();
+        topRightPos = robot.motorFrontRight.getCurrentPosition();
+        bottomLeftPos = robot.motorBackLeft.getCurrentPosition();
+        bottomRightPos = robot.motorBackRight.getCurrentPosition();
     }
 
     private int topLeftPos;
@@ -49,10 +49,10 @@ public class MotorCounter2019 extends OpMode {
         int countsPerRevolutionBottomRight;
 
         if (gamepad1.a) { // Turn
-            robot.frontController.setMotorPower(2, 0.1);
-            robot.frontController.setMotorPower(1, 0.1);
-            robot.rearController.setMotorPower(2, 0.1);
-            robot.rearController.setMotorPower(1, 0.1);
+            robot.motorFrontLeft.setPower(0.1);
+            robot.motorFrontRight.setPower(0.1);
+            robot.motorBackLeft.setPower(0.1);
+            robot.motorBackRight.setPower(0.1);
         } else if (gamepad1.y) { // Forward
             robot.frontController.setMotorPower(2, 0.1);
             robot.frontController.setMotorPower(1, -0.1);
