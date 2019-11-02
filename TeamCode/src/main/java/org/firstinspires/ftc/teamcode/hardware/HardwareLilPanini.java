@@ -102,15 +102,19 @@ public class HardwareLilPanini extends Robot {
             ((LinearOpMode) opMode).idle();
         }
 
-        motorFrontRight.setPower(0);
-        motorFrontLeft.setPower(0);
-        motorBackLeft.setPower(0);
-        motorBackRight.setPower(0);
+        stop();
     }
 
     @Override
     public void turn(double speed, double angle, double timeout) {
 
+    }
+
+    public void stop() {
+        motorFrontRight.setPower(0);
+        motorFrontLeft.setPower(0);
+        motorBackLeft.setPower(0);
+        motorBackRight.setPower(0);
     }
 
     public enum HorizontalDirection {
