@@ -54,31 +54,31 @@ public class MotorCounter2019 extends OpMode {
             robot.motorBackLeft.setPower(0.1);
             robot.motorBackRight.setPower(0.1);
         } else if (gamepad1.y) { // Forward
-            robot.frontController.setMotorPower(2, 0.1);
-            robot.frontController.setMotorPower(1, -0.1);
-            robot.rearController.setMotorPower(2, -0.1);
-            robot.rearController.setMotorPower(1, 0.1);
+            robot.motorFrontLeft.setPower(0.1);
+            robot.motorFrontRight.setPower(0.1);
+            robot.motorBackRight.setPower(0.1);
+            robot.motorBackLeft.setPower(0.1);
         } else if (gamepad1.x) { // Left
-            robot.frontController.setMotorPower(2, -0.1);
-            robot.frontController.setMotorPower(1, -0.1);
-            robot.rearController.setMotorPower(2, 0.1);
-            robot.rearController.setMotorPower(1, 0.1);
+            robot.motorFrontLeft.setPower(0.1);
+            robot.motorFrontRight.setPower(0.1);
+            robot.motorBackRight.setPower(0.1);
+            robot.motorBackLeft.setPower(0.1);
         } else {
-            robot.frontController.setMotorPower(2, 0);
-            robot.frontController.setMotorPower(1, 0);
-            robot.rearController.setMotorPower(2, 0);
-            robot.rearController.setMotorPower(1, 0);
+            robot.motorFrontLeft.setPower(0);
+            robot.motorFrontRight.setPower(0);
+            robot.motorBackRight.setPower(0);
+            robot.motorBackLeft.setPower(0);
         }
 
-        countsPerRevolutionTopLeft = robot.frontController.getMotorCurrentPosition(2) - topLeftPos;
-        countsPerRevolutionTopRight = robot.frontController.getMotorCurrentPosition(1) - topRightPos;
-        countsPerRevolutionBottomLeft = robot.rearController.getMotorCurrentPosition(1) - bottomLeftPos;
-        countsPerRevolutionBottomRight = robot.rearController.getMotorCurrentPosition(2) - bottomRightPos;
+        countsPerRevolutionTopLeft = robot.motorFrontLeft.getCurrentPosition() - topLeftPos;
+        countsPerRevolutionTopRight = robot.motorFrontRight.getCurrentPosition() + topRightPos;
+        countsPerRevolutionBottomLeft = robot.motorBackLeft.getCurrentPosition() - bottomLeftPos;
+        countsPerRevolutionBottomRight = robot.motorBackRight.getCurrentPosition() + bottomRightPos;
 
-        telemetry.addData("Current top left position:", robot.frontController.getMotorCurrentPosition(2));
-        telemetry.addData("Current top right position", robot.frontController.getMotorCurrentPosition(1));
-        telemetry.addData("Current bottom left position:", robot.rearController.getMotorCurrentPosition(1));
-        telemetry.addData("Current bottom right position", robot.rearController.getMotorCurrentPosition(2));
+        telemetry.addData("Current top left position:", robot.motorFrontLeft.getCurrentPosition());
+        telemetry.addData("Current top right position", robot.motorFrontRight.getCurrentPosition());
+        telemetry.addData("Current bottom left position:", robot.motorBackLeft.getCurrentPosition());
+        telemetry.addData("Current bottom right position", robot.motorBackRight.getCurrentPosition());
 
         telemetry.addData("Counts per revolution (top left)", countsPerRevolutionTopLeft);
         telemetry.addData("Counts per revolution (top right)", countsPerRevolutionTopRight);
