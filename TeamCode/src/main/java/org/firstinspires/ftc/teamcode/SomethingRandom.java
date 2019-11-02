@@ -18,19 +18,23 @@ public class SomethingRandom extends LinearOpMode {
 
 
        robot.drive(.93, 10, 3);
-       robot.turn(5,2,9)
+       robot.turn(5,2,9);
 
 
-               robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT, 0.5,5,3);
-       //Green Light
-        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT, 0.5,5,3);
-        robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT, 0.5,5,3);
-        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT, 0.5,5,3);
-        //Red light
-        robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT, 0,0,1);
-        robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT, 0,0,1);
-        //Orange Light
-        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT, 0.22,2.2,1);
+              robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,0.7, 0.2, 1);
+        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,0.7, .2, 1);
+        robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT,0.7, .2, 1);
+        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,0.7, .2, 1);
+        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,0.7, .2, 1);
+        robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT,0.7, .2, 1);
+        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,0.7, .2, 1);
+        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,0.7, .2, 1);
+        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,0.7, .2, 1);
+        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,0.7, .2, 1);
+        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,0.7, .2, 1);
+        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,0.7, .2, 1);
+
+
 
 
 
