@@ -55,9 +55,9 @@ public class HardwareLilPanini extends Robot {
      * @param timeout If dist is never reached for whatever reason, how many seconds before stopping where it is
      */
     public void drive(double speed, double dist, double timeout) {
-        int distInCounts = (int) (dist * COUNTS_PER_FORWARD_INCH);
+        int distInCounts = (int) (dist * COUNTS_PER_FORWARD_INCH); //convert distance in inches provided to distance in counts for motor to understand
 
-        // Target count value for each motor given dist, calulated from current position plus distance in counts
+        // Target count value for each motor given dist, calculated from current position plus (or minus if going backwards) distance in counts
         int topRightTargetForward = motorFrontRight.getCurrentPosition() + distInCounts;
         int topLeftTargetForward = motorFrontLeft.getCurrentPosition() + distInCounts;
         int bottomRightTargetForward = motorBackRight.getCurrentPosition() + distInCounts;
@@ -71,25 +71,24 @@ public class HardwareLilPanini extends Robot {
 
             while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) { //while opmode active and timeout not reached
                 if (motorFrontRight.getCurrentPosition() <= topRightTargetForward || motorFrontLeft.getCurrentPosition() <= topLeftTargetForward || motorBackRight.getCurrentPosition() <= bottomRightTargetForward || motorBackLeft.getCurrentPosition() <= bottomLeftTargetForward) {
-                    motorFrontRight.setPower(speed);
+                    motorFrontRight.setPower(speed); //set motors to speed while opmode active
                     motorFrontLeft.setPower(speed);
                     motorBackRight.setPower(speed);
                     motorBackLeft.setPower(speed);
-                } else {
+                } else { //if opmode is not active or timeout reached
                     stop();
-
                 }
             }
         }
         if (speed > 0) { //if backwards
             while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) { //while opmode active and timeout not reached
                 if (motorFrontRight.getCurrentPosition() >= topRightTargetBackward || motorFrontLeft.getCurrentPosition() >= topLeftTargetBackward || motorBackRight.getCurrentPosition() >= bottomRightTargetBackward || motorBackLeft.getCurrentPosition() >= bottomLeftTargetBackward) {
-                    motorFrontRight.setPower(speed);
+                    motorFrontRight.setPower(speed); //set motors to speed while opmode active
                     motorFrontLeft.setPower(speed);
                     motorBackRight.setPower(speed);
                     motorBackLeft.setPower(speed);
                 } else {
-                    stop();
+                    stop(); //if opmode is not active or timeout reached
                 }
             }
         }
@@ -165,7 +164,7 @@ public class HardwareLilPanini extends Robot {
         motorFrontLeft.setPower(-speed);
         motorBackLeft.setPower(-speed);
         motorBackRight.setPower(speed);
-    //sets rights motors to positive and left to negtive for counterclockwise turn
+    //sets rights motors to positive and left to negative for counterclockwise turn
     } else {
         motorFrontRight.setPower(-speed);
         motorFrontLeft.setPower(speed);
@@ -175,7 +174,7 @@ public class HardwareLilPanini extends Robot {
     }
 
 
-        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout){
+        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout){ //while opmode active and timenout not reached
             if (angle > 0){
                 if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
                     break;
@@ -198,7 +197,7 @@ public class HardwareLilPanini extends Robot {
         motorBackRight.setPower(0);
     }
 
-    public enum HorizontalDirection {
+    public enum HorizontalDirection { //Enumerator declared for strafe function
         RIGHT,
         LEFT
     }
