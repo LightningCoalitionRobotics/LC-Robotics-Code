@@ -18,8 +18,11 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 public class Lcr2019AutonomousSample extends LinearOpMode { //This class extends (inherits) properties from LinearOpMode
     private HardwareLilPanini robot = new HardwareLilPanini(this);
 
-    private void movements() { //Put what you want the robot to do here
-        //CODE
+    private void movements() {                                                                //Put what you want the robot to do here
+        robot.drive(0.5,15,60);                                            // Robot should drive at half speed for at most 60 seconds or until it has gone 15 seconds
+        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,1,10,60); // Robot should strafe right 10 inches at full speed or until 60 seconds has passed
+        robot.turn(1,60,60);                                              // Robot should turn 60 degrees at full speed or until 60 seconds has passed
+        //robot.driveangle
 
     }
 
