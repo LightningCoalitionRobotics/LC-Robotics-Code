@@ -48,13 +48,13 @@ public class HardwareLilPanini extends Robot {
         motorBackRight = registerMotor("motorRearRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER); // Same problem as above with this motor
     }
 
-    @Override
     /**
      * Drive the robot forward or backwards.
      * @param speed An integer between -1 and 1, greater distance from origin is greater speed, negative is backwards and positive is forwards
      * @param dist Distance, in inches, that you want the robot to go (always positive)
      * @param timeout How many seconds before stopping wherever it is
      */
+    @Override
     public void drive(double speed, double dist, double timeout) {
         int distInCounts = (int) (dist * COUNTS_PER_FORWARD_INCH); //convert distance in inches provided to distance in counts for motor to understand
 
@@ -173,8 +173,6 @@ public class HardwareLilPanini extends Robot {
         motorBackRight.setPower(-speed);
     //sets left motors to positive and right to negative for clockwise turn
     }
-
-
         while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout){ //while opmode active and timenout not reached
             if (angle > 0){
                 if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
