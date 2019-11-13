@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.hardware;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -42,6 +41,7 @@ public class HardwareLilPanini extends Robot {
 
     @Override  // Since this class extends the class Robot, these @Overrides let the code know that this will supercede any conflicting properties of init present in class Robot
     public void init(HardwareMap hardwareMap) { //This section registers the motors to the encoders and sets their default direction
+        this.hardwareMap = hardwareMap;
         motorFrontLeft = registerMotor("motorFrontLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
         motorFrontRight = registerMotor("motorFrontRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER); //this direction is reverse because the motor is backward, so to make it go forwards you (if you had this forwards) would have to set a negative speed
         motorBackLeft = registerMotor("motorRearLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
@@ -103,6 +103,25 @@ public class HardwareLilPanini extends Robot {
      * @param timeout If dist is never reached, how many seconds to wait before stopping.
      */
     public void driveAngle(double degrees, double speed, double dist, double timeout) {
+        double a; //
+        double b;
+
+        double tangent = Math.tan(degrees);
+
+        a = 1;
+        // tan theta = a+b / a-b
+        // tangent = 1+b/1-b
+        // tangent - tangent*b = 1+b
+        // tangent = (tangent+1)b + 1
+        // (tangent - 1)/(tangent + 1) = b
+        b = (tangent - 1)/(tangent + 1);
+
+        if (Math.abs(b) > 1) {
+            a /= Math.abs(b);
+            b /= Math.abs(b);
+        }
+
+
 
     }
 
