@@ -9,8 +9,7 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 public class TroglobiteCave extends LinearOpMode {
     private HardwareLilPanini robot = new HardwareLilPanini(this);
 
-
-    private void cupidShuffle(){
+    public void cupidShuffle(){
         robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,1, 4, 5 );
         sleep(20);
         robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,1, 4, 5 );
@@ -177,7 +176,7 @@ public class TroglobiteCave extends LinearOpMode {
     public void runOpMode(){
         robot.init(hardwareMap);
         waitForStart();
-        
+
         cupidShuffle();
     }
 }
