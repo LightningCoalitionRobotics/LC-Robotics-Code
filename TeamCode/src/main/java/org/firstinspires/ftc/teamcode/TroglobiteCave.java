@@ -177,6 +177,8 @@ public class TroglobiteCave extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
 
+        robot.drive(-0.5, 5, 10);
+        robot.stop();
         robot.turn(1, 30, 10);
         robot.turn(0.5, -30, 10);
 
