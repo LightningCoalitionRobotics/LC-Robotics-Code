@@ -96,6 +96,7 @@ public class HardwareLilPanini extends Robot {
                 }
             }
         }
+        stop();
     }
 
     /**
