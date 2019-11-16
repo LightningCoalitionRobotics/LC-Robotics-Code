@@ -25,6 +25,9 @@ public class HardwareLilPanini extends Robot {
     private static final int COUNTS_PER_SIDE_FOOT = 2000;                          // The amount of counts per the robot moving to the SIDE 1 foot is 2000, NOTICE this is different than the amount of counts going forward or backwards
     private static final int COUNTS_PER_SIDE_INCH = COUNTS_PER_SIDE_FOOT/12;
 
+    // Not experimentally determined:
+    private static final int COUNTS_PER_45_INCH = (int) Math.sqrt(Math.pow(COUNTS_PER_FORWARD_INCH, 2) + Math.pow(COUNTS_PER_SIDE_INCH, 2));
+
     // All of the components we will need (e.g. motors, servos, sensors...) that are attached to the robot are declared here
 
     public DcMotor motorFrontLeft;
@@ -97,14 +100,14 @@ public class HardwareLilPanini extends Robot {
 
     /**
      * Drive the robot at a particular angle.
-     * @param degrees The angle at which to move the robot. Measured in degrees above the positive X axis.
+     * @param degrees The angle at which to move the robot. Measured in degrees above the positive X axis. Do not type 90.
      * @param speed How fast the robot should move. Number should be in range (0, 1].
      * @param dist How far, in inches, to move the robot.
      * @param timeout If dist is never reached, how many seconds to wait before stopping.
      */
     public void driveAngle(double degrees, double speed, double dist, double timeout) {
-        double a; //
-        double b;
+        double a; // top left and bottom right
+        double b; // top right and bottom left
 
         double tangent = Math.tan(degrees);
 
@@ -121,8 +124,42 @@ public class HardwareLilPanini extends Robot {
             b /= Math.abs(b);
         }
 
+        // Find targets for motors
 
+        int aDistInCounts = (int)(dist * Math.sin(45 + degrees) * COUNTS_PER_45_INCH);
+        int bDistInCounts = (int)(dist * Math.cos(45 + degrees) * COUNTS_PER_45_INCH);
 
+        int topRightTarget = motorFrontRight.getCurrentPosition() + bDistInCounts;
+        int topLeftTarget = motorFrontLeft.getCurrentPosition() + aDistInCounts;
+        int bottomLeftTarget = motorBackLeft.getCurrentPosition() + bDistInCounts;
+        int bottomRightTarget = motorBackRight.getCurrentPosition() + aDistInCounts;
+
+        motorFrontRight.setPower(b);
+        motorFrontLeft.setPower(a);
+        motorBackLeft.setPower(b);
+        motorBackRight.setPower(a);
+
+        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
+            if (a > 0 && b > 0) {
+                if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
+                    break;
+                }
+            } else if (a > 0 && b < 0) {
+                if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
+                    break;
+                }
+            } else if (a < 0 && b > 0) {
+                if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget) {
+                    break;
+                }
+            } else {
+                if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget) {
+                    break;
+                }
+            }
+        }
+
+        stop();
     }
 
     /**
