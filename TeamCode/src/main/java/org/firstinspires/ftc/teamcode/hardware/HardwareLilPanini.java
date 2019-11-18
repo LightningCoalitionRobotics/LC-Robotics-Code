@@ -65,7 +65,7 @@ public class HardwareLilPanini extends Robot {
         if (speed < 0) {
             direction = -1;
         }
-        else if (speed > 0) {
+        else {
             direction = 1;
         }
         // Target count value for each motor given dist, calculated from current position in counts plus (or minus if going backwards) distance in counts
