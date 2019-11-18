@@ -60,16 +60,19 @@ public class HardwareLilPanini extends Robot {
     @Override
     public void drive(double speed, double dist, double timeout) {
         int distInCounts = (int) (dist * COUNTS_PER_FORWARD_INCH); //convert distance in inches provided to distance in counts for motor to understand
+        int direction;
 
+        if (speed < 0) {
+            direction = -1;
+        }
+        else if (speed > 0) {
+            direction = 1;
+        }
         // Target count value for each motor given dist, calculated from current position in counts plus (or minus if going backwards) distance in counts
-        int topRightTargetForward = motorFrontRight.getCurrentPosition() + distInCounts;
-        int topLeftTargetForward = motorFrontLeft.getCurrentPosition() + distInCounts;
-        int bottomRightTargetForward = motorBackRight.getCurrentPosition() + distInCounts;
-        int bottomLeftTargetForward = motorBackLeft.getCurrentPosition() + distInCounts;
-        int topRightTargetBackward = motorFrontRight.getCurrentPosition() - distInCounts;
-        int topLeftTargetBackward = motorFrontLeft.getCurrentPosition() - distInCounts;
-        int bottomRightTargetBackward = motorBackRight.getCurrentPosition() - distInCounts;
-        int bottomLeftTargetBackward = motorBackLeft.getCurrentPosition() - distInCounts;
+        int topRightTarget = motorFrontRight.getCurrentPosition() + distInCounts * direction;
+        int topLeftTarget = motorFrontLeft.getCurrentPosition() + distInCounts * direction;
+        int bottomRightTarget = motorBackRight.getCurrentPosition() + distInCounts * direction;
+        int bottomLeftTarget = motorBackLeft.getCurrentPosition() + distInCounts * direction;
 
         motorFrontRight.setPower(speed); //set motors to speed
         motorFrontLeft.setPower(speed);
@@ -77,13 +80,13 @@ public class HardwareLilPanini extends Robot {
         motorBackLeft.setPower(speed);
 
         while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) { //while opmode active and timeout not reached
-            if (speed > 0) {
-                if (motorFrontRight.getCurrentPosition() >= topRightTargetForward || motorFrontLeft.getCurrentPosition() >= topLeftTargetForward || motorBackRight.getCurrentPosition() >= bottomRightTargetForward || motorBackLeft.getCurrentPosition() >= bottomLeftTargetForward) { //if at target
+            if (speed > 0) { // if you want the robot to go forwards (positive speed)
+                if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget) { //if at or beyond target
                     break;
                 }
             }
-            else if (speed < 0) {
-                if (motorFrontRight.getCurrentPosition() <= topRightTargetBackward || motorBackRight.getCurrentPosition() <= topLeftTargetBackward || motorBackRight.getCurrentPosition() <= bottomRightTargetBackward || motorBackLeft.getCurrentPosition() <= bottomLeftTargetBackward) {
+            else if (speed < 0) { // if you want the robot to go backwards (negative speed)
+                if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorBackRight.getCurrentPosition() <= topLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget) { //if at or beyond target
                     break;
                 }
             }
