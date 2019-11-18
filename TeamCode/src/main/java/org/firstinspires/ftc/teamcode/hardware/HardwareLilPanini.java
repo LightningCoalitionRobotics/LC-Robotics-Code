@@ -45,10 +45,10 @@ public class HardwareLilPanini extends Robot {
     @Override  // Since this class extends the class Robot, these @Overrides let the code know that this will supercede any conflicting properties of init present in class Robot
     public void init(HardwareMap hardwareMap) { //This section registers the motors to the encoders and sets their default direction
         this.hardwareMap = hardwareMap;
-        motorFrontLeft = registerMotor("motorFrontLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFrontRight = registerMotor("motorFrontRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER); //this direction is reverse because the motor is backward, so to make it go forwards you (if you had this forwards) would have to set a negative speed
-        motorBackLeft = registerMotor("motorRearLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBackRight = registerMotor("motorRearRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER); // Same problem as above with this motor
+        motorFrontLeft = registerMotor("motorFrontLeft", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontRight = registerMotor("motorFrontRight", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER); //this direction is reverse because the motor is backward, so to make it go forwards you (if you had this forwards) would have to set a negative speed
+        motorBackLeft = registerMotor("motorRearLeft", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackRight = registerMotor("motorRearRight", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER); // Same problem as above with this motor
     }
 
     /**
@@ -71,32 +71,27 @@ public class HardwareLilPanini extends Robot {
         int bottomRightTargetBackward = motorBackRight.getCurrentPosition() - distInCounts;
         int bottomLeftTargetBackward = motorBackLeft.getCurrentPosition() - distInCounts;
 
-        if (speed < 0) { // if we are trying to go forwards
+        motorFrontRight.setPower(speed); //set motors to speed
+        motorFrontLeft.setPower(speed);
+        motorBackRight.setPower(speed);
+        motorBackLeft.setPower(speed);
 
-            while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) { //while opmode active and timeout not reached
-                if (motorFrontRight.getCurrentPosition() <= topRightTargetForward || motorFrontLeft.getCurrentPosition() <= topLeftTargetForward || motorBackRight.getCurrentPosition() <= bottomRightTargetForward || motorBackLeft.getCurrentPosition() <= bottomLeftTargetForward) { // Very complicated way of saying 'if each motor hasn't yet reached target counts'
-                    motorFrontRight.setPower(speed); //set motors to speed
-                    motorFrontLeft.setPower(speed);
-                    motorBackRight.setPower(speed);
-                    motorBackLeft.setPower(speed);
-                } else { //if opmode is not active or timeout reached
-                    stop(); // This function is declared at the bottom, it sets all motor power to 0
-                }
-            }
-        }
-        if (speed > 0) { //if backwards
-            while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) { //while opmode active and timeout not reached
-                if (motorFrontRight.getCurrentPosition() >= topRightTargetBackward || motorFrontLeft.getCurrentPosition() >= topLeftTargetBackward || motorBackRight.getCurrentPosition() >= bottomRightTargetBackward || motorBackLeft.getCurrentPosition() >= bottomLeftTargetBackward) { // Very complicated way of saying 'if each motor hasn't yet reached target counts'
-                    motorFrontRight.setPower(speed); //set motors to speed while opmode active
-                    motorFrontLeft.setPower(speed);
-                    motorBackRight.setPower(speed);
-                    motorBackLeft.setPower(speed);
-                } else { //if opmode is not active or timeout reached
+        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) { //while opmode active and timeout not reached
+            if (speed > 0) {
+                if (motorFrontRight.getCurrentPosition() >= topRightTargetForward || motorFrontLeft.getCurrentPosition() >= topLeftTargetForward || motorBackRight.getCurrentPosition() >= bottomRightTargetForward || motorBackLeft.getCurrentPosition() >= bottomLeftTargetForward) { //if at target
                     stop();
+                } else {
+                    break;
+                }
+            }
+            if (speed < 0) {
+                if (motorFrontRight.getCurrentPosition() <= topRightTargetBackward || motorBackRight.getCurrentPosition() <= topLeftTargetBackward || motorBackRight.getCurrentPosition() <= bottomRightTargetBackward || motorBackLeft.getCurrentPosition() <= bottomLeftTargetBackward) {
+                    stop();
+                } else {
+                    break;
                 }
             }
         }
-        stop();
     }
 
     /**
