@@ -49,6 +49,17 @@ public class TestAutonomous extends LinearOpMode {
         robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,.5,40,5);
         //once again, speed and distance should always be positive so no need to test those
     }
+
+    private void testdriveangle() {
+        telemetry.addLine("Testing DriveAngle function: Positive Angle at half speed for 10 inches");
+        robot.driveAngle(45, .5, 10, 60);
+
+        telemetry.addLine("Testing DriveAngle function: Negative angle at half speed for 10 inches");
+        robot.driveAngle(-45, .5, 10, 60);
+
+        telemetry.addLine("Testing DriveAngle function: Timeout after 5 seconds");
+        robot.driveAngle(45, .5, 100, 5);
+    }
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
@@ -56,6 +67,6 @@ public class TestAutonomous extends LinearOpMode {
         testdrive();
         testturn();
         teststrafe();
-        // testdriveangle();
+        testdriveangle();
     }
 }
