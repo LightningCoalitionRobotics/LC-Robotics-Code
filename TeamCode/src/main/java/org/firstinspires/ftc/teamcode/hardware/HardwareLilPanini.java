@@ -79,19 +79,17 @@ public class HardwareLilPanini extends Robot {
         while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) { //while opmode active and timeout not reached
             if (speed > 0) {
                 if (motorFrontRight.getCurrentPosition() >= topRightTargetForward || motorFrontLeft.getCurrentPosition() >= topLeftTargetForward || motorBackRight.getCurrentPosition() >= bottomRightTargetForward || motorBackLeft.getCurrentPosition() >= bottomLeftTargetForward) { //if at target
-                    stop();
-                } else {
                     break;
                 }
             }
-            if (speed < 0) {
+            else if (speed < 0) {
                 if (motorFrontRight.getCurrentPosition() <= topRightTargetBackward || motorBackRight.getCurrentPosition() <= topLeftTargetBackward || motorBackRight.getCurrentPosition() <= bottomRightTargetBackward || motorBackLeft.getCurrentPosition() <= bottomLeftTargetBackward) {
-                    stop();
-                } else {
                     break;
                 }
             }
+            ((LinearOpMode) opMode).idle();
         }
+        stop();
     }
 
     /**
