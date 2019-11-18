@@ -68,5 +68,8 @@ public class TestAutonomous extends LinearOpMode {
         testturn();
         teststrafe();
         testdriveangle();
+
+        telemetry.addLine("I admit.... im curious");
+        robot.driveAngle(90,.5,100,100);
     }
 }
