@@ -26,7 +26,7 @@ public class HardwareLilPanini extends Robot {
     private static final int COUNTS_PER_SIDE_INCH = COUNTS_PER_SIDE_FOOT/12;
 
     // Not experimentally determined:
-    private static final int COUNTS_PER_45_INCH = (int) Math.sqrt(Math.pow(COUNTS_PER_FORWARD_INCH, 2) + Math.pow(COUNTS_PER_SIDE_INCH, 2));
+    private static final int COUNTS_PER_45_INCH = (int) Math.hypot(COUNTS_PER_FORWARD_INCH, COUNTS_PER_SIDE_INCH);
 
     // All of the components we will need (e.g. motors, servos, sensors...) that are attached to the robot are declared here
 
