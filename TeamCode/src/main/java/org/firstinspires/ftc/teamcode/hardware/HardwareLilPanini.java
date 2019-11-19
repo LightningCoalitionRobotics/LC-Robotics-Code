@@ -131,32 +131,36 @@ public class HardwareLilPanini extends Robot {
         int bottomLeftTarget = motorBackLeft.getCurrentPosition() + bDistInCounts;
         int bottomRightTarget = motorBackRight.getCurrentPosition() + aDistInCounts;
 
-        motorFrontRight.setPower(b);
-        motorFrontLeft.setPower(a);
-        motorBackLeft.setPower(b);
-        motorBackRight.setPower(a);
+        if (degrees != 90) {
+            motorFrontRight.setPower(b);
+            motorFrontLeft.setPower(a);
+            motorBackLeft.setPower(b);
+            motorBackRight.setPower(a);
 
-        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-            if (a > 0 && b > 0) {
-                if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
-                    break;
-                }
-            } else if (a > 0 && b < 0) {
-                if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
-                    break;
-                }
-            } else if (a < 0 && b > 0) {
-                if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget) {
-                    break;
-                }
-            } else {
-                if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget) {
-                    break;
+            while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
+                if (a > 0 && b > 0) {
+                    if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
+                        break;
+                    }
+                } else if (a > 0 && b < 0) {
+                    if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
+                        break;
+                    }
+                } else if (a < 0 && b > 0) {
+                    if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget) {
+                        break;
+                    }
+                } else {
+                    if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget) {
+                        break;
+                    }
                 }
             }
-        }
 
-        stop();
+            stop();
+        } else {
+            drive(speed, dist, timeout);
+        }
     }
 
     /**
