@@ -59,20 +59,20 @@ public class HardwareLilPanini extends Robot {
      */
     @Override
     public void drive(double speed, double dist, double timeout) {
-        int distInCounts = (int) (dist * COUNTS_PER_FORWARD_INCH); //convert distance in inches provided to distance in counts for motor to understand
+        int distInCounts = (int) (dist * COUNTS_PER_FORWARD_INCH); //convert distance from human inches to motor counts
         int direction;
 
-        if (speed < 0) {
+        if (speed < 0) { //direction allows us to add counts if going forward or subtract counts if going backwards
             direction = -1;
         }
         else {
             direction = 1;
         }
         // Target count value for each motor given dist, calculated from current position in counts plus (or minus if going backwards) distance in counts
-        int topRightTarget = motorFrontRight.getCurrentPosition() + distInCounts * direction;
-        int topLeftTarget = motorFrontLeft.getCurrentPosition() + distInCounts * direction;
-        int bottomRightTarget = motorBackRight.getCurrentPosition() + distInCounts * direction;
-        int bottomLeftTarget = motorBackLeft.getCurrentPosition() + distInCounts * direction;
+        int topRightTarget = motorFrontRight.getCurrentPosition() + (distInCounts * direction);
+        int topLeftTarget = motorFrontLeft.getCurrentPosition() + (distInCounts * direction);
+        int bottomRightTarget = motorBackRight.getCurrentPosition() + (distInCounts * direction);
+        int bottomLeftTarget = motorBackLeft.getCurrentPosition() + (distInCounts * direction);
 
         motorFrontRight.setPower(speed); //set motors to speed
         motorFrontLeft.setPower(speed);
@@ -82,12 +82,12 @@ public class HardwareLilPanini extends Robot {
         while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) { //while opmode active and timeout not reached
             if (speed > 0) { // if you want the robot to go forwards (positive speed)
                 if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget) { //if at or beyond target
-                    break;
+                    break; //break from while loop and move on to stop()
                 }
             }
             else if (speed < 0) { // if you want the robot to go backwards (negative speed)
                 if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorBackRight.getCurrentPosition() <= topLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget) { //if at or beyond target
-                    break;
+                    break; ////break from while loop and move on to stop()
                 }
             }
             ((LinearOpMode) opMode).idle();
@@ -131,7 +131,7 @@ public class HardwareLilPanini extends Robot {
         int bottomLeftTarget = motorBackLeft.getCurrentPosition() + bDistInCounts;
         int bottomRightTarget = motorBackRight.getCurrentPosition() + aDistInCounts;
 
-        if (degrees != 90) {
+        if (degrees != 90) { //if degrees are not equal to 90, continue with driveAngle, if they are equal to 90, just use drive with speed and dist
             motorFrontRight.setPower(b);
             motorFrontLeft.setPower(a);
             motorBackLeft.setPower(b);
@@ -158,8 +158,8 @@ public class HardwareLilPanini extends Robot {
             }
 
             stop();
-        } else {
-            drive(speed, dist, timeout);
+        } else { // if degrees == 90
+            drive(speed, dist, timeout); // this is because plugging 90 into driveAngle returns an angle (imagine a triangle with two 90 degree angles, obviously not possible), so we just use drive
         }
     }
 
