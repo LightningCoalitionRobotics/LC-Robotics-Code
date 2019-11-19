@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareBobAlexanderIII;
  */
 @Disabled
 @Autonomous(name="LcrHardware2018AutonomousSample", group="autonomous")
-public class LcrHardware2018AutonomousSample extends LinearOpMode {
+public class  LcrHardware2018AutonomousSample extends LinearOpMode {
     private static final double DRIVE_SPEED = 0.5;
     private final HardwareBobAlexanderIII robot = new HardwareBobAlexanderIII(this, DRIVE_SPEED);
 

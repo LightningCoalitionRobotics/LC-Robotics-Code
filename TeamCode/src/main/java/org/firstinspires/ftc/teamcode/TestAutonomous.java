@@ -69,7 +69,7 @@ public class TestAutonomous extends LinearOpMode {
         teststrafe();
         testdriveangle();
 
-        telemetry.addLine("I admit.... im curious");
-        robot.driveAngle(90,.5,100,100);
+        telemetry.addLine("Should drive forward");
+        robot.driveAngle(90,.5,10,60); //This is testing driveAngle's ability to recognize that 90 degrees should just be using drive function
     }
 }
