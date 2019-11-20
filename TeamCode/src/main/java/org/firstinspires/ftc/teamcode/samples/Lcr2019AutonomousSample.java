@@ -22,14 +22,14 @@ public class Lcr2019AutonomousSample extends LinearOpMode { //This class extends
         robot.drive(0.5,15,60);                                            // Robot should drive at half speed for at most 60 seconds or until it has gone 15 inches
         robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,1,10,60); // Robot should strafe right 10 inches at full speed or until 60 seconds has passed
         robot.turn(1,60,60);                                              // Robot should turn 60 degrees at full speed or until 60 seconds has passed
-        //robot.driveangle
-
+        robot.driveAngle(30,1,10,60);                               // Robot should drive at a 30 degree angle at full speed for 60 inches, or for 60 second
+        robot.extend(HardwareLilPanini.INCHES_PER_EXTENSION, 60);                      // Robot should extend drawer slide
     }
 
     @Override // Let the code know that this will override anything conflicting in the class it inherited stuff from
     public void runOpMode(){ //When the init button is pressed
         robot.init(hardwareMap); //initializes the piece of code that tells it which motors are what
         waitForStart(); //Wait until we press start on the phone (remember you have to press init and then start when you're ready
-        movements();
+        movements(); // Does your movements
     }
 }
