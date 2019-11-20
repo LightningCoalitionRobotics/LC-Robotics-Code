@@ -60,6 +60,17 @@ public class TestAutonomous extends LinearOpMode {
         telemetry.addLine("Testing DriveAngle function: Timeout after 5 seconds");
         robot.driveAngle(45, .5, 100, 5);
     }
+
+    private void testextend() {
+        telemetry.addLine("Testing extend function: extending at default speed all the way");
+        robot.extend(HardwareLilPanini.INCHES_PER_EXTENSION, 60);
+
+        telemetry.addLine("Testing extend function: retracting halfway slowly");
+        robot.extend(-(HardwareLilPanini.INCHES_PER_HALF_EXTENSION), 60, 0.25);
+
+        telemetry.addLine("Testing extend function: extending a little bit at default speed");
+        robot.extend(5,60);
+    }
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
@@ -68,6 +79,7 @@ public class TestAutonomous extends LinearOpMode {
         testturn();
         teststrafe();
         testdriveangle();
+        testextend();
 
         telemetry.addLine("Should drive forward");
         robot.driveAngle(90,.5,10,60); //This is testing driveAngle's ability to recognize that 90 degrees should just be using drive function
