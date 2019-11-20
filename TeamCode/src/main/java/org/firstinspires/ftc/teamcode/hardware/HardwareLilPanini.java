@@ -23,7 +23,11 @@ public class HardwareLilPanini extends Robot {
     private static final int COUNTS_PER_DEGREE = COUNTS_PER_360 / 360;
 
     private static final int COUNTS_PER_SIDE_FOOT = 2000;                          // The amount of counts per the robot moving to the SIDE 1 foot is 2000, NOTICE this is different than the amount of counts going forward or backwards
-    private static final int COUNTS_PER_SIDE_INCH = COUNTS_PER_SIDE_FOOT/12;
+    private static final int COUNTS_PER_SIDE_INCH = COUNTS_PER_SIDE_FOOT / 12;
+
+    public static final double INCHES_PER_EXTENSION = 0; // Not yet determined (Will be inches per a full extension of drawer slide), public so other people can plug this in as distance
+    private static final double INCHES_PER_INCH_EXTENDED = 0; // Not yet determined
+    public static final double INCHES_PER_HALF_EXTENSION = INCHES_PER_EXTENSION / 2; // Inches per half extension of drawer slide
 
     // Not experimentally determined:
     private static final int COUNTS_PER_45_INCH = (int) Math.hypot(COUNTS_PER_FORWARD_INCH, COUNTS_PER_SIDE_INCH);
@@ -63,19 +67,13 @@ public class HardwareLilPanini extends Robot {
     @Override
     public void drive(double speed, double dist, double timeout) {
         int distInCounts = (int) (dist * COUNTS_PER_FORWARD_INCH); //convert distance from human inches to motor counts
-        int direction;
 
-        if (speed < 0) { //direction allows us to add counts if going forward or subtract counts if going backwards
-            direction = -1;
-        }
-        else {
-            direction = 1;
-        }
+
         // Target count value for each motor given dist, calculated from current position in counts plus (or minus if going backwards) distance in counts
-        int topRightTarget = motorFrontRight.getCurrentPosition() + (distInCounts * direction);
-        int topLeftTarget = motorFrontLeft.getCurrentPosition() + (distInCounts * direction);
-        int bottomRightTarget = motorBackRight.getCurrentPosition() + (distInCounts * direction);
-        int bottomLeftTarget = motorBackLeft.getCurrentPosition() + (distInCounts * direction);
+        int topRightTarget = motorFrontRight.getCurrentPosition() + distInCounts;
+        int topLeftTarget = motorFrontLeft.getCurrentPosition() + distInCounts;
+        int bottomRightTarget = motorBackRight.getCurrentPosition() + distInCounts;
+        int bottomLeftTarget = motorBackLeft.getCurrentPosition() + distInCounts;
 
         motorFrontRight.setPower(speed); //set motors to speed
         motorFrontLeft.setPower(speed);
@@ -248,12 +246,57 @@ public class HardwareLilPanini extends Robot {
         stop();
         //tells motors to stop if they've reached target number of counts
     }
+    /**
+     * Extend or retract the drawer slide
+     * @param dist How far, in inches, to extend/retract the slide OR input INCHES_PER_EXTENSION or INCHES_PER_HALF_EXTENSION
+     * @param timeout If dist is never reached, how many seconds to wait before stopping.
+     */
+    public void extend(double dist, double timeout) {
+        int distInCounts = (int)(dist * INCHES_PER_INCH_EXTENDED);
+        double drawerSlideTarget = motorDrawerSlide.getCurrentPosition() + distInCounts;
+
+        motorDrawerSlide.setPower(.5);
+
+        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
+            if (dist < 0) {
+                if (motorDrawerSlide.getCurrentPosition() <= drawerSlideTarget) {
+                    break;
+                }
+            } else if (dist > 0); {
+                if (motorDrawerSlide.getCurrentPosition() >= drawerSlideTarget); {
+                    break;
+                }
+            }
+        }
+        stop();
+    }
+
+    public void extend(double dist, double timeout, double speed) { //Overloaded the function extend so you can choose whether or not you put in a speed and it will do the function that matches your input
+        int distInCounts = (int)(dist * INCHES_PER_INCH_EXTENDED);
+        double drawerSlideTarget = motorDrawerSlide.getCurrentPosition() + distInCounts;
+
+        motorDrawerSlide.setPower(speed);
+
+        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
+            if (dist < 0) {
+                if (motorDrawerSlide.getCurrentPosition() <= drawerSlideTarget) {
+                    break;
+                }
+            } else if (dist > 0); {
+                if (motorDrawerSlide.getCurrentPosition() >= drawerSlideTarget); {
+                    break;
+                }
+            }
+        }
+        stop();
+    }
 
     public void stop() {
         motorFrontRight.setPower(0);
         motorFrontLeft.setPower(0);
         motorBackLeft.setPower(0);
         motorBackRight.setPower(0);
+        motorDrawerSlide.setPower(0);
     }
 
     public enum HorizontalDirection { //Enumerator declared for strafe function
