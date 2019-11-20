@@ -38,6 +38,8 @@ public class HardwareLilPanini extends Robot {
 
     public DcMotor motorBackRight;
 
+    public DcMotor motorDrawerSlide;
+
     public HardwareLilPanini(OpMode opMode) {
         super(opMode);
     }
@@ -49,6 +51,7 @@ public class HardwareLilPanini extends Robot {
         motorFrontRight = registerMotor("motorFrontRight", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER); //this direction is reverse because the motor is backward, so to make it go forwards you (if you had this forwards) would have to set a negative speed
         motorBackLeft = registerMotor("motorRearLeft", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackRight = registerMotor("motorRearRight", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER); // Same problem as above with this motor
+        motorDrawerSlide = registerMotor("motorDrawerSlide", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     /**
@@ -87,7 +90,7 @@ public class HardwareLilPanini extends Robot {
             }
             else if (speed < 0) { // if you want the robot to go backwards (negative speed)
                 if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorBackRight.getCurrentPosition() <= topLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget) { //if at or beyond target
-                    break; ////break from while loop and move on to stop()
+                    break; //break from while loop and move on to stop()
                 }
             }
             ((LinearOpMode) opMode).idle();

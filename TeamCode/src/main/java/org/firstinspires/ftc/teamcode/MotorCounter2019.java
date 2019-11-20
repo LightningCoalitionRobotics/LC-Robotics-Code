@@ -17,6 +17,7 @@ public class MotorCounter2019 extends OpMode {
         robot.motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorDrawerSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         try {
             Thread.sleep(2000);
@@ -28,17 +29,20 @@ public class MotorCounter2019 extends OpMode {
         robot.motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorDrawerSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         topLeftPos = robot.motorFrontLeft.getCurrentPosition();
         topRightPos = robot.motorFrontRight.getCurrentPosition();
         bottomLeftPos = robot.motorBackLeft.getCurrentPosition();
         bottomRightPos = robot.motorBackRight.getCurrentPosition();
+        drawerSlidePos = robot.motorDrawerSlide.getCurrentPosition();
     }
 
     private int topLeftPos;
     private int topRightPos;
     private int bottomLeftPos;
     private int bottomRightPos;
+    private int drawerSlidePos;
 
     @Override
     public void loop() {
@@ -47,6 +51,7 @@ public class MotorCounter2019 extends OpMode {
         int countsPerRevolutionTopRight;
         int countsPerRevolutionBottomLeft;
         int countsPerRevolutionBottomRight;
+        int countsPerExtension;
 
         if (gamepad1.a) { // Turn
             robot.motorFrontLeft.setPower(0.1);
@@ -66,6 +71,8 @@ public class MotorCounter2019 extends OpMode {
         } else if (gamepad1.b) { // Diagonally right
             robot.motorFrontLeft.setPower(0.1);
             robot.motorBackRight.setPower(0.1);
+        } else if (gamepad2.a) { //Extending drawer slide
+            robot.motorDrawerSlide.setPower(0.1);
         } else {
             robot.motorFrontLeft.setPower(0);
             robot.motorFrontRight.setPower(0);
@@ -77,16 +84,19 @@ public class MotorCounter2019 extends OpMode {
         countsPerRevolutionTopRight = robot.motorFrontRight.getCurrentPosition() + topRightPos;
         countsPerRevolutionBottomLeft = robot.motorBackLeft.getCurrentPosition() - bottomLeftPos;
         countsPerRevolutionBottomRight = robot.motorBackRight.getCurrentPosition() + bottomRightPos;
+        countsPerExtension = robot.motorDrawerSlide.getCurrentPosition() - drawerSlidePos;
 
         telemetry.addData("Current top left position:", robot.motorFrontLeft.getCurrentPosition());
         telemetry.addData("Current top right position", robot.motorFrontRight.getCurrentPosition());
         telemetry.addData("Current bottom left position:", robot.motorBackLeft.getCurrentPosition());
         telemetry.addData("Current bottom right position", robot.motorBackRight.getCurrentPosition());
+        telemetry.addData("Current drawer slide position", robot.motorDrawerSlide.getCurrentPosition());
 
         telemetry.addData("Counts per revolution (top left)", countsPerRevolutionTopLeft);
         telemetry.addData("Counts per revolution (top right)", countsPerRevolutionTopRight);
         telemetry.addData("Counts per revolution (bottom left)", countsPerRevolutionBottomLeft);
         telemetry.addData("Counts per revolution (bottom right)", countsPerRevolutionBottomRight);
+        telemetry.addData("Counts per extension:", countsPerExtension);
 
         telemetry.update();
     }
