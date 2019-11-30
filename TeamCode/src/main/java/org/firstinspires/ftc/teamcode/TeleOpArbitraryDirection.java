@@ -72,10 +72,10 @@ public class TeleOpArbitraryDirection extends OpMode {
 
         // Side to side
 
-        frontLeftPower += newX;
-        frontRightPower -= newX;
-        backLeftPower -= newX;
-        backRightPower += newX;
+        frontLeftPower -= newX;
+        frontRightPower += newX;
+        backLeftPower += newX;
+        backRightPower -= newX;
 
 
         // Turn
