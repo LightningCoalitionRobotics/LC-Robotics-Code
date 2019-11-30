@@ -74,10 +74,10 @@ public class TeleOpArbitraryDirection extends OpMode {
 
         // Turn
 
-        frontLeftPower += gamepad1.right_stick_x;
-        frontRightPower -= gamepad1.right_stick_x;
-        backLeftPower += gamepad1.right_stick_x;
-        backRightPower -= gamepad1.right_stick_x;
+        frontLeftPower -= gamepad1.right_stick_x;
+        frontRightPower += gamepad1.right_stick_x;
+        backLeftPower -= gamepad1.right_stick_x;
+        backRightPower += gamepad1.right_stick_x;
 
         // Correct powers
 
@@ -105,6 +105,13 @@ public class TeleOpArbitraryDirection extends OpMode {
             frontRightPower /= Math.abs(backRightPower);
             backLeftPower /= Math.abs(backRightPower);
         }
+
+        // Debug
+        telemetry.addData("Joystick (x,y)", "(" + gamepad1.left_stick_x + "," + gamepad1.left_stick_y + ")");
+        telemetry.addData("Mapped powers (x,y)", "(" + newX + "," + newY + ")");
+        telemetry.addData("Turn power", gamepad1.right_stick_x);
+        telemetry.addLine();
+        telemetry.addData("Motor powers TR TL BL BR", String.valueOf(frontRightPower) + " " + String.valueOf(frontLeftPower) + " " + String.valueOf(backLeftPower) + " " + String.valueOf(backRightPower));
 
         // Set motors
 
