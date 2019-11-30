@@ -16,16 +16,22 @@ public class TeleOpArbitraryDirection extends OpMode {
 
     @Override
     public void loop() {
-        if (gamepad1.left_stick_x == 0 && gamepad1.left_stick_y == 0) {
+        telemetry.clearAll();
+        if (gamepad1.left_stick_x == 0 && gamepad1.left_stick_y == 0 && gamepad1.right_stick_x == 0) {
             robot.stop();
+            telemetry.addLine("Stopped");
         } else if (gamepad1.left_stick_x == 0) {
-            robot.motorBackRight.setPower(gamepad1.left_stick_y);
-            robot.motorBackLeft.setPower(gamepad1.left_stick_y);
-            robot.motorFrontRight.setPower(gamepad1.left_stick_y);
-            robot.motorFrontLeft.setPower(gamepad1.left_stick_y);
+            correctPowersAndGo(gamepad1.left_stick_y + gamepad1.right_stick_x, gamepad1.left_stick_y - gamepad1.right_stick_x, gamepad1.left_stick_y + gamepad1.right_stick_x, gamepad1.left_stick_y - gamepad1.right_stick_x);
+            telemetry.addData("Joystick (x,y)", "(0," + gamepad1.left_stick_y + ")");
+            telemetry.addLine();
+            telemetry.addData("Turn power", gamepad1.right_stick_x);
+            telemetry.addLine();
+            telemetry.addData("Motor powers TR TL BL BR", robot.motorFrontRight.getPower() + " " + robot.motorFrontLeft.getPower() + " " + robot.motorBackLeft.getPower() + " " + robot.motorBackRight.getPower());
+
         } else {
             setPowersFromJoystick();
         }
+        telemetry.update();
     }
 
     private void setPowersFromJoystick() {
@@ -79,8 +85,17 @@ public class TeleOpArbitraryDirection extends OpMode {
         backLeftPower -= gamepad1.right_stick_x;
         backRightPower += gamepad1.right_stick_x;
 
-        // Correct powers
+        correctPowersAndGo(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
 
+        // Debug
+        telemetry.addData("Joystick (x,y)", "(" + gamepad1.left_stick_x + "," + gamepad1.left_stick_y + ")");
+        telemetry.addData("Mapped powers (x,y)", "(" + newX + "," + newY + ")");
+        telemetry.addData("Turn power", gamepad1.right_stick_x);
+        telemetry.addLine();
+        telemetry.addData("Motor powers TR TL BL BR", frontRightPower + " " + frontLeftPower + " " + backLeftPower + " " + backRightPower);
+    }
+
+    private void correctPowersAndGo(double frontLeftPower, double frontRightPower, double backLeftPower, double backRightPower) {
         if (Math.abs(frontLeftPower) > 1) {
             frontLeftPower /= Math.abs(frontLeftPower);
             frontRightPower /= Math.abs(frontLeftPower);
@@ -105,13 +120,6 @@ public class TeleOpArbitraryDirection extends OpMode {
             frontRightPower /= Math.abs(backRightPower);
             backLeftPower /= Math.abs(backRightPower);
         }
-
-        // Debug
-        telemetry.addData("Joystick (x,y)", "(" + gamepad1.left_stick_x + "," + gamepad1.left_stick_y + ")");
-        telemetry.addData("Mapped powers (x,y)", "(" + newX + "," + newY + ")");
-        telemetry.addData("Turn power", gamepad1.right_stick_x);
-        telemetry.addLine();
-        telemetry.addData("Motor powers TR TL BL BR", String.valueOf(frontRightPower) + " " + String.valueOf(frontLeftPower) + " " + String.valueOf(backLeftPower) + " " + String.valueOf(backRightPower));
 
         // Set motors
 
