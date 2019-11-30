@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
+@TeleOp(name="TeleOp Arbitrary Direction", group="TeleOp")
 public class TeleOpArbitraryDirection extends OpMode {
     private HardwareLilPanini robot = new HardwareLilPanini(this);
 
@@ -14,7 +16,16 @@ public class TeleOpArbitraryDirection extends OpMode {
 
     @Override
     public void loop() {
-        setPowersFromJoystick();
+        if (gamepad1.left_stick_x == 0 && gamepad1.left_stick_y == 0) {
+            robot.stop();
+        } else if (gamepad1.left_stick_x == 0) {
+            robot.motorBackRight.setPower(gamepad1.left_stick_y);
+            robot.motorBackLeft.setPower(gamepad1.left_stick_y);
+            robot.motorFrontRight.setPower(gamepad1.left_stick_y);
+            robot.motorFrontLeft.setPower(gamepad1.left_stick_y);
+        } else {
+            setPowersFromJoystick();
+        }
     }
 
     private void setPowersFromJoystick() {
@@ -39,9 +50,6 @@ public class TeleOpArbitraryDirection extends OpMode {
             }
         }
         double distCenterToEdgeOfSquare = Math.hypot(1, squareDim);
-        double distCenterToJoystick = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
-        // 1/dCTEOS = dCTJ/x
-        // x = dCTEOSdCTJ
         double newY = gamepad1.left_stick_y * distCenterToEdgeOfSquare;
         double newX = gamepad1.left_stick_x * distCenterToEdgeOfSquare;
 
