@@ -25,9 +25,9 @@ public class HardwareLilPanini extends Robot {
     private static final int COUNTS_PER_SIDE_FOOT = 2000;                          // The amount of counts per the robot moving to the SIDE 1 foot is 2000, NOTICE this is different than the amount of counts going forward or backwards
     private static final int COUNTS_PER_SIDE_INCH = COUNTS_PER_SIDE_FOOT / 12;
 
-    public static final double INCHES_PER_EXTENSION = 0; // Not yet determined (Will be inches per a full extension of drawer slide), public so other people can plug this in as distance
-    private static final double INCHES_PER_INCH_EXTENDED = 0; // Not yet determined
-    public static final double INCHES_PER_HALF_EXTENSION = INCHES_PER_EXTENSION / 2; // Inches per half extension of drawer slide
+//    public static final double INCHES_PER_EXTENSION = 0; // Not yet determined (Will be inches per a full extension of drawer slide), public so other people can plug this in as distance
+//    private static final double INCHES_PER_INCH_EXTENDED = 0; // Not yet determined
+//    public static final double INCHES_PER_HALF_EXTENSION = INCHES_PER_EXTENSION / 2; // Inches per half extension of drawer slide
 
     // Not experimentally determined:
     private static final int COUNTS_PER_45_INCH = (int) Math.hypot(COUNTS_PER_FORWARD_INCH, COUNTS_PER_SIDE_INCH);
@@ -136,10 +136,10 @@ public class HardwareLilPanini extends Robot {
         int bottomRightTarget = motorBackRight.getCurrentPosition() + aDistInCounts;
 
         if (degrees != 90) { //if degrees are not equal to 90, continue with driveAngle, if they are equal to 90, just use drive with speed and dist
-            motorFrontRight.setPower(b);
-            motorFrontLeft.setPower(a);
-            motorBackLeft.setPower(b);
-            motorBackRight.setPower(a);
+            motorFrontRight.setPower(b * speed);
+            motorFrontLeft.setPower(a * speed);
+            motorBackLeft.setPower(b * speed);
+            motorBackRight.setPower(a * speed);
 
             while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
                 if (a > 0 && b > 0) {
