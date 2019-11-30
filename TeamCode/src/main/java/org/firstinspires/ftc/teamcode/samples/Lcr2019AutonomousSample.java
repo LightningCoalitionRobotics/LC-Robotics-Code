@@ -23,7 +23,7 @@ public class Lcr2019AutonomousSample extends LinearOpMode { //This class extends
         robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,1,10,60); // Robot should strafe right 10 inches at full speed or until 60 seconds has passed
         robot.turn(1,60,60);                                              // Robot should turn 60 degrees at full speed or until 60 seconds has passed
         robot.driveAngle(30,1,10,60);                               // Robot should drive at a 30 degree angle at full speed for 60 inches, or for 60 second
-        robot.extend(HardwareLilPanini.INCHES_PER_EXTENSION, 60);                      // Robot should extend drawer slide
+//        robot.extend(HardwareLilPanini.INCHES_PER_EXTENSION, 60);                      // Robot should extend drawer slide
     }
 
     @Override // Let the code know that this will override anything conflicting in the class it inherited stuff from
