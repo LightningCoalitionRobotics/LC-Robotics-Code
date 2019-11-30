@@ -14,26 +14,55 @@ public class TeleOpArbitraryDirection extends OpMode {
 
     @Override
     public void loop() {
-
+        setPowersFromJoystick();
     }
 
     private void setPowersFromJoystick() {
-        double frontLeftPower = gamepad1.left_stick_y;
-        double frontRightPower = gamepad1.left_stick_y;
-        double backLeftPower = gamepad1.left_stick_y;
-        double backRightPower = gamepad1.left_stick_y;
+        // Correct proportions - basically i want to map the joystick circle on the circumscribed square because i can get better power
+        // y = (gamepad1.left_stick_y / gamepad1.left_stick_x)x
+        double squareDim;
+        if (Math.abs(gamepad1.left_stick_x) > Math.abs(gamepad1.left_stick_y)) {
+            if (gamepad1.left_stick_x > 0) {
+                // x = 1
+                squareDim = gamepad1.left_stick_y / gamepad1.left_stick_x;
+            } else {
+                // x = -1
+                squareDim = -gamepad1.left_stick_y / gamepad1.left_stick_x;
+            }
+        } else {
+            if (gamepad1.left_stick_y > 0) {
+                // y = 1
+                squareDim = 1 / (gamepad1.left_stick_y / gamepad1.left_stick_x);
+            } else {
+                // y = -1
+                squareDim = -1 / (gamepad1.left_stick_y / gamepad1.left_stick_x);
+            }
+        }
+        double distCenterToEdgeOfSquare = Math.hypot(1, squareDim);
+        double distCenterToJoystick = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
+        // 1/dCTEOS = dCTJ/x
+        // x = dCTEOSdCTJ
+        double newY = gamepad1.left_stick_y * distCenterToEdgeOfSquare;
+        double newX = gamepad1.left_stick_x * distCenterToEdgeOfSquare;
+
+        // Forward/back
+
+        @SuppressWarnings("SuspiciousNameCombination")
+        double frontLeftPower = newY;
+        @SuppressWarnings("SuspiciousNameCombination")
+        double frontRightPower = newY;
+        @SuppressWarnings("SuspiciousNameCombination")
+        double backLeftPower = newY;
+        @SuppressWarnings("SuspiciousNameCombination")
+        double backRightPower = newY;
 
         // Side to side
 
-        frontLeftPower += gamepad1.left_stick_x;
-        frontRightPower -= gamepad1.left_stick_x;
-        backLeftPower -= gamepad1.left_stick_x;
-        backRightPower += gamepad1.left_stick_x;
+        frontLeftPower += newX;
+        frontRightPower -= newX;
+        backLeftPower -= newX;
+        backRightPower += newX;
 
-        // Correct proportions
-        if (Math.abs(gamepad1.left_stick_x) != 1 && Math.abs(gamepad1.left_stick_y) != 1) {
-
-        }
 
         // Turn
 
@@ -68,5 +97,12 @@ public class TeleOpArbitraryDirection extends OpMode {
             frontRightPower /= Math.abs(backRightPower);
             backLeftPower /= Math.abs(backRightPower);
         }
+
+        // Set motors
+
+        robot.motorFrontLeft.setPower(frontLeftPower);
+        robot.motorFrontRight.setPower(frontRightPower);
+        robot.motorBackLeft.setPower(backLeftPower);
+        robot.motorBackRight.setPower(backRightPower);
     }
 }
