@@ -46,6 +46,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
+import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
+
 /**
  * This OpMode illustrates the basics of using the Vuforia engine to determine
  * the identity of Vuforia VuMarks encountered on the field. The code is structured as
@@ -65,11 +67,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * is explained in {@link ConceptVuforiaNavigation}.
  */
 
-@TeleOp(name="Concept: VuMark Id", group ="Concept")
+@Autonomous(name="Sensor: VuMark Id", group ="Sensor")
 @Disabled
 public class SensorVuMarkIdentification extends LinearOpMode {
 
-    public static final String TAG = "Vuforia VuMark Sample";
+    public static final String TAG = "Vuforia VuMark";
 
     OpenGLMatrix lastLocation = null;
 
@@ -79,6 +81,7 @@ public class SensorVuMarkIdentification extends LinearOpMode {
      */
     VuforiaLocalizer vuforia;
 
+    private HardwareLilPanini robot = new HardwareLilPanini(this);
     @Override public void runOpMode() {
 
         /*
