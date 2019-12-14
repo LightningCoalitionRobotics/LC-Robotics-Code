@@ -174,7 +174,16 @@ public class SensorVuMarkIdentification extends LinearOpMode {
                     double rY = rot.secondAngle;
                     double rZ = rot.thirdAngle;
                 }
+
+                robot.init(hardwareMap);
+                waitForStart();
+
+                robot.drive(0.5,46, 50);
+                robot.turn(.5,30,50);
+                robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT, 0.5, 29, 50);
+
             }
+
             else {
                 telemetry.addData("VuMark", "not visible");
             }
