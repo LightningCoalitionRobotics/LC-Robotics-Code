@@ -68,7 +68,7 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
  */
 
 @Autonomous(name="Sensor: VuMark Id", group ="Sensor")
-@Disabled
+
 public class SensorVuMarkIdentification extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark";
@@ -174,7 +174,21 @@ public class SensorVuMarkIdentification extends LinearOpMode {
                     double rY = rot.secondAngle;
                     double rZ = rot.thirdAngle;
                 }
+
+                // Actual commands for the robot to execute
+
+                robot.init(hardwareMap);
+                waitForStart();
+                while (double tY != 0) {
+                    robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT, 0.5, 1, 50);
+                }
+
+                robot.drive(0.5, double tX, 50);
+
+
+
             }
+
             else {
                 telemetry.addData("VuMark", "not visible");
             }
