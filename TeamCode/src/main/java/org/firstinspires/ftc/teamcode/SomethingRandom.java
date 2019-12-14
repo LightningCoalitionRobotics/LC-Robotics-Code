@@ -22,7 +22,7 @@ public class SomethingRandom extends LinearOpMode {
 
 //---------------------------------------------------------------------------------------
 
-        robot.drive(0.8,46, 50);
+        robot.drive(0.5,29, 50);
         robot.turn(.8, 165, 50);
         robot.drive(0.6, 24, 50);
         robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT, 0.5, 30, 50);
@@ -45,6 +45,9 @@ public class SomethingRandom extends LinearOpMode {
 
 
 
+
+
+        robot.drive(0.5, 29,50);
 
 
 
