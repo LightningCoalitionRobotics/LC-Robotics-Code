@@ -30,7 +30,7 @@ public final class SkystoneCourseConstants implements CourseConstants {
     /**
      * The distance in inches of one block
      */
-    public static final double ONE_BLOCK_ACROSS = 20;
+    public static final double ONE_BLOCK_ACROSS = 23;
 
     /**
      * The distance in inches of one diagonal of the square
