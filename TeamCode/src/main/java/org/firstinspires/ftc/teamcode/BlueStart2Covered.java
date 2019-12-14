@@ -15,10 +15,10 @@ public class BlueStart2Covered extends LinearOpMode {
         waitForStart();
 
         robot.drive(0.5, 29, 50);
-        int topRightBefore = robot.motorFrontRight.getCurrentPosition();
-        int topLeftBefore = robot.motorFrontLeft.getCurrentPosition();
-        int bottomLeftBefore = robot.motorBackLeft.getCurrentPosition();
-        int bottomRightBefore = robot.motorBackRight.getCurrentPosition();
+        int frontRightTarget = robot.motorFrontRight.getCurrentPosition();
+        int frontLeftTarget = robot.motorFrontLeft.getCurrentPosition();
+        int backLeftTarget = robot.motorBackLeft.getCurrentPosition();
+        int backRightTarget = robot.motorBackRight.getCurrentPosition();
         //finding number of counts before while loop
 
         while (!skyblockDetected) {
@@ -28,17 +28,6 @@ public class BlueStart2Covered extends LinearOpMode {
             robot.motorBackRight.setPower(0.5);
         }
         //code to pick up block goes here
-
-        int topRightAfter = robot.motorFrontRight.getCurrentPosition();
-        int topLeftAfter = robot.motorFrontLeft.getCurrentPosition();
-        int bottomLeftAfter = robot.motorBackLeft.getCurrentPosition();
-        int bottomRightAfter = robot.motorBackRight.getCurrentPosition();
-
-        int frontRightTarget = topRightAfter - topRightBefore;
-        int frontLeftTarget = topLeftAfter - topLeftBefore;
-        int backLeftTarget = bottomLeftAfter - bottomLeftBefore;
-        int backRightTarget = bottomRightAfter - bottomRightBefore;
-        //finding target amount of counts to get back to the start position
 
         while (robot.motorFrontRight.getCurrentPosition() >= frontRightTarget || robot.motorFrontLeft.getCurrentPosition() <= frontLeftTarget || robot.motorBackLeft.getCurrentPosition() >= backLeftTarget || robot.motorBackRight.getCurrentPosition() <= backRightTarget) {
             robot.motorFrontRight.setPower(0.5);
