@@ -46,8 +46,18 @@ public class SomethingRandom extends LinearOpMode {
 
 
 
+        //Code iff robot starts in the middle
 
-        robot.drive(0.5, 29,50);
+        robot.drive(0.7, 32,50);
+        robot.turn(.6, 180, 50);
+        robot.drive(0.5, 11, 50 );
+        robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT, .5, 6, 50);
+       //write for loop (ASK NOAH)
+
+
+
+
+
 
 
 
