@@ -43,8 +43,7 @@ public class SomethingRandom extends LinearOpMode {
         robot.drive(0.5,9, 50);
         //Code for if robot starts in RedStart2
 
-
-
+        
 
         //Code iff robot starts in the middle
 
