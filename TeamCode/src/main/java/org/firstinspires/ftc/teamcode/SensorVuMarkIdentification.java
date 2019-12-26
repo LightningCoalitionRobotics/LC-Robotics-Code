@@ -67,7 +67,7 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
  * is explained in {@link ConceptVuforiaNavigation}.
  */
 
-@Autonomous(name="Sensor: VuMark Id", group ="Sensor")
+@Autonomous(name="SensorVuMarkIdentification, group ="Autonomous")
 
 public class SensorVuMarkIdentification extends LinearOpMode {
 
