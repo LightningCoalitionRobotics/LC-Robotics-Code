@@ -47,11 +47,50 @@ public class SomethingRandom extends LinearOpMode {
 
         //Code iff robot starts in the middle
 
-        robot.drive(0.7, 32,50);
-        robot.turn(.6, 180, 50);
-        robot.drive(0.5, 11, 50 );
+        robot.drive(0.7, 44,50);
+        robot.turn(.6, -90, 50);
+        robot.drive(0.4, 11, 50 );
         robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT, .5, 6, 50);
-       //write for loop (ASK NOAH)
+        robot.turn(.5, -90, 50 );
+        robot.drive(1, 14,50);
+        robot.turn(1, -15, 50);
+        //ONE
+        robot.drive(1, 14,50);
+        robot.turn(1, -15, 50);
+        //TWO
+        robot.drive(1, 14,50);
+        robot.turn(1, -15, 50);
+        //THREE
+        robot.drive(1, 14,50);
+        robot.turn(1, -15, 50);
+        //FOUR
+        robot.drive(1, 14,50);
+        robot.turn(1, -15, 50);
+        //FIVE
+        robot.drive(1, 10,50);
+        robot.turn(1, -15, 50);
+        //SIX
+
+
+
+
+
+
+
+
+
+        for(int i=0; i<5; i++) {
+            //run 5 times
+            robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT, .5, 6,50);
+            robot.check;
+                    //Robot checking using image recognition. Not sure what code to use: robot.(?)
+            robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT, .5, 6,50);
+            robot.check;
+            robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT, .5, 6,50);
+            robot.check;
+            robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT, .5, 6,50);
+            robot.check;
+        }
 
 
 
