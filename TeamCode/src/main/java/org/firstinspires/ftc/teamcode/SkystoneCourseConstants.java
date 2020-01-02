@@ -47,5 +47,6 @@ public final class SkystoneCourseConstants implements CourseConstants {
     public static final float BRIDGE_ROT_Z = 180;
     public static final float HALF_FIELD_MM = 72 * 25.4f;
     public static final float QUAD_FIELD_MM = HALF_FIELD_MM / 2;
+    public static final float TARGET_HEIGHT_MM = 6 * 25.4f;
     // End constants from org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaSkyStoneNavigation
 }
