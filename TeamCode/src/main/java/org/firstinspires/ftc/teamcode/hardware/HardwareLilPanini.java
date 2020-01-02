@@ -311,5 +311,13 @@ public class HardwareLilPanini extends Robot {
         RIGHT,
         LEFT
     }
+
+    public void grab() {
+        grabber.setPosition(0);
+    }
+
+    public void release() {
+        grabber.setPosition(1);
+    }
 }
 
