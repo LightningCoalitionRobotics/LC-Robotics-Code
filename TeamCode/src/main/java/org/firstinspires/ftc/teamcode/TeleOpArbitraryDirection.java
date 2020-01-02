@@ -31,6 +31,13 @@ public class TeleOpArbitraryDirection extends OpMode {
         } else {
             setPowersFromJoystick();
         }
+
+        if (gamepad2.right_bumper) {
+            robot.grabber.setPosition(1);
+        } else if (gamepad2.left_bumper) {
+            robot.grabber.setPosition(0);
+        }
+
         telemetry.update();
     }
 
