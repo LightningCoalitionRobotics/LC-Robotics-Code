@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * The class for the LCR 2019-20 robot.
@@ -42,6 +43,8 @@ public class HardwareLilPanini extends Robot {
 
     public DcMotor motorBackRight;
 
+    public Servo grabber;
+
 //    public DcMotor smoothBoi;
 
 //    public DcMotor extendoBoi;
@@ -59,6 +62,8 @@ public class HardwareLilPanini extends Robot {
         motorBackRight = registerMotor("motorRearRight", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER); // Same problem as above with this motor
 //        smoothBoi = registerMotor("smoothBoi", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
 //        extendoBoi = registerMotor("extendoBoi", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
+
+        grabber = registerServo("grabber");
     }
 
     /**
