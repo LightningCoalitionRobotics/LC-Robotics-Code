@@ -37,4 +37,15 @@ public final class SkystoneCourseConstants implements CourseConstants {
      */
     public static final double ONE_BLOCK_DIAGONAL = 33;
 
+    // Begin constants from org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaSkyStoneNavigation
+    // 25.4 is number of mm per in
+    public static final float STONE_Z_MM = 2 * 25.4f;
+    public static final float BRIDGE_Z_MM = 6.42f * 25.4f;
+    public static final float BRIDGE_Y_MM = 23 * 25.4f;
+    public static final float BRIDGE_X_MM = 5.18f * 25.4f;
+    public static final float BRIDGE_ROT_Y = 59;
+    public static final float BRIDGE_ROT_Z = 180;
+    public static final float HALF_FIELD_MM = 72 * 25.4f;
+    public static final float QUAD_FIELD_MM = HALF_FIELD_MM / 2;
+    // End constants from org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaSkyStoneNavigation
 }
