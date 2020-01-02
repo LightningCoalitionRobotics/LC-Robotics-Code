@@ -10,6 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
@@ -38,6 +39,8 @@ public abstract class LcVuforiaOpMode extends LinearOpMode {
     protected List<VuforiaTrackable> allTrackables = new ArrayList<>();
 
     private VuforiaTrackables targetsSkyStone;
+
+    protected OpenGLMatrix robotFromCamera = OpenGLMatrix.translation(robot.CAMERA_FORWARD_DISPLACEMENT_MM, robot.CAMERA_LEFT_DISPLACEMENT_MM, robot.CAMERA_VERTICAL_DISPLACEMENT_MM).multiplied(Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.YZX, AngleUnit.DEGREES, -90, 0, 90));
 
     private void vuforiaInit() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -104,11 +107,9 @@ public abstract class LcVuforiaOpMode extends LinearOpMode {
 
         allTrackables.addAll(targetsSkyStone);
 
-        // TODO: Continue when phone mounted on robot
-    }
-
-    private void vuforiaCleanup() {
-        targetsSkyStone.deactivate();
+        for (VuforiaTrackable trackable : allTrackables) {
+            ((VuforiaTrackableDefaultListener) trackable.getListener()).setPhoneInformation(robotFromCamera, parameters.cameraDirection);
+        }
     }
 
     @Override
@@ -116,11 +117,12 @@ public abstract class LcVuforiaOpMode extends LinearOpMode {
         vuforiaInit();
         robot.init(hardwareMap);
         waitForStart();
+        targetsSkyStone.activate();
 
         runTasks();
 
         // Do vuforia cleanup
-        vuforiaCleanup();
+        targetsSkyStone.deactivate();
     }
 
     abstract void runTasks();
