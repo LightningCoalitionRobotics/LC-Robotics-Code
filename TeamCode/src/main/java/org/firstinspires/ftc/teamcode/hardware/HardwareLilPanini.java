@@ -273,12 +273,12 @@ public class HardwareLilPanini extends Robot {
                     break;
                 }
             } else {
-                if (motorDrawerSlide.getCurrentPosition() >= drawerSlideTarget); {
+                if (motorDrawerSlide.getCurrentPosition() >= drawerSlideTarget) {
                     break;
                 }
             }
         }
-        stop();
+        motorDrawerSlide.setPower(0);
     }
 
     public void extend(double dist, double timeout, double speed) { //Overloaded the function extend so you can choose whether or not you put in a speed and it will do the function that matches your input
@@ -293,12 +293,12 @@ public class HardwareLilPanini extends Robot {
                     break;
                 }
             } else {
-                if (motorDrawerSlide.getCurrentPosition() >= drawerSlideTarget); {
+                if (motorDrawerSlide.getCurrentPosition() >= drawerSlideTarget) {
                     break;
                 }
             }
         }
-        stop();
+        motorDrawerSlide.setPower(0);
     }
 
     public void stop() {
@@ -306,7 +306,6 @@ public class HardwareLilPanini extends Robot {
         motorFrontLeft.setPower(0);
         motorBackLeft.setPower(0);
         motorBackRight.setPower(0);
-        motorDrawerSlide.setPower(0);
     }
 
     public enum HorizontalDirection { //Enumerator declared for strafe function

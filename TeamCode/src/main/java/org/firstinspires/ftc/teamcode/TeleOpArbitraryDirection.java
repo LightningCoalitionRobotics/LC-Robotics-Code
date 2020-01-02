@@ -40,6 +40,9 @@ public class TeleOpArbitraryDirection extends OpMode {
             telemetry.addLine("Retracting grabber");
         }
 
+        robot.motorDrawerSlide.setPower(gamepad2.right_stick_y);
+        telemetry.addData("Drawer slide power", gamepad2.right_stick_y);
+
         telemetry.update();
     }
 
