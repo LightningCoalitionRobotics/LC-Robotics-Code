@@ -2,10 +2,10 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * The class for the LCR 2019-20 robot.
@@ -50,7 +50,7 @@ public class HardwareLilPanini extends Robot {
 
     public DcMotor motorDrawerSlide;
 
-    public Servo grabber;
+    public CRServo grabber;
 
     public HardwareLilPanini(OpMode opMode) {
         super(opMode);
@@ -65,7 +65,9 @@ public class HardwareLilPanini extends Robot {
         motorBackRight = registerMotor("motorRearRight", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER); // Same problem as above with this motor
         motorDrawerSlide = registerMotor("motorDrawerSlide", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        grabber = registerServo("grabber");
+        grabber = hardwareMap.get(CRServo.class, "grabber");
+        grabber.setDirection(DcMotorSimple.Direction.FORWARD);
+
     }
 
     /**
@@ -313,12 +315,12 @@ public class HardwareLilPanini extends Robot {
         LEFT
     }
 
-    public void grab() {
-        grabber.setPosition(0);
-    }
-
-    public void release() {
-        grabber.setPosition(1);
-    }
+//    public void grab() {
+//        grabber.setPosition(0);
+//    }
+//
+//    public void release() {
+//        grabber.setPosition(1);
+//    }
 }
 
