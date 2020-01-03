@@ -14,5 +14,6 @@ public class VuforiaNavTest extends LcVuforiaOpMode {
         telemetry.update();
         sleep(2000);
         robot.drive(1, 10, 10);
+        robot.turn(0.5, 60, 10);
     }
 }
