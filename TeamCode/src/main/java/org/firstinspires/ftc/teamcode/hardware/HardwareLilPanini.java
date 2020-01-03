@@ -26,9 +26,9 @@ public class HardwareLilPanini extends Robot {
     private static final int COUNTS_PER_SIDE_INCH = COUNTS_PER_SIDE_FOOT / 12;
 
     // mm per inch: 25.4
-    public static final float CAMERA_FORWARD_DISPLACEMENT_MM = -70;
-    public static final float CAMERA_VERTICAL_DISPLACEMENT_MM = 170;
-    public static final float CAMERA_LEFT_DISPLACEMENT_MM = 40;
+    public static final float CAMERA_FORWARD_DISPLACEMENT_MM = 160;
+    public static final float CAMERA_VERTICAL_DISPLACEMENT_MM = 180;
+    public static final float CAMERA_LEFT_DISPLACEMENT_MM = 110;
 
     public static final double INCHES_PER_EXTENSION = 0; // Not yet determined (Will be inches per a full extension of drawer slide), public so other people can plug this in as distance
     private static final double COUNTS_PER_INCH_EXTENDED = 0; // Not yet determined
@@ -60,10 +60,10 @@ public class HardwareLilPanini extends Robot {
     @Override  // Since this class extends the class Robot, these @Overrides let the code know that this will supercede any conflicting properties of init present in class Robot
     public void init(HardwareMap hardwareMap) { //This section registers the motors to the encoders and sets their default direction
         this.hardwareMap = hardwareMap;
-        motorFrontLeft = registerMotor("motorFrontLeft", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFrontRight = registerMotor("motorFrontRight", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER); //this direction is reverse because the motor is backward, so to make it go forwards you (if you had this forwards) would have to set a negative speed
-        motorBackLeft = registerMotor("motorRearLeft", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBackRight = registerMotor("motorRearRight", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER); // Same problem as above with this motor
+        motorFrontLeft = registerMotor("motorFrontLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontRight = registerMotor("motorFrontRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER); //this direction is reverse because the motor is backward, so to make it go forwards you (if you had this forwards) would have to set a negative speed
+        motorBackLeft = registerMotor("motorRearLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackRight = registerMotor("motorRearRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER); // Same problem as above with this motor
         motorDrawerSlide = registerMotor("motorDrawerSlide", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         grabber = registerMotor("grabber", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
