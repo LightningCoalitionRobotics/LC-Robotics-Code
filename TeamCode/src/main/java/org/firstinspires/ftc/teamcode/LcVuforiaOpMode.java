@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public abstract class LcVuforiaOpMode extends LinearOpMode {
     private static final String VUFORIA_LICENSE_KEY = "AZLuN0P/////AAABmXgtUaFkU0DIk56Jx+XytyKDs9/Ax2YiCDZkM76i5kOmHu1gIDWVNX4LS1fRmfnreaxfK3keo5gWF+Ot6tSDVDLTy3vCR3skPLoZmR+ZiOhiXHSucmBiO2GPPHfSvuhDK+1l4Mqc+ogxle0SlPJz3DhZz47DT07XBSvJaXFBDd/tHeIodQVb0ysOi0yRbUNQ7RkxftKt3lRCq/5JwS28/TiNTpE33psKj3rusF5LLyFB0XviowHrPdLObQEhuCbY0LUljVagijOJ6jvYciIZhRBK65fjDqFCsVkd9+d2waFMhC1JdZD2VnuCkblfdnWpd+EOkrzqCtCDf6bHSEdnzSnzc5jXuzFhNcjyMmdIY9S+";
@@ -37,6 +38,8 @@ public abstract class LcVuforiaOpMode extends LinearOpMode {
     protected VuforiaTrackable rear1;
     protected VuforiaTrackable rear2;
     protected List<VuforiaTrackable> allTrackables = new ArrayList<>();
+
+    protected OpenGLMatrix lastKnownLocation;
 
     private VuforiaTrackables targetsSkyStone;
 
@@ -126,4 +129,64 @@ public abstract class LcVuforiaOpMode extends LinearOpMode {
     }
 
     abstract void runTasks();
+
+    protected boolean isVisible(VuforiaTrackable trackable) {
+        if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
+            OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
+            if (robotLocationTransform != null) {
+                lastKnownLocation = robotLocationTransform;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public class Position {
+        public float x;
+        public float y;
+        public float z;
+
+        Position(float x, float y, float z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        @Override
+        public String toString() {
+            return "(" + x + ", " + y + ", " + z + ")";
+        }
+    }
+
+    protected Position getLastPosition() {
+        if (lastKnownLocation != null) {
+            return new Position(lastKnownLocation.getTranslation().get(0) / 25.4f, lastKnownLocation.getTranslation().get(1) / 25.4f, lastKnownLocation.getTranslation().get(2) / 25.4f);
+        }
+        return null;
+    }
+
+    public class Facing {
+        public float roll; // Rotation on robot's y axis, robot's left and right axles at different heights
+        public float pitch; // Rotation on robot's x axis, robot sight aimed up/down
+        public float heading; // Rotation on robot's z axis, flat direction of robot
+
+        Facing(float roll, float pitch, float heading) {
+            this.roll = roll;
+            this.pitch = pitch;
+            this.heading = heading;
+        }
+
+        @Override
+        public String toString() {
+            return "r=" + roll + ", p=" + pitch + ", h=" + heading;
+        }
+    }
+
+    protected Facing getLastOrientation() {
+        if (lastKnownLocation != null) {
+            Orientation rotation = Orientation.getOrientation(lastKnownLocation, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+            return new Facing(rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+        }
+        return null;
+    }
 }
