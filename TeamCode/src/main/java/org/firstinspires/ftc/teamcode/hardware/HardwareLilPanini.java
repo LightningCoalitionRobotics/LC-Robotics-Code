@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -52,7 +51,7 @@ public class HardwareLilPanini extends Robot {
 
     public DcMotor motorDrawerSlide;
 
-    public CRServo grabber;
+    public DcMotor grabber;
 
     public HardwareLilPanini(OpMode opMode) {
         super(opMode);
@@ -66,9 +65,7 @@ public class HardwareLilPanini extends Robot {
         motorBackLeft = registerMotor("motorRearLeft", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackRight = registerMotor("motorRearRight", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER); // Same problem as above with this motor
         motorDrawerSlide = registerMotor("motorDrawerSlide", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        grabber = hardwareMap.get(CRServo.class, "grabber");
-        grabber.setDirection(DcMotorSimple.Direction.FORWARD);
+        grabber = registerMotor("grabber", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     }
 
@@ -318,7 +315,7 @@ public class HardwareLilPanini extends Robot {
     }
 
     public void grab() {
-        grabber.setPower(1);
+        grabber.setPower(0.75);
         try {
             Thread.sleep(TIME_TO_GRAB);
         } catch(InterruptedException e) {
@@ -328,7 +325,7 @@ public class HardwareLilPanini extends Robot {
     }
 
     public void release() {
-        grabber.setPower(-1);
+        grabber.setPower(-0.75);
         try {
             Thread.sleep(TIME_TO_GRAB);
         } catch(InterruptedException e) {
