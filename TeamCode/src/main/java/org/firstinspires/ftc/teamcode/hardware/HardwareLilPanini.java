@@ -35,6 +35,8 @@ public class HardwareLilPanini extends Robot {
     private static final double COUNTS_PER_INCH_EXTENDED = 0; // Not yet determined
     public static final double INCHES_PER_HALF_EXTENSION = INCHES_PER_EXTENSION / 2; // Inches per half extension of drawer slide
 
+    private static final int TIME_TO_GRAB = 0;
+
     // Not experimentally determined:
     private static final int COUNTS_PER_45_INCH = (int) Math.hypot(COUNTS_PER_FORWARD_INCH, COUNTS_PER_SIDE_INCH);
 
@@ -315,12 +317,24 @@ public class HardwareLilPanini extends Robot {
         LEFT
     }
 
-//    public void grab() {
-//        grabber.setPosition(0);
-//    }
-//
-//    public void release() {
-//        grabber.setPosition(1);
-//    }
+    public void grab() {
+        grabber.setPower(1);
+        try {
+            Thread.sleep(TIME_TO_GRAB);
+        } catch(InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        grabber.setPower(0);
+    }
+
+    public void release() {
+        grabber.setPower(-1);
+        try {
+            Thread.sleep(TIME_TO_GRAB);
+        } catch(InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        grabber.setPower(0);
+    }
 }
 

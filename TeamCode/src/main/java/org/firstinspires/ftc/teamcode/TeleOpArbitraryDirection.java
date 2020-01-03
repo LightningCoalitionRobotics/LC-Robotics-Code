@@ -27,16 +27,15 @@ public class TeleOpArbitraryDirection extends OpMode {
             telemetry.addData("Turn power", gamepad1.right_stick_x);
             telemetry.addLine();
             telemetry.addData("Motor powers TR TL BL BR", robot.motorFrontRight.getPower() + " " + robot.motorFrontLeft.getPower() + " " + robot.motorBackLeft.getPower() + " " + robot.motorBackRight.getPower());
-
         } else {
             setPowersFromJoystick();
         }
 
         if (gamepad2.right_bumper) {
-            robot.grabber.setPosition(1);
+            robot.grab();
             telemetry.addLine("Extending grabber");
         } else if (gamepad2.left_bumper) {
-            robot.grabber.setPosition(0);
+            robot.release();
             telemetry.addLine("Retracting grabber");
         }
 
