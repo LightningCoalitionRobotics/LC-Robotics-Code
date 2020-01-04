@@ -7,6 +7,7 @@ public class VuforiaNavTest extends LcVuforiaOpMode {
     public void runTasks() {
         sleep(1000);
         if (searchForTrackables().size() > 0) {
+            telemetry.addData("I can see", searchForTrackables().toArray());
             telemetry.addData("Current position", getLastPosition());
             telemetry.addData("Current orientation", getLastOrientation());
         } else {
