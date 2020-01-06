@@ -44,12 +44,12 @@ public class TeleOpArbitraryDirection extends OpMode {
             robot.grabber.setPower(0);
         }
 
-        if ((gamepad2.right_stick_y > 0 && robot.motorDrawerSlide.getCurrentPosition() >= DRAWER_SLIDE_TOP_POSITION) || (gamepad2.right_stick_y < 0 && robot.motorDrawerSlide.getCurrentPosition() <= DRAWER_SLIDE_BOTTOM_POSITION)) {
+        if ((gamepad2.right_stick_y > 0 && robot.motorDrawerSlide.getCurrentPosition() >= DRAWER_SLIDE_TOP_POSITION) || (gamepad2.right_stick_y < 0 && robot.motorDrawerSlide.getCurrentPosition() <= DRAWER_SLIDE_BOTTOM_POSITION)) { // if the robot isnt trying to go past the bounds of drawer slide safe distance let it move and add telemetry
             robot.motorDrawerSlide.setPower(gamepad2.right_stick_y);
             telemetry.addData("Drawer slide power", gamepad2.right_stick_y);
             telemetry.update();
         }
-        else {
+        else { // if not don't move
             robot.motorDrawerSlide.setPower(0);
         }
 
