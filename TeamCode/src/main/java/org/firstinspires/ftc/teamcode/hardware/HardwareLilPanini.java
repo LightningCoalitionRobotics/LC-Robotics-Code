@@ -36,6 +36,9 @@ public class HardwareLilPanini extends Robot {
 
     private static final int TIME_TO_GRAB = 0;
 
+    public static final int DRAWER_SLIDE_TOP_POSITION = 0; //not determined
+    public static final int DRAWER_SLIDE_BOTTOM_POSITION = 0; //not determined
+
     // Not experimentally determined:
     private static final int COUNTS_PER_45_INCH = (int) Math.hypot(COUNTS_PER_FORWARD_INCH, COUNTS_PER_SIDE_INCH);
 
@@ -255,7 +258,7 @@ public class HardwareLilPanini extends Robot {
             ((LinearOpMode) opMode).idle();
         }
         stop();
-        //tells motors to stop if they've reached target number of counts
+            //tells motors to stop if they've reached target number of counts
     }
     /**
      * Extend or retract the drawer slide
