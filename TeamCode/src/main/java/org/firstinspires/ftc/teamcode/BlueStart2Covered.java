@@ -1,9 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
-import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
 @Autonomous(name="BlueStart2Covered", group = "autonomous")
 public class BlueStart2Covered extends LcVuforiaOpMode {
