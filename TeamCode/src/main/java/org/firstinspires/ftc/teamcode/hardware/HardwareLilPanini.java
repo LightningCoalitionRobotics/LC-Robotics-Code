@@ -30,14 +30,14 @@ public class HardwareLilPanini extends Robot {
     public static final float CAMERA_VERTICAL_DISPLACEMENT_MM = 180;
     public static final float CAMERA_LEFT_DISPLACEMENT_MM = 110;
 
-    public static final double INCHES_PER_EXTENSION = 0; // Not yet determined (Will be inches per a full extension of drawer slide), public so other people can plug this in as distance
+    public static final double EXTENSION_INCHES = 0; // Not yet determined (Will be inches per a full extension of drawer slide), public so other people can plug this in as distance
     private static final double COUNTS_PER_INCH_EXTENDED = 0; // Not yet determined
-    public static final double INCHES_PER_HALF_EXTENSION = INCHES_PER_EXTENSION / 2; // Inches per half extension of drawer slide
 
-    private static final int TIME_TO_GRAB = 0;
 
     public static final int DRAWER_SLIDE_TOP_POSITION = 0; //not determined
     public static final int DRAWER_SLIDE_BOTTOM_POSITION = 0; //not determined
+
+    public static final int COUNTS_PER_GRABBER_INCH = 0;
 
     // Not experimentally determined:
     private static final int COUNTS_PER_45_INCH = (int) Math.hypot(COUNTS_PER_FORWARD_INCH, COUNTS_PER_SIDE_INCH);
@@ -223,28 +223,28 @@ public class HardwareLilPanini extends Robot {
 
     @Override
     public void turn(double speed, double angle, double timeout) {
-    int angleInCounts = (int)(angle * COUNTS_PER_DEGREE);
-    //changes the angle variable from degrees to counts
+        int angleInCounts = (int)(angle * COUNTS_PER_DEGREE);
+        //changes the angle variable from degrees to counts
 
-    int topRightTarget = motorFrontRight.getCurrentPosition() + angleInCounts;
-    int topLeftTarget = motorFrontLeft.getCurrentPosition() - angleInCounts;
-    int bottomLeftTarget = motorBackLeft.getCurrentPosition() - angleInCounts;
-    int bottomRightTarget = motorBackRight.getCurrentPosition() + angleInCounts;
-    //finds target number of counts for each motor
+        int topRightTarget = motorFrontRight.getCurrentPosition() + angleInCounts;
+        int topLeftTarget = motorFrontLeft.getCurrentPosition() - angleInCounts;
+        int bottomLeftTarget = motorBackLeft.getCurrentPosition() - angleInCounts;
+        int bottomRightTarget = motorBackRight.getCurrentPosition() + angleInCounts;
+        //finds target number of counts for each motor
 
-    if (angle > 0) {
-        motorFrontRight.setPower(speed);
-        motorFrontLeft.setPower(-speed);
-        motorBackLeft.setPower(-speed);
-        motorBackRight.setPower(speed);
-    //sets rights motors to positive and left to negative for counterclockwise turn
-    } else {
-        motorFrontRight.setPower(-speed);
-        motorFrontLeft.setPower(speed);
-        motorBackLeft.setPower(speed);
-        motorBackRight.setPower(-speed);
-    //sets left motors to positive and right to negative for clockwise turn
-    }
+        if (angle > 0) {
+            motorFrontRight.setPower(speed);
+            motorFrontLeft.setPower(-speed);
+            motorBackLeft.setPower(-speed);
+            motorBackRight.setPower(speed);
+        //sets rights motors to positive and left to negative for counterclockwise turn
+        } else {
+            motorFrontRight.setPower(-speed);
+            motorFrontLeft.setPower(speed);
+            motorBackLeft.setPower(speed);
+            motorBackRight.setPower(-speed);
+        //sets left motors to positive and right to negative for clockwise turn
+        }
         while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout){ //while opmode active and timenout not reached
             if (angle > 0){
                 if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
@@ -262,7 +262,7 @@ public class HardwareLilPanini extends Robot {
     }
     /**
      * Extend or retract the drawer slide
-     * @param dist How far, in inches, to extend/retract the slide OR input INCHES_PER_EXTENSION or INCHES_PER_HALF_EXTENSION
+     * @param dist How far, in inches, to extend/retract the slide OR input EXTENSION_INCHES or INCHES_PER_HALF_EXTENSION
      * @param timeout If dist is never reached, how many seconds to wait before stopping.
      */
     public void extend(double dist, double timeout) {
@@ -317,24 +317,26 @@ public class HardwareLilPanini extends Robot {
         LEFT
     }
 
-    public void grab() {
-        grabber.setPower(0.75);
-        try {
-            Thread.sleep(TIME_TO_GRAB);
-        } catch(InterruptedException e) {
-            Thread.currentThread().interrupt();
+    public void grab(double distance) {
+        int currentCounts = grabber.getCurrentPosition();
+        grabber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        grabber.setPower(-0.5);
+        grabber.setTargetPosition((int)(currentCounts - distance * COUNTS_PER_GRABBER_INCH));
+        while (grabber.getPower() != 0) {
+            ((LinearOpMode)opMode).idle();
         }
-        grabber.setPower(0);
+        grabber.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    public void release() {
-        grabber.setPower(-0.75);
-        try {
-            Thread.sleep(TIME_TO_GRAB);
-        } catch(InterruptedException e) {
-            Thread.currentThread().interrupt();
+    public void release(double distance) {
+        int currentCounts = grabber.getCurrentPosition();
+        grabber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        grabber.setPower(0.5);
+        grabber.setTargetPosition((int)(currentCounts + distance * COUNTS_PER_GRABBER_INCH));
+        while (grabber.getPower() != 0) {
+            ((LinearOpMode)opMode).idle();
         }
-        grabber.setPower(0);
+        grabber.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 }
 

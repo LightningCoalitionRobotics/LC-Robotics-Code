@@ -35,11 +35,11 @@ public class TeleOpArbitraryDirection extends OpMode {
         }
 
         if (gamepad2.right_bumper) {
-            robot.grab();
-            telemetry.addLine("Extending grabber");
-        } else if (gamepad2.left_bumper) {
-            robot.release();
+            robot.grabber.setPower(-0.5);
             telemetry.addLine("Retracting grabber");
+        } else if (gamepad2.left_bumper) {
+            robot.grabber.setPower(0.5);
+            telemetry.addLine("Extending grabber");
         } else {
             robot.grabber.setPower(0);
         }
