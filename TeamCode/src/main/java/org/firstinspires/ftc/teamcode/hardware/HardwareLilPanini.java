@@ -98,11 +98,15 @@ public class HardwareLilPanini extends Robot {
             if (speed > 0) { // if you want the robot to go forwards (positive speed)
                 if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget) { //if at or beyond target
                     break; //break from while loop and move on to stop()
+                } else {
+                    ((LinearOpMode)opMode).idle();
                 }
             }
             else if (speed < 0) { // if you want the robot to go backwards (negative speed)
                 if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorBackRight.getCurrentPosition() <= topLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget) { //if at or beyond target
                     break; //break from while loop and move on to stop()
+                } else {
+                    ((LinearOpMode)opMode).idle();
                 }
             }
             ((LinearOpMode) opMode).idle();
