@@ -84,7 +84,7 @@
 //    private HardwareLilPanini robot = new HardwareLilPanini(this);
 //    @Override public void runOpMode() {
 //
-//        /*a
+//        /*
 //         * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
 //         */
 //        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
