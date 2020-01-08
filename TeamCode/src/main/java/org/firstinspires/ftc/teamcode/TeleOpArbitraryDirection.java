@@ -5,6 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
+import static org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini.DRAWER_SLIDE_TOP_POSITION;
+import static org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini.DRAWER_SLIDE_BOTTOM_POSITION;
+
 @TeleOp(name="TeleOp Arbitrary Direction", group="TeleOp")
 public class TeleOpArbitraryDirection extends OpMode {
     private HardwareLilPanini robot = new HardwareLilPanini(this);
@@ -37,12 +40,19 @@ public class TeleOpArbitraryDirection extends OpMode {
         } else if (gamepad2.left_bumper) {
             robot.release();
             telemetry.addLine("Retracting grabber");
+        } else {
+            robot.grabber.setPower(0);
         }
 
-        robot.motorDrawerSlide.setPower(gamepad2.right_stick_y);
-        telemetry.addData("Drawer slide power", gamepad2.right_stick_y);
+        if ((gamepad2.right_stick_y > 0 && robot.motorDrawerSlide.getCurrentPosition() >= DRAWER_SLIDE_TOP_POSITION) || (gamepad2.right_stick_y < 0 && robot.motorDrawerSlide.getCurrentPosition() <= DRAWER_SLIDE_BOTTOM_POSITION)) { // if the robot isnt trying to go past the bounds of drawer slide safe distance let it move and add telemetry
+            robot.motorDrawerSlide.setPower(gamepad2.right_stick_y);
+            telemetry.addData("Drawer slide power", gamepad2.right_stick_y);
+            telemetry.update();
+        }
+        else { // if not don't move
+            robot.motorDrawerSlide.setPower(0);
+        }
 
-        telemetry.update();
     }
 
     private void setPowersFromJoystick() {
