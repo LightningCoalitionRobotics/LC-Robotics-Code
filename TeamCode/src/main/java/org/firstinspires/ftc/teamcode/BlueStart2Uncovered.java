@@ -2,7 +2,12 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="BlueStart2Uncovered", group = "autonomous")
+/**
+ * This code is used to find the sky stone and then move it into the build zone.
+ * This one is used for if the other team doesn't move the platform into the build zone
+ */
+
+@Autonomous(name = "BlueStart2Uncovered", group = "autonomous")
 public class BlueStart2Uncovered extends LcVuforiaOpMode {
 
     @Override
@@ -11,6 +16,7 @@ public class BlueStart2Uncovered extends LcVuforiaOpMode {
         waitForStart();
 
         robot.drive(0.5, 29, 50);
+
         int frontRightTarget = robot.motorFrontRight.getCurrentPosition();
         int frontLeftTarget = robot.motorFrontLeft.getCurrentPosition();
         int backLeftTarget = robot.motorBackLeft.getCurrentPosition();

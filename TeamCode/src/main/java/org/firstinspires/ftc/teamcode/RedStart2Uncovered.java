@@ -6,10 +6,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  * This code is used to find the sky stone and then place it onto the build platform.
  * Its used for when the other team moves the build platform into the build zone.
  */
-
-@Autonomous(name = "BlueStart2Covered", group = "autonomous")
-public class BlueStart2Covered extends LcVuforiaOpMode {
-
+@Autonomous(name = "RedStart2Uncovered", group = "autonomous")
+public class RedStart2Uncovered extends LcVuforiaOpMode {
+    
     @Override
     public void runTasks() {
         robot.init(hardwareMap);
@@ -39,7 +38,9 @@ public class BlueStart2Covered extends LcVuforiaOpMode {
         }
         robot.drive(-0.7, 30, 50);
         robot.turn(0.6, 90, 50);
-        robot.drive(0.7, 51, 50);
+        robot.drive(0.7, 75, 50);
+
+        //code for robot to place skystone in build zone
 
     }
 
