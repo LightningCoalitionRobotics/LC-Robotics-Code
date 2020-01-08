@@ -6,10 +6,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
 @Autonomous(name="BlueStart2Uncovered", group = "autonomous")
-public class BlueStart2Uncovered extends LinearOpMode {
-    private HardwareLilPanini robot = new HardwareLilPanini(this);
+public class BlueStart2Uncovered extends LcVuforiaOpMode {
+
     @Override
-    public void runOpMode() {
+    public void runTasks() {
         robot.init(hardwareMap);
         waitForStart();
 
@@ -20,7 +20,7 @@ public class BlueStart2Uncovered extends LinearOpMode {
         int backRightTarget = robot.motorBackRight.getCurrentPosition();
         //finding number of counts before while loop
 
-        while (!skyblockDetected) {
+        while (!isVisible(stoneTarget)) {
             robot.motorFrontRight.setPower(-0.5);
             robot.motorFrontLeft.setPower(0.5);
             robot.motorBackLeft.setPower(-0.5);
