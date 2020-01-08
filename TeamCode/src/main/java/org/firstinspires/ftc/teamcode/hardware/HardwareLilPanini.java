@@ -30,14 +30,14 @@ public class HardwareLilPanini extends Robot {
     public static final float CAMERA_VERTICAL_DISPLACEMENT_MM = 180;
     public static final float CAMERA_LEFT_DISPLACEMENT_MM = 110;
 
-    public static final double INCHES_PER_EXTENSION = 0; // Not yet determined (Will be inches per a full extension of drawer slide), public so other people can plug this in as distance
+    public static final double EXTENSION_INCHES = 0; // Not yet determined (Will be inches per a full extension of drawer slide), public so other people can plug this in as distance
     private static final double COUNTS_PER_INCH_EXTENDED = 0; // Not yet determined
-    public static final double INCHES_PER_HALF_EXTENSION = INCHES_PER_EXTENSION / 2; // Inches per half extension of drawer slide
 
-    private static final int TIME_TO_GRAB = 0;
 
     public static final int DRAWER_SLIDE_TOP_POSITION = 0; //not determined
     public static final int DRAWER_SLIDE_BOTTOM_POSITION = 0; //not determined
+
+    public static final int COUNTS_PER_GRABBER_INCH = 0;
 
     // Not experimentally determined:
     private static final int COUNTS_PER_45_INCH = (int) Math.hypot(COUNTS_PER_FORWARD_INCH, COUNTS_PER_SIDE_INCH);
@@ -262,7 +262,7 @@ public class HardwareLilPanini extends Robot {
     }
     /**
      * Extend or retract the drawer slide
-     * @param dist How far, in inches, to extend/retract the slide OR input INCHES_PER_EXTENSION or INCHES_PER_HALF_EXTENSION
+     * @param dist How far, in inches, to extend/retract the slide OR input EXTENSION_INCHES or INCHES_PER_HALF_EXTENSION
      * @param timeout If dist is never reached, how many seconds to wait before stopping.
      */
     public void extend(double dist, double timeout) {
@@ -317,24 +317,26 @@ public class HardwareLilPanini extends Robot {
         LEFT
     }
 
-    public void grab() {
-        grabber.setPower(0.75);
-        try {
-            Thread.sleep(TIME_TO_GRAB);
-        } catch(InterruptedException e) {
-            Thread.currentThread().interrupt();
+    public void grab(double distance) {
+        int currentCounts = grabber.getCurrentPosition();
+        grabber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        grabber.setPower(-0.5);
+        grabber.setTargetPosition((int)(currentCounts - distance * COUNTS_PER_GRABBER_INCH));
+        while (grabber.getPower() != 0) {
+            ((LinearOpMode)opMode).idle();
         }
-        grabber.setPower(0);
+        grabber.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    public void release() {
-        grabber.setPower(-0.75);
-        try {
-            Thread.sleep(TIME_TO_GRAB);
-        } catch(InterruptedException e) {
-            Thread.currentThread().interrupt();
+    public void release(double distance) {
+        int currentCounts = grabber.getCurrentPosition();
+        grabber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        grabber.setPower(0.5);
+        grabber.setTargetPosition((int)(currentCounts + distance * COUNTS_PER_GRABBER_INCH));
+        while (grabber.getPower() != 0) {
+            ((LinearOpMode)opMode).idle();
         }
-        grabber.setPower(0);
+        grabber.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 }
 

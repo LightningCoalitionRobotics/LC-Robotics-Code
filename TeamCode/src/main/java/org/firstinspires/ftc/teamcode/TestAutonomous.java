@@ -63,7 +63,7 @@ public class TestAutonomous extends LinearOpMode {
 
 //    private void testextend() {
 //        telemetry.addLine("Testing extend function: extending at default speed all the way");
-//        robot.extend(HardwareLilPanini.INCHES_PER_EXTENSION, 60);
+//        robot.extend(HardwareLilPanini.EXTENSION_INCHES, 60);
 //
 //        telemetry.addLine("Testing extend function: retracting halfway slowly");
 //        robot.extend(-(HardwareLilPanini.INCHES_PER_HALF_EXTENSION), 60, 0.25);
