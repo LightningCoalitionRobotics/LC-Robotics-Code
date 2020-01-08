@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
+import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 @Autonomous(name = "SomethingRandom", group = "autonomous")
 public class SomethingRandom extends LcVuforiaOpMode {
@@ -12,6 +13,7 @@ public class SomethingRandom extends LcVuforiaOpMode {
         robot.init(hardwareMap);
         waitForStart();
         start();
+
 
         robot.drive(.93, 10, 3);
         robot.turn(5, 2, 9);
@@ -52,7 +54,7 @@ public class SomethingRandom extends LcVuforiaOpMode {
             if (isVisible(stoneTarget)) {
 
                 robot.stop();
-                robot.grab(3);
+                robot.grab();
                 break;
 
             } else {
@@ -66,6 +68,6 @@ public class SomethingRandom extends LcVuforiaOpMode {
         robot.turn(.7, 90, 50);
         robot.drive(.7, 75, 50);
         robot.stop();
-        robot.release(2);
+        robot.release();
     }
 }
