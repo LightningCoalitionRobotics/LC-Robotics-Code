@@ -27,7 +27,7 @@ public class BlueStart2Uncovered extends LcVuforiaOpMode {
         //finding number of counts before while loop
 
         while (!isVisible(stoneTarget)) {
-            robot.motorFrontRight.setPower(-0.5);
+//=[-pl,]            robot.motorFrontRight.setPower(-0.5);
             robot.motorFrontLeft.setPower(0.5);
             robot.motorBackLeft.setPower(-0.5);
             robot.motorBackRight.setPower(0.5);

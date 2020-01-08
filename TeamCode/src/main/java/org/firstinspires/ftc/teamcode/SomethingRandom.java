@@ -54,7 +54,7 @@ public class SomethingRandom extends LcVuforiaOpMode {
             if (isVisible(stoneTarget)) {
 
                 robot.stop();
-                robot.grab(1);
+                robot.grab();
                 break;
 
             } else {
@@ -68,6 +68,6 @@ public class SomethingRandom extends LcVuforiaOpMode {
         robot.turn(.7, 90, 50);
         robot.drive(.7, 75, 50);
         robot.stop();
-        robot.release(1);
+        robot.release();
     }
 }
