@@ -268,43 +268,43 @@ public class HardwareLilPanini extends Robot {
      * @param timeout If dist is never reached, how many seconds to wait before stopping.
      */
     public void extend(double dist, double timeout) {
-        int distInCounts = (int)(dist * COUNTS_PER_INCH_EXTENDED);
-        double drawerSlideTarget = motorDrawerSlide.getCurrentPosition() + distInCounts;
-
-        motorDrawerSlide.setPower(.5);
-
-        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-            if (dist < 0) {
-                if (motorDrawerSlide.getCurrentPosition() <= drawerSlideTarget) {
-                    break;
-                }
-            } else {
-                if (motorDrawerSlide.getCurrentPosition() >= drawerSlideTarget) {
-                    break;
-                }
-            }
-        }
-        motorDrawerSlide.setPower(0);
+//        int distInCounts = (int)(dist * COUNTS_PER_INCH_EXTENDED);
+//        double drawerSlideTarget = motorDrawerSlide.getCurrentPosition() + distInCounts;
+//
+//        motorDrawerSlide.setPower(.5);
+//
+//        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
+//            if (dist < 0) {
+//                if (motorDrawerSlide.getCurrentPosition() <= drawerSlideTarget) {
+//                    break;
+//                }
+//            } else {
+//                if (motorDrawerSlide.getCurrentPosition() >= drawerSlideTarget) {
+//                    break;
+//                }
+//            }
+//        }
+//        motorDrawerSlide.setPower(0);
     }
 
     public void extend(double dist, double timeout, double speed) { //Overloaded the function extend so you can choose whether or not you put in a speed and it will do the function that matches your input
-        int distInCounts = (int)(dist * COUNTS_PER_INCH_EXTENDED);
-        double drawerSlideTarget = motorDrawerSlide.getCurrentPosition() + distInCounts;
-
-        motorDrawerSlide.setPower(speed);
-
-        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-            if (dist < 0) {
-                if (motorDrawerSlide.getCurrentPosition() <= drawerSlideTarget) {
-                    break;
-                }
-            } else {
-                if (motorDrawerSlide.getCurrentPosition() >= drawerSlideTarget) {
-                    break;
-                }
-            }
-        }
-        motorDrawerSlide.setPower(0);
+//        int distInCounts = (int)(dist * COUNTS_PER_INCH_EXTENDED);
+//        double drawerSlideTarget = motorDrawerSlide.getCurrentPosition() + distInCounts;
+//
+//        motorDrawerSlide.setPower(speed);
+//
+//        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
+//            if (dist < 0) {
+//                if (motorDrawerSlide.getCurrentPosition() <= drawerSlideTarget) {
+//                    break;
+//                }
+//            } else {
+//                if (motorDrawerSlide.getCurrentPosition() >= drawerSlideTarget) {
+//                    break;
+//                }
+//            }
+//        }
+//        motorDrawerSlide.setPower(0);
     }
 
     public void stop() {

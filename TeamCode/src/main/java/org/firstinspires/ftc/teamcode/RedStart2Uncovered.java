@@ -22,7 +22,7 @@ public class RedStart2Uncovered extends LcVuforiaOpMode {
         int backRightTarget = robot.motorBackRight.getCurrentPosition();
         //finding number of counts before while loop
 
-        while (!isVisible(stoneTarget)) {
+        while (opModeIsActive() && !isVisible(stoneTarget)) {
             robot.motorFrontRight.setPower(0.5);
             robot.motorFrontLeft.setPower(-0.5);
             robot.motorBackLeft.setPower(0.5);
@@ -30,7 +30,7 @@ public class RedStart2Uncovered extends LcVuforiaOpMode {
         }
         //code to pick up block goes here
 
-        while (robot.motorFrontRight.getCurrentPosition() <= frontRightTarget || robot.motorFrontLeft.getCurrentPosition() >= frontLeftTarget || robot.motorBackLeft.getCurrentPosition() <= backLeftTarget || robot.motorBackRight.getCurrentPosition() >= backRightTarget) {
+        while (opModeIsActive() && (robot.motorFrontRight.getCurrentPosition() <= frontRightTarget || robot.motorFrontLeft.getCurrentPosition() >= frontLeftTarget || robot.motorBackLeft.getCurrentPosition() <= backLeftTarget || robot.motorBackRight.getCurrentPosition() >= backRightTarget)) {
             robot.motorFrontRight.setPower(-0.5);
             robot.motorFrontLeft.setPower(0.5);
             robot.motorBackLeft.setPower(-0.5);
