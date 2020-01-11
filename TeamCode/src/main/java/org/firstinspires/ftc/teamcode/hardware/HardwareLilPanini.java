@@ -30,14 +30,12 @@ public class HardwareLilPanini extends Robot {
     public static final float CAMERA_VERTICAL_DISPLACEMENT_MM = 180;
     public static final float CAMERA_LEFT_DISPLACEMENT_MM = 110;
 
-    public static final double EXTENSION_INCHES = 0; // Not yet determined (Will be inches per a full extension of drawer slide), public so other people can plug this in as distance
-    private static final double COUNTS_PER_INCH_EXTENDED = 0; // Not yet determined
-
+    public static final double EXTENSION_TIME = 2; // Not yet determined (Will be inches per a full extension of drawer slide), public so other people can plug this in as distance
 
     public static final int DRAWER_SLIDE_TOP_POSITION = 0; //not determined
     public static final int DRAWER_SLIDE_BOTTOM_POSITION = 0; //not determined
 
-    public static final int COUNTS_PER_GRABBER_INCH = 0;
+    public static final double GRABBER_TIME = 2;
 
     // Not experimentally determined:
     private static final int COUNTS_PER_45_INCH = (int) Math.hypot(COUNTS_PER_FORWARD_INCH, COUNTS_PER_SIDE_INCH);
@@ -98,11 +96,15 @@ public class HardwareLilPanini extends Robot {
             if (speed > 0) { // if you want the robot to go forwards (positive speed)
                 if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget) { //if at or beyond target
                     break; //break from while loop and move on to stop()
+                } else {
+                    ((LinearOpMode)opMode).idle();
                 }
             }
             else if (speed < 0) { // if you want the robot to go backwards (negative speed)
                 if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorBackRight.getCurrentPosition() <= topLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget) { //if at or beyond target
                     break; //break from while loop and move on to stop()
+                } else {
+                    ((LinearOpMode)opMode).idle();
                 }
             }
             ((LinearOpMode) opMode).idle();
@@ -318,25 +320,15 @@ public class HardwareLilPanini extends Robot {
     }
 
     public void grab(double distance) {
-        int currentCounts = grabber.getCurrentPosition();
-        grabber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         grabber.setPower(-0.5);
-        grabber.setTargetPosition((int)(currentCounts - distance * COUNTS_PER_GRABBER_INCH));
-        while (grabber.getPower() != 0) {
-            ((LinearOpMode)opMode).idle();
-        }
-        grabber.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ((LinearOpMode)opMode).sleep((int)(distance * GRABBER_TIME * 1000));
+        grabber.setPower(0);
     }
 
     public void release(double distance) {
-        int currentCounts = grabber.getCurrentPosition();
-        grabber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         grabber.setPower(0.5);
-        grabber.setTargetPosition((int)(currentCounts + distance * COUNTS_PER_GRABBER_INCH));
-        while (grabber.getPower() != 0) {
-            ((LinearOpMode)opMode).idle();
-        }
-        grabber.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ((LinearOpMode)opMode).sleep((int)(distance * GRABBER_TIME * 1000));
+        grabber.setPower(0);
     }
 }
 

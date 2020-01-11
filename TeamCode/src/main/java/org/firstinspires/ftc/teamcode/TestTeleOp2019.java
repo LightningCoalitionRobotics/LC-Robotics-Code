@@ -20,9 +20,7 @@ public class TestTeleOp2019 extends OpMode {
     }
 
     public void loop() {
-        robot.motorFrontRight.setPower(gamepad1.right_stick_y);
-        robot.motorFrontLeft.setPower(gamepad1.left_stick_y);
-        robot.motorBackLeft.setPower(gamepad2.left_stick_y);
-        robot.motorBackRight.setPower(gamepad2.right_stick_y);
+        robot.motorDrawerSlide.setPower(gamepad1.a?0.5:0);
+        robot.grabber.setPower(gamepad1.b?0.5:0);
     }
 }
