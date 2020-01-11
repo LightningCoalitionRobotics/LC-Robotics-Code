@@ -16,8 +16,7 @@ public class RedStart2Covered extends LcVuforiaOpMode{
         robot.init(hardwareMap);
         waitForStart();
 
-        robot.extend(4, 50);
-        robot.release(5);
+        robot.extend(HardwareLilPanini.EXTENSION_INCHES/4, 50);
         robot.drive(0.5, 29, 50);
 
         int frontRightTarget = robot.motorFrontRight.getCurrentPosition();
@@ -32,7 +31,7 @@ public class RedStart2Covered extends LcVuforiaOpMode{
             robot.motorBackLeft.setPower(0.5);
             robot.motorBackRight.setPower(-0.5);
         }
-        robot.extend(-3, 69);
+        robot.extend(HardwareLilPanini.EXTENSION_INCHES/-4, 69);
         robot.grab(1);
 
         while (robot.motorFrontRight.getCurrentPosition() <= frontRightTarget || robot.motorFrontLeft.getCurrentPosition() >= frontLeftTarget || robot.motorBackLeft.getCurrentPosition() <= backLeftTarget || robot.motorBackRight.getCurrentPosition() >= backRightTarget) {
@@ -45,9 +44,9 @@ public class RedStart2Covered extends LcVuforiaOpMode{
         robot.turn(0.6, 90, 50);
         robot.drive(0.7, 51, 50);
 
-        robot.extend(5, 50);
+        robot.extend(HardwareLilPanini.EXTENSION_INCHES, 50);
         robot.drive(0.7, 5, 50);
-        robot.extend(-2, 50);
+        robot.extend(-HardwareLilPanini.EXTENSION_INCHES+5, 50);
         robot.release(1);
     }
 

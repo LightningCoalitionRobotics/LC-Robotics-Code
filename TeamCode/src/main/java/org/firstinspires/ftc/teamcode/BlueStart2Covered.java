@@ -25,7 +25,7 @@ public class BlueStart2Covered extends LcVuforiaOpMode {
         int backRightTarget = robot.motorBackRight.getCurrentPosition();
         //finding number of counts before while loop
 
-        while (!isVisible(stoneTarget)) {
+        while (!isVisible(stoneTarget) && opModeIsActive()) {
             robot.motorFrontRight.setPower(-0.5);
             robot.motorFrontLeft.setPower(0.5);
             robot.motorBackLeft.setPower(-0.5);
@@ -34,7 +34,7 @@ public class BlueStart2Covered extends LcVuforiaOpMode {
         robot.extend(-3, 50, 0.3);
         robot.grab(1);
 
-        while (robot.motorFrontRight.getCurrentPosition() >= frontRightTarget || robot.motorFrontLeft.getCurrentPosition() <= frontLeftTarget || robot.motorBackLeft.getCurrentPosition() >= backLeftTarget || robot.motorBackRight.getCurrentPosition() <= backRightTarget) {
+        while (opModeIsActive() && robot.motorFrontRight.getCurrentPosition() >= frontRightTarget || robot.motorFrontLeft.getCurrentPosition() <= frontLeftTarget || robot.motorBackLeft.getCurrentPosition() >= backLeftTarget || robot.motorBackRight.getCurrentPosition() <= backRightTarget) {
             robot.motorFrontRight.setPower(0.5);
             robot.motorFrontLeft.setPower(-0.5);
             robot.motorBackLeft.setPower(0.5);
