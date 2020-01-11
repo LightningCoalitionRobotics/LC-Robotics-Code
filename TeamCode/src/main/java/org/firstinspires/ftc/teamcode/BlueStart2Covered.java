@@ -37,7 +37,7 @@ public class BlueStart2Covered extends LcVuforiaOpMode {
             robot.motorBackLeft.setPower(0.5);
             robot.motorBackRight.setPower(-0.5);
         }
-        robot.drive(-0.7, 30, 50);
+        robot.drive(-0.7, 25, 50);
         robot.turn(0.6, 90, 50);
         robot.drive(0.7, 51, 50);
 
