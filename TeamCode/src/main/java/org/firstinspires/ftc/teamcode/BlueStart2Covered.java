@@ -43,8 +43,10 @@ public class BlueStart2Covered extends LcVuforiaOpMode {
         robot.drive(-0.7, 25, 50);
         robot.turn(0.6, 90, 50);
         robot.drive(0.7, 49, 50);
+
         robot.extend(5, 50);
         robot.drive(0.5, 3, 50);
+        robot.extend(-2, 50);
         robot.release(1);
 
     }
