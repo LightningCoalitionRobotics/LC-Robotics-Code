@@ -87,21 +87,21 @@ public class HardwareLilPanini extends Robot {
         int bottomRightTarget = motorBackRight.getCurrentPosition() + distInCounts;
         int bottomLeftTarget = motorBackLeft.getCurrentPosition() + distInCounts;
 
-        motorFrontRight.setPower(speed); //set motors to speed
-        motorFrontLeft.setPower(speed);
-        motorBackRight.setPower(speed);
-        motorBackLeft.setPower(speed);
+        motorFrontRight.setPower(-speed); //set motors to speed
+        motorFrontLeft.setPower(-speed);
+        motorBackRight.setPower(-speed);
+        motorBackLeft.setPower(-speed);
 
         while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) { //while opmode active and timeout not reached
             if (speed > 0) { // if you want the robot to go forwards (positive speed)
-                if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget) { //if at or beyond target
+                if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget) { //if at or beyond target
                     break; //break from while loop and move on to stop()
                 } else {
                     ((LinearOpMode)opMode).idle();
                 }
             }
             else if (speed < 0) { // if you want the robot to go backwards (negative speed)
-                if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorBackRight.getCurrentPosition() <= topLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget) { //if at or beyond target
+                if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorBackRight.getCurrentPosition() >= topLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget) { //if at or beyond target
                     break; //break from while loop and move on to stop()
                 } else {
                     ((LinearOpMode)opMode).idle();
@@ -202,18 +202,18 @@ public class HardwareLilPanini extends Robot {
         int bottomLeftTarget = motorBackLeft.getCurrentPosition() + correctDirection * distInCounts;
         int bottomRightTarget = motorBackRight.getCurrentPosition() - correctDirection * distInCounts;
 
-        motorFrontRight.setPower(speed * correctDirection);
-        motorFrontLeft.setPower(-speed * correctDirection);
-        motorBackLeft.setPower(speed * correctDirection);
-        motorBackRight.setPower(-speed * correctDirection);
+        motorFrontRight.setPower(-speed * correctDirection);
+        motorFrontLeft.setPower(speed * correctDirection);
+        motorBackLeft.setPower(-speed * correctDirection);
+        motorBackRight.setPower(speed * correctDirection);
 
         while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
             if (direction == HorizontalDirection.LEFT) {
-                if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget) {
+                if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
                     break;
                 }
             } else {
-                if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
+                if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget) {
                     break;
                 }
             }
