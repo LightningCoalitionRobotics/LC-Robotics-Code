@@ -18,7 +18,7 @@ public class Strafe_RIGHT extends LinearOpMode {
 
         robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT, 0.3, 15, 50);
         robot.stop();
-        
+
     }
 
 }
