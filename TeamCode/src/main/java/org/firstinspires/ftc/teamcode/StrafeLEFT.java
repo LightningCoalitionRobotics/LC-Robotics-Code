@@ -12,7 +12,7 @@ public class StrafeLEFT extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT, .7, 15, 50 );
+        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT, .3, 15, 50 );
         robot.stop();
 
     }
