@@ -71,7 +71,7 @@ public class HardwareLilPanini extends Robot {
         motorBackRight = registerMotor("motorRearRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER); // Same problem as above with this motor
         motorDrawerSlide = registerMotor("motorDrawerSlide", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         grabber = registerMotor("grabber", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
+        arm2 = registerServo("arm2", 0.5f);
     }
 
     /**
