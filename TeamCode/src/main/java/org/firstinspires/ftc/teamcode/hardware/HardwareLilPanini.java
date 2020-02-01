@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * The class for the LCR 2019-20 robot.
@@ -53,6 +54,9 @@ public class HardwareLilPanini extends Robot {
     public DcMotor motorDrawerSlide;
 
     public DcMotor grabber;
+
+    public Servo arm2;
+
 
     public HardwareLilPanini(OpMode opMode) {
         super(opMode);
