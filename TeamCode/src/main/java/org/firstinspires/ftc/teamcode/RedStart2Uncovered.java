@@ -45,6 +45,12 @@ public class RedStart2Uncovered extends LcVuforiaOpMode {
 
         robot.release(1);
 
+
+
+
     }
 
 }
+
+        
+
