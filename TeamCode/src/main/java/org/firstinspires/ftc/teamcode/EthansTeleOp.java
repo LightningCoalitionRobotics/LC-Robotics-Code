@@ -14,9 +14,12 @@ public class EthansTeleOp extends OpMode {
     }
 
     public void loop() {
-        robot.motorFrontLeft.setPower(gamepad1.left_stick_y);
-        robot.motorFrontRight.setPower(gamepad1.right_stick_y);
-        robot.motorBackLeft.setPower(gamepad2.left_stick_y);
-        robot.motorBackRight.setPower(gamepad2.right_stick_y);
+        //forward,side,rotation
+        robot.motorFrontLeft.setPower((-gamepad1.left_stick_y+gamepad1.left_stick_x-gamepad1.right_stick_x)/3);
+        robot.motorFrontRight.setPower((-gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x)/3);
+        robot.motorBackLeft.setPower((-gamepad1.left_stick_y-gamepad1.left_stick_x-gamepad1.right_stick_x)/3);
+        robot.motorBackRight.setPower((-gamepad1.left_stick_y+gamepad1.left_stick_x+gamepad1.right_stick_x)/3);
+
+        robot.motorDrawerSlide.setPower(gamepad2.left_stick_y);
     }
 }
