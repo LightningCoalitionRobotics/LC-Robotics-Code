@@ -28,20 +28,20 @@ public class BlueStart2Uncovered extends LcVuforiaOpMode {
         //finding number of counts before while loop
 
         while (!opModeIsActive() && isVisible(stoneTarget)) {
-            robot.motorFrontRight.setPower(-0.3);
+            robot.motorFrontRight.setPower(-0.37);
             robot.motorFrontLeft.setPower(0.3);
             robot.motorBackLeft.setPower(-0.3);
-            robot.motorBackRight.setPower(0.3);
+            robot.motorBackRight.setPower(0.37);
         }
 
         robot.extend(4, 69);
         robot.grab(1);
 
         while (opModeIsActive() && (robot.motorFrontRight.getCurrentPosition() >= frontRightTarget || robot.motorFrontLeft.getCurrentPosition() <= frontLeftTarget || robot.motorBackLeft.getCurrentPosition() >= backLeftTarget || robot.motorBackRight.getCurrentPosition() <= backRightTarget)) {
-            robot.motorFrontRight.setPower(0.3);
+            robot.motorFrontRight.setPower(0.37);
             robot.motorFrontLeft.setPower(-0.3);
             robot.motorBackLeft.setPower(0.3);
-            robot.motorBackRight.setPower(-0.3);
+            robot.motorBackRight.setPower(-0.37);
         }
         robot.drive(-0.7, 30, 50);
         robot.turn(0.6, 90, 50);
