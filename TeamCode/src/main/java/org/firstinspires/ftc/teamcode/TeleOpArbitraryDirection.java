@@ -71,10 +71,10 @@ public class TeleOpArbitraryDirection extends OpMode {
         } else {
             if (gamepad1.left_stick_y > 0) {
                 // y = 1
-                squareDim = 0.75 / (gamepad1.left_stick_y / gamepad1.left_stick_x);
+                squareDim = 1 / (gamepad1.left_stick_y / gamepad1.left_stick_x);
             } else {
                 // y = -1
-                squareDim = -0.75 / (gamepad1.left_stick_y / gamepad1.left_stick_x);
+                squareDim = -1 / (gamepad1.left_stick_y / gamepad1.left_stick_x);
             }
         }
         double distCenterToEdgeOfSquare = Math.hypot(1, squareDim);
