@@ -19,7 +19,7 @@ public class BlueStart2Uncovered extends LcVuforiaOpMode {
 
         robot.extend(4, 50);
         robot.release(5);
-        robot.drive(0.5, 29, 50);
+        robot.drive(0.5, 10, 50);
 
         int frontRightTarget = robot.motorFrontRight.getCurrentPosition();
         int frontLeftTarget = robot.motorFrontLeft.getCurrentPosition();
