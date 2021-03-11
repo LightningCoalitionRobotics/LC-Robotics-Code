@@ -21,5 +21,8 @@ public class EthansTeleOp extends OpMode {
         robot.motorBackRight.setPower((-gamepad1.left_stick_y+gamepad1.left_stick_x+gamepad1.right_stick_x)/3);
 
         robot.motorDrawerSlide.setPower(gamepad2.left_stick_y);
+        robot.grabber.setPower(gamepad2.right_stick_y);
+
+        telemetry.addData("Test", gamepad1.left_stick_y+" "+gamepad1.left_stick_x+" "+gamepad1.right_stick_x);
     }
 }
