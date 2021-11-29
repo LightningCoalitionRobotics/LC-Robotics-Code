@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
 @Autonomous(name = "Strafe_RIGHT", group = "autonomous")
-public class Strafe_RIGHT extends LinearOpMode {
+public class Strafe_LEFT extends LinearOpMode {
 
     HardwareLilPanini robot = new HardwareLilPanini(this);
 
@@ -16,10 +16,10 @@ public class Strafe_RIGHT extends LinearOpMode {
         waitForStart();
         start();
 
-        robot.motorFrontRight.setPower(-1);
-        robot.motorFrontLeft.setPower(1);
-        robot.motorBackRight.setPower(1);
-        robot.motorBackLeft.setPower(-1);
+        robot.motorFrontRight.setPower(1);
+        robot.motorFrontLeft.setPower(-1);
+        robot.motorBackRight.setPower(-1);
+        robot.motorBackLeft.setPower(1);
 
         sleep(3000);
 

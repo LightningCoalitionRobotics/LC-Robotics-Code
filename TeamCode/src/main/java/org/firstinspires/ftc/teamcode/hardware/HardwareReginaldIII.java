@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,13 +8,15 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
 /**
- * The class for the LCR 2019-20 robot.
+ * The class for the LCR 2021-22 robot.
  *
  * If more components are added, please add them to this class!
  *
- * @author Noah Simon
+ * @author Jack Weinstein
+ * @author Alex Cunningham
  */
-public class HardwareLilPanini extends Robot {
+
+public class HardwareReginaldIII extends Robot {
 
     // These are constants that we have experimentally determined, relating counts (the way an encoder measures movement) to inches or degrees (the way we understand movement)
     private static final int COUNTS_PER_REVOLUTION = 1400;                         // One full revolution of a wheel is 1400 counts
@@ -59,9 +60,12 @@ public class HardwareLilPanini extends Robot {
     //public Servo arm2;
 
 
-    public HardwareLilPanini(OpMode opMode) {
+    public HardwareReginaldIII(OpMode opMode) {
         super(opMode);
     }
+
+
+    
 
     @Override  // Since this class extends the class Robot, these @Overrides let the code know that this will supercede any conflicting properties of init present in class Robot
     public void init(HardwareMap hardwareMap) { //This section registers the motors to the encoders and sets their default direction
@@ -115,6 +119,11 @@ public class HardwareLilPanini extends Robot {
             ((LinearOpMode) opMode).idle();
         }
         stop();
+    }
+
+    @Override
+    public void turn(double speed, double angle, double timeout) {
+
     }
 
     /**
@@ -185,6 +194,10 @@ public class HardwareLilPanini extends Robot {
         }
     }
 
+    private void stop() {
+    }
+}
+/*
     /**
      * Strafe the robot left or right.
      * @param direction The direction in which to move the robot.
@@ -192,11 +205,11 @@ public class HardwareLilPanini extends Robot {
      * @param dist How far, in inches, to move the robot.
      * @param timeout If dist is never reached, how many seconds to wait before stopping.
      */
-    public void strafe(HorizontalDirection direction, double speed, double dist, double timeout) {
+  /* public void strafe(HardwareLilPanini.HorizontalDirection direction, double speed, double dist, double timeout) {
         int distInCounts = (int)(dist * COUNTS_PER_SIDE_INCH);  // Once again, converting from things we understand to the language the motor understands
 
         int correctDirection;
-        if (direction == HorizontalDirection.LEFT) {
+        if (direction == HardwareLilPanini.HorizontalDirection.LEFT) {
             correctDirection = 1;
         } else {
             correctDirection = -1;
@@ -213,7 +226,7 @@ public class HardwareLilPanini extends Robot {
         motorBackRight.setPower(-speed * correctDirection);
 
         while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-            if (direction == HorizontalDirection.LEFT) {
+            if (direction == HardwareLilPanini.HorizontalDirection.LEFT) {
                 if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget) {
                     break;
                 }
@@ -244,13 +257,13 @@ public class HardwareLilPanini extends Robot {
             motorFrontLeft.setPower(-speed);
             motorBackLeft.setPower(-speed);
             motorBackRight.setPower(speed);
-        //sets rights motors to positive and left to negative for counterclockwise turn
+            //sets rights motors to positive and left to negative for counterclockwise turn
         } else {
             motorFrontRight.setPower(-speed);
             motorFrontLeft.setPower(speed);
             motorBackLeft.setPower(speed);
             motorBackRight.setPower(-speed);
-        //sets left motors to positive and right to negative for clockwise turn
+            //sets left motors to positive and right to negative for clockwise turn
         }
         while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout){ //while opmode active and timenout not reached
             if (angle > 0){
@@ -265,75 +278,13 @@ public class HardwareLilPanini extends Robot {
             ((LinearOpMode) opMode).idle();
         }
         stop();
-            //tells motors to stop if they've reached target number of counts
-    }
-    /**
-     * Extend or retract the drawer slide
-     * @param dist How far, in inches, to extend/retract the slide OR input EXTENSION_INCHES or INCHES_PER_HALF_EXTENSION
-     * @param timeout If dist is never reached, how many seconds to wait before stopping.
-     */
-    public void extend(double dist, double timeout) {
-//       int distInCounts = (int)(dist * COUNTS_PER_INCH_EXTENDED);
-//        double drawerSlideTarget = motorDrawerSlide.getCurrentPosition() + distInCounts;
-//
-//        motorDrawerSlide.setPower(.5);
-//
-//        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-//            if (dist < 0) {
-//                if (motorDrawerSlide.getCurrentPosition() <= drawerSlideTarget) {
-//                    break;
-//                }
-//            } else {
-//                if (motorDrawerSlide.getCurrentPosition() >= drawerSlideTarget) {
-//                    break;
-//                }
-//            }
-//        }
-//        motorDrawerSlide.setPower(0);
+        //tells motors to stop if they've reached target number of counts
     }
 
-    public void extend(double dist, double timeout, double speed) { //Overloaded the function extend so you can choose whether or not you put in a speed and it will do the function that matches your input
-//        int distInCounts = (int)(dist * COUNTS_PER_INCH_EXTENDED);
-//        double drawerSlideTarget = motorDrawerSlide.getCurrentPosition() + distInCounts;
-//
-//        motorDrawerSlide.setPower(speed);
-//
-//        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-//            if (dist < 0) {
-//                if (motorDrawerSlide.getCurrentPosition() <= drawerSlideTarget) {
-//                    break;
-//                }
-//            } else {
-//                if (motorDrawerSlide.getCurrentPosition() >= drawerSlideTarget) {
-//                    break;
-//                }
-//            }
-//        }
-//        motorDrawerSlide.setPower(0);
+    private void stop() {
     }
 
-    public void stop() {
-        motorFrontRight.setPower(0);
-        motorFrontLeft.setPower(0);
-        motorBackLeft.setPower(0);
-        motorBackRight.setPower(0);
-    }
 
-    public enum HorizontalDirection { //Enumerator declared for strafe function
-        RIGHT,
-        LEFT
-    }
-
-    public void grab(double distance) {
-        grabber.setPower(-0.5);
-        ((LinearOpMode)opMode).sleep((int)(distance * GRABBER_TIME * 1000));
-        grabber.setPower(0);
-    }
-
-    public void release(double distance) {
-        grabber.setPower(0.5);
-        ((LinearOpMode)opMode).sleep((int)(distance * GRABBER_TIME * 1000));
-        grabber.setPower(0);
-    }
 }
 
+  */
