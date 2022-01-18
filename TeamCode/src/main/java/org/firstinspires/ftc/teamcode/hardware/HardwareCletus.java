@@ -42,8 +42,7 @@ public class HardwareCletus extends Robot {
 
     public DcMotor motorBackRight;
 
-
-    public DcMotor grabber;
+    //public DcMotor grabber;
 
     //public Servo arm2;
 
@@ -62,7 +61,7 @@ public class HardwareCletus extends Robot {
         motorFrontRight = registerMotor("motorFrontRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER); //this direction is reverse because the motor is backward, so to make it go forwards you (if you had this forwards) would have to set a negative speed
         motorBackLeft = registerMotor("motorBackLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackRight = registerMotor("motorBackRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER); // Same problem as above with this motor
-        grabber = registerMotor("grabber", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //grabber = registerMotor("grabber", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //arm2 = registerServo("arm2", 0.5f);
     }
 
