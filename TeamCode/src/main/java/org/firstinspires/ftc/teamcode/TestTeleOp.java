@@ -2,11 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.hardware.HardwareCletus;
+import org.firstinspires.ftc.teamcode.hardware.HardwareReginaldIII;
 
 public class TestTeleOp extends OpMode {
 
-    private HardwareCletus robot = new HardwareCletus(this);
+    private HardwareReginaldIII robot = new HardwareReginaldIII(this);
 
     public void init() { robot.init(hardwareMap);}
 
