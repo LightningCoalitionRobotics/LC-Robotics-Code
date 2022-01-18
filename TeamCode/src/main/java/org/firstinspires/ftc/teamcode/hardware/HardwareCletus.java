@@ -16,7 +16,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  * @author Alex Cunningham
  */
 
-public class HardwareReginaldIII extends Robot {
+public class HardwareCletus extends Robot {
 
     // These are constants that we have experimentally determined, relating counts (the way an encoder measures movement) to inches or degrees (the way we understand movement)
     private static final int COUNTS_PER_REVOLUTION = 1400;                         // One full revolution of a wheel is 1400 counts
@@ -48,7 +48,7 @@ public class HardwareReginaldIII extends Robot {
     //public Servo arm2;
 
 
-    public HardwareReginaldIII(OpMode opMode) {
+    public HardwareCletus(OpMode opMode) {
         super(opMode);
     }
 
