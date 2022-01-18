@@ -27,7 +27,8 @@ public class AlexsTeleOp extends OpMode {
         }
 
         if(gamepad1.atRest()){
-           //robot.stop();
+           robot.stop();
+
         } else if(gamepad1.left_trigger > 0.49) {
             //moves forwards
             robot.motorBackLeft.setPower(speed);

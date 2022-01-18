@@ -180,7 +180,7 @@ public class HardwareCletus extends Robot {
         }
     }
 
-    private void stop() {
+    public void stop() {
     }
 
 
