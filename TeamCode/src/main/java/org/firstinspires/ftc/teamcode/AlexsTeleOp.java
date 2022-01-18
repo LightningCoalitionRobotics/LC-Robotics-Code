@@ -3,11 +3,12 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.hardware.HardwareCletus;
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
 @TeleOp(name="AlexsTeleOp", group="TeleOp")
 public class AlexsTeleOp extends OpMode {
-    private HardwareLilPanini robot = new HardwareLilPanini(this);
+    private HardwareCletus robot = new HardwareCletus(this);
 
     public void init() {
         robot.init(hardwareMap);
@@ -26,7 +27,7 @@ public class AlexsTeleOp extends OpMode {
         }
 
         if(gamepad1.atRest()){
-            robot.stop();
+           //robot.stop();
         } else if(gamepad1.left_trigger > 0.49) {
             //moves forwards
             robot.motorBackLeft.setPower(speed);
