@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 /**
  * The class for the LCR 2021-22 robot.
  *
- * If more components are added, please add them to this class!
+ * If more components are added, please add them to this class
  *
  * @author Jack Weinstein
  * @author Alex Cunningham
@@ -20,25 +20,14 @@ public class HardwareReginaldIII extends Robot {
 
     // These are constants that we have experimentally determined, relating counts (the way an encoder measures movement) to inches or degrees (the way we understand movement)
     private static final int COUNTS_PER_REVOLUTION = 1400;                         // One full revolution of a wheel is 1400 counts
-    private static final int COUNTS_PER_FORWARD_INCH = COUNTS_PER_REVOLUTION / 12; // 1 revolution FORWARDS is very close to 1 foot, so to get counts per inch, take counts per revolution and divide it by 12
+    private static final int COUNTS_PER_FORWARD_INCH = COUNTS_PER_REVOLUTION / 13; // 1 revolution FORWARDS is very close to 1 foot, so to get counts per inch, take counts per revolution and divide it by 12
 
     private static final int COUNTS_PER_360 = 10000;                               // One full turn 360 degrees is 10000 counts
-    private static final int COUNTS_PER_DEGREE = COUNTS_PER_360 / 360;
 
     private static final int COUNTS_PER_SIDE_FOOT = 2000;                          // The amount of counts per the robot moving to the SIDE 1 foot is 2000, NOTICE this is different than the amount of counts going forward or backwards
-    private static final int COUNTS_PER_SIDE_INCH = COUNTS_PER_SIDE_FOOT / 12;
+    private static final int COUNTS_PER_SIDE_INCH = COUNTS_PER_SIDE_FOOT / 13;
 
-    // mm per inch: 25.4
-    public static final float CAMERA_FORWARD_DISPLACEMENT_MM = 160;
-    public static final float CAMERA_VERTICAL_DISPLACEMENT_MM = 180;
-    public static final float CAMERA_LEFT_DISPLACEMENT_MM = 110;
 
-    public static final double EXTENSION_TIME = 2; // Not yet determined (Will be inches per a full extension of drawer slide), public so other people can plug this in as distance
-
-    public static final int DRAWER_SLIDE_TOP_POSITION = 0; //not determined
-    public static final int DRAWER_SLIDE_BOTTOM_POSITION = 0; //not determined
-
-    public static final double GRABBER_TIME = 2;
 
     // Not experimentally determined:
     private static final int COUNTS_PER_45_INCH = (int) Math.hypot(COUNTS_PER_FORWARD_INCH, COUNTS_PER_SIDE_INCH);
@@ -66,7 +55,7 @@ public class HardwareReginaldIII extends Robot {
 
     
 
-    @Override  // Since this class extends the class Robot, these @Overrides let the code know that this will supercede any conflicting properties of init present in class Robot
+    @Override  // Since this class extends the class Robot, these @Overrides let the code know that this will super cede any conflicting properties of init present in class Robot
     public void init(HardwareMap hardwareMap) { //This section registers the motors to the encoders and sets their default direction
         this.hardwareMap = hardwareMap;
         motorFrontLeft = registerMotor("motorFrontLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -138,11 +127,11 @@ public class HardwareReginaldIII extends Robot {
         double tangent = Math.tan(degrees);
 
         a = 1;
-        // tan theta = a+b / a-b
-        // tangent = 1+b/1-b
-        // tangent - tangent*b = 1+b
-        // tangent = (tangent+1)b + 1
-        // (tangent - 1)/(tangent + 1) = b
+        // tan ø = a+b / a-b
+        // tangent ø = 1+b/1-b
+        // tangent ø - tangent*b = 1+b
+        // tangent ø = (tangent+1)b + 1
+        // (tangent ø - 1)/(tangent ø + 1) = b
         b = (tangent - 1)/(tangent + 1);
 
         if (Math.abs(b) > 1) {
@@ -194,8 +183,9 @@ public class HardwareReginaldIII extends Robot {
 
     private void stop() {
     }
-}
-/*
+
+
+
     /**
      * Strafe the robot left or right.
      * @param direction The direction in which to move the robot.
@@ -203,7 +193,7 @@ public class HardwareReginaldIII extends Robot {
      * @param dist How far, in inches, to move the robot.
      * @param timeout If dist is never reached, how many seconds to wait before stopping.
      */
-  /* public void strafe(HardwareLilPanini.HorizontalDirection direction, double speed, double dist, double timeout) {
+   public void strafe(HardwareLilPanini.HorizontalDirection direction, double speed, double dist, double timeout) {
         int distInCounts = (int)(dist * COUNTS_PER_SIDE_INCH);  // Once again, converting from things we understand to the language the motor understands
 
         int correctDirection;
@@ -238,51 +228,8 @@ public class HardwareReginaldIII extends Robot {
 
         stop();
     }
-
-    @Override
-    public void turn(double speed, double angle, double timeout) {
-        int angleInCounts = (int)(angle * COUNTS_PER_DEGREE);
-        //changes the angle variable from degrees to counts
-
-        int topRightTarget = motorFrontRight.getCurrentPosition() + angleInCounts;
-        int topLeftTarget = motorFrontLeft.getCurrentPosition() - angleInCounts;
-        int bottomLeftTarget = motorBackLeft.getCurrentPosition() - angleInCounts;
-        int bottomRightTarget = motorBackRight.getCurrentPosition() + angleInCounts;
-        //finds target number of counts for each motor
-
-        if (angle > 0) {
-            motorFrontRight.setPower(speed);
-            motorFrontLeft.setPower(-speed);
-            motorBackLeft.setPower(-speed);
-            motorBackRight.setPower(speed);
-            //sets rights motors to positive and left to negative for counterclockwise turn
-        } else {
-            motorFrontRight.setPower(-speed);
-            motorFrontLeft.setPower(speed);
-            motorBackLeft.setPower(speed);
-            motorBackRight.setPower(-speed);
-            //sets left motors to positive and right to negative for clockwise turn
-        }
-        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout){ //while opmode active and timenout not reached
-            if (angle > 0){
-                if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
-                    break;
-                }
-            } else {
-                if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget) {
-                    break;
-                }
-            }
-            ((LinearOpMode) opMode).idle();
-        }
-        stop();
-        //tells motors to stop if they've reached target number of counts
-    }
-
-    private void stop() {
-    }
-
-
 }
 
-  */
+
+
+
