@@ -64,7 +64,8 @@ public class AlexsTeleOp extends OpMode {
             robot.motorFrontLeft.setPower(-speed);
             robot.motorFrontRight.setPower(speed);
         } else if(gamepad1.right_stick_x != 0 && gamepad1.right_stick_y != 0){
-
+            double angle = Math.toDegrees(Math.atan(Math.abs(gamepad1.right_stick_y)/Math.abs(gamepad1.right_stick_x)));
+            //drive tangent
         }
         //controls for the arm gamepad
         if(gamepad2.y){
