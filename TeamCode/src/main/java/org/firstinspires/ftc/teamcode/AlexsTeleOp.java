@@ -12,9 +12,10 @@ public class AlexsTeleOp extends OpMode {
     public void init() {
         robot.init(hardwareMap);
     }
-    public boolean placeholderTrigger = true;
+    double speed = 0.5;
+
     public void loop() {
-        double speed = 0.5;
+        ;
         //movement gamepad: triggers for forward/backward, b/x for strafing left and right, right joystick for moving tangent, left joystick for turning, dpad for changing speed
         //arm gamepad: y/a to move arm to max/min height, b/x to open and close claw, dpad for more precise height changes
         //controls for the movement gamepad
@@ -23,6 +24,7 @@ public class AlexsTeleOp extends OpMode {
         } else if(gamepad1.dpad_down){
             speed /= 2;
         }
+
         if(gamepad1.atRest()){
             robot.stop();
         } else if(gamepad1.left_trigger > 0.49) {
@@ -49,18 +51,20 @@ public class AlexsTeleOp extends OpMode {
             robot.motorBackRight.setPower(speed);
             robot.motorFrontLeft.setPower(speed);
             robot.motorFrontRight.setPower(-speed);
-        } else if(gamepad1.right_stick_x > 0.25){
+        } else if(gamepad1.left_stick_x > 0.25){
             //turn right
             robot.motorBackLeft.setPower(speed);
             robot.motorBackRight.setPower(-speed);
             robot.motorFrontLeft.setPower(speed);
             robot.motorFrontRight.setPower(-speed);
-        } else if(gamepad1.right_stick_x < -0.25){
+        } else if(gamepad1.left_stick_x < -0.25){
             //turn left
             robot.motorBackLeft.setPower(-speed);
             robot.motorBackRight.setPower(speed);
             robot.motorFrontLeft.setPower(-speed);
             robot.motorFrontRight.setPower(speed);
+        } else if(gamepad1.right_stick_x != 0 && gamepad1.right_stick_y != 0){
+
         }
         //controls for the arm gamepad
         if(gamepad2.y){
