@@ -19,13 +19,13 @@ public class HardwareCletus extends Robot {
 
     // These are constants that we have experimentally determined, relating counts (the way an encoder measures movement) to inches or degrees (the way we understand movement)
     private static final int COUNTS_PER_REVOLUTION = 1400;                         // One full revolution of a wheel is 1400 counts
-    private static final int COUNTS_PER_FORWARD_INCH = COUNTS_PER_REVOLUTION / 13; // 1 revolution FORWARDS is very close to 1 foot, so to get counts per inch, take counts per revolution and divide it by 12
+    private static final int COUNTS_PER_FORWARD_INCH = COUNTS_PER_REVOLUTION / 12; // 1 revolution FORWARDS is very close to 1 foot, so to get counts per inch, take counts per revolution and divide it by 12
 
     private static final int COUNTS_PER_360 = 10000;                               // One full turn 360 degrees is 10000 counts
     private static final int COUNTS_PER_DEGREE = COUNTS_PER_360 / 360;
 
     private static final int COUNTS_PER_SIDE_FOOT = 2000;                          // The amount of counts per the robot moving to the SIDE 1 foot is 2000, NOTICE this is different than the amount of counts going forward or backwards
-    private static final int COUNTS_PER_SIDE_INCH = COUNTS_PER_SIDE_FOOT / 13;
+    private static final int COUNTS_PER_SIDE_INCH = COUNTS_PER_SIDE_FOOT / 12;
 
     // Not experimentally determined:
     private static final int COUNTS_PER_45_INCH = (int) Math.hypot(COUNTS_PER_FORWARD_INCH, COUNTS_PER_SIDE_INCH);
@@ -142,6 +142,7 @@ public class HardwareCletus extends Robot {
         //tells motors to stop if they've reached target number of counts
 
     }
+
     public void driveIndefinite(double speed){
         motorFrontRight.setPower(speed); //set motors to speed
         motorFrontLeft.setPower(speed);
@@ -155,6 +156,7 @@ public class HardwareCletus extends Robot {
         motorBackLeft.setPower(speed);
         motorBackRight.setPower(-speed);
     }
+
     public void strafeIndefinite(double speed){
         motorFrontRight.setPower(-speed); //set motors to speed
         motorFrontLeft.setPower(speed);
@@ -327,7 +329,3 @@ public class HardwareCletus extends Robot {
         stop();
     }
 }
-
-
-
-

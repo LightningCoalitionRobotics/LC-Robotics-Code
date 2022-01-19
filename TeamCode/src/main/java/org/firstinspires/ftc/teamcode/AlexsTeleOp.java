@@ -33,36 +33,42 @@ public class AlexsTeleOp extends OpMode {
             robot.motorBackRight.setPower(speed);
             robot.motorFrontLeft.setPower(speed);
             robot.motorFrontRight.setPower(speed);
+
         } else if(gamepad1.right_trigger > 0.49){
             //moves backwards
             robot.motorBackLeft.setPower(-speed);
             robot.motorBackRight.setPower(-speed);
             robot.motorFrontLeft.setPower(-speed);
             robot.motorFrontRight.setPower(-speed);
+
         } else if(gamepad1.left_bumper){
             //strafes left
             robot.motorBackLeft.setPower(speed);
             robot.motorBackRight.setPower(-speed);
             robot.motorFrontLeft.setPower(-speed);
             robot.motorFrontRight.setPower(speed);
+
         } else if(gamepad1.right_bumper){
             //strafe right
             robot.motorBackLeft.setPower(-speed);
             robot.motorBackRight.setPower(speed);
             robot.motorFrontLeft.setPower(speed);
             robot.motorFrontRight.setPower(-speed);
+
         } else if(gamepad1.left_stick_x > 0.25){
             //turn right
             robot.motorBackLeft.setPower(speed);
             robot.motorBackRight.setPower(-speed);
             robot.motorFrontLeft.setPower(speed);
             robot.motorFrontRight.setPower(-speed);
+
         } else if(gamepad1.left_stick_x < -0.25){
             //turn left
             robot.motorBackLeft.setPower(-speed);
             robot.motorBackRight.setPower(speed);
             robot.motorFrontLeft.setPower(-speed);
             robot.motorFrontRight.setPower(speed);
+
         } else if(gamepad1.right_stick_x != 0 && gamepad1.right_stick_y != 0){
             double angle = Math.toDegrees(Math.atan(Math.abs(gamepad1.right_stick_y)/Math.abs(gamepad1.right_stick_x)));
             int quadrant = 0;
