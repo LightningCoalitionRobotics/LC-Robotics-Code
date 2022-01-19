@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-
 /**
  * The class for the LCR 2021-22 robot.
  *
@@ -23,11 +22,10 @@ public class HardwareCletus extends Robot {
     private static final int COUNTS_PER_FORWARD_INCH = COUNTS_PER_REVOLUTION / 13; // 1 revolution FORWARDS is very close to 1 foot, so to get counts per inch, take counts per revolution and divide it by 12
 
     private static final int COUNTS_PER_360 = 10000;                               // One full turn 360 degrees is 10000 counts
+    private static final int COUNTS_PER_DEGREE = COUNTS_PER_360 / 360;
 
     private static final int COUNTS_PER_SIDE_FOOT = 2000;                          // The amount of counts per the robot moving to the SIDE 1 foot is 2000, NOTICE this is different than the amount of counts going forward or backwards
     private static final int COUNTS_PER_SIDE_INCH = COUNTS_PER_SIDE_FOOT / 13;
-
-
 
     // Not experimentally determined:
     private static final int COUNTS_PER_45_INCH = (int) Math.hypot(COUNTS_PER_FORWARD_INCH, COUNTS_PER_SIDE_INCH);
@@ -46,13 +44,9 @@ public class HardwareCletus extends Robot {
 
     //public Servo arm2;
 
-
     public HardwareCletus(OpMode opMode) {
         super(opMode);
     }
-
-
-    
 
     @Override  // Since this class extends the class Robot, these @Overrides let the code know that this will super cede any conflicting properties of init present in class Robot
     public void init(HardwareMap hardwareMap) { //This section registers the motors to the encoders and sets their default direction
@@ -110,9 +104,95 @@ public class HardwareCletus extends Robot {
 
     @Override
     public void turn(double speed, double angle, double timeout) {
+        int angleInCounts = (int)(angle * COUNTS_PER_DEGREE);
+        //changes the angle variable from degrees to counts
+
+        int topRightTarget = motorFrontRight.getCurrentPosition() + angleInCounts;
+        int topLeftTarget = motorFrontLeft.getCurrentPosition() - angleInCounts;
+        int bottomLeftTarget = motorBackLeft.getCurrentPosition() - angleInCounts;
+        int bottomRightTarget = motorBackRight.getCurrentPosition() + angleInCounts;
+        //finds target number of counts for each motor
+
+        if (angle > 0) {
+            motorFrontRight.setPower(speed);
+            motorFrontLeft.setPower(-speed);
+            motorBackLeft.setPower(-speed);
+            motorBackRight.setPower(speed);
+            //sets rights motors to positive and left to negative for counterclockwise turn
+        } else {
+            motorFrontRight.setPower(-speed);
+            motorFrontLeft.setPower(speed);
+            motorBackLeft.setPower(speed);
+            motorBackRight.setPower(-speed);
+            //sets left motors to positive and right to negative for clockwise turn
+        }
+        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout){ //while opmode active and timenout not reached
+            if (angle > 0){
+                if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
+                    break;
+                }
+            } else {
+                if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget) {
+                    break;
+                }
+            }
+            ((LinearOpMode) opMode).idle();
+        }
+        stop();
+        //tells motors to stop if they've reached target number of counts
 
     }
+    public void driveIndefinite(double speed){
+        motorFrontRight.setPower(speed); //set motors to speed
+        motorFrontLeft.setPower(speed);
+        motorBackRight.setPower(speed);
+        motorBackLeft.setPower(speed);
+    }
 
+    public void turnIndefinite(double speed){
+        motorFrontRight.setPower(-speed);
+        motorFrontLeft.setPower(speed);
+        motorBackLeft.setPower(speed);
+        motorBackRight.setPower(-speed);
+    }
+    public void strafeIndefinite(double speed){
+        motorFrontRight.setPower(-speed); //set motors to speed
+        motorFrontLeft.setPower(speed);
+        motorBackRight.setPower(speed);
+        motorBackLeft.setPower(-speed);
+    }
+
+    public void driveAngleIndefinite(double degrees, double speed){
+        double a; // top left and bottom right
+        double b; // top right and bottom left
+
+        double tangent = Math.tan(degrees);
+
+        a = 1;
+        // tan ø = a+b / a-b
+        // tangent ø = 1+b/1-b
+        // tangent ø - tangent*b = 1+b
+        // tangent ø = (tangent+1)b + 1
+        // (tangent ø - 1)/(tangent ø + 1) = b
+        b = (tangent - 1)/(tangent + 1);
+
+        if (Math.abs(b) > 1) {
+            //need to figure ot why this
+            a /= Math.abs(b);
+            b /= Math.abs(b);
+        }
+
+        // Find targets for motors
+        if (degrees != 90) { //if degrees are not equal to 90, continue with driveAngle, if they are equal to 90, just use drive with speed and dist
+            motorFrontRight.setPower(b * speed);
+            motorFrontLeft.setPower(a * speed);
+            motorBackLeft.setPower(b * speed);
+            motorBackRight.setPower(a * speed);
+
+        } else { // if degrees == 90
+            driveIndefinite(speed); // this is because plugging 90 into driveAngle returns an angle (imagine a triangle with two 90 degree angles, obviously not possible), so we just use drive
+        }
+    }
     /**
      * Drive the robot at a particular angle.
      * @param degrees The angle at which to move the robot. Measured in degrees above the positive X axis. Do not type 90.
