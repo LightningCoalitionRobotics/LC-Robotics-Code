@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.hardware.HardwareCletus;
-import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
 @TeleOp(name="AlexsTeleOp", group="TeleOp")
 public class AlexsTeleOp extends OpMode {
@@ -16,19 +15,18 @@ public class AlexsTeleOp extends OpMode {
     double speed = 0.5;
 
     public void loop() {
-        ;
         //movement gamepad: triggers for forward/backward, b/x for strafing left and right, right joystick for moving tangent, left joystick for turning, dpad for changing speed
         //arm gamepad: y/a to move arm to max/min height, b/x to open and close claw, dpad for more precise height changes
-        //controls for the movement gamepad
+
         if(gamepad1.dpad_up){
             speed *= 2;
         } else if(gamepad1.dpad_down){
             speed /= 2;
         }
 
+        //controls for the movement gamepad
         if(gamepad1.atRest()){
            robot.stop();
-
         } else if(gamepad1.left_trigger > 0.49) {
             //moves forwards
             robot.motorBackLeft.setPower(speed);

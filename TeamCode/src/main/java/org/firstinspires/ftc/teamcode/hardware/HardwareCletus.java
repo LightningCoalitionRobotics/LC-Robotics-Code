@@ -61,6 +61,7 @@ public class HardwareCletus extends Robot {
         motorFrontRight = registerMotor("motorFrontRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER); //this direction is reverse because the motor is backward, so to make it go forwards you (if you had this forwards) would have to set a negative speed
         motorBackLeft = registerMotor("motorBackLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackRight = registerMotor("motorBackRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER); // Same problem as above with this motor
+
         //grabber = registerMotor("grabber", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //arm2 = registerServo("arm2", 0.5f);
     }
@@ -181,9 +182,13 @@ public class HardwareCletus extends Robot {
     }
 
     public void stop() {
+
     }
 
-
+    public enum StrafeDirection{
+        RIGHT,
+        LEFT
+    }
 
     /**
      * Strafe the robot left or right.
@@ -192,11 +197,11 @@ public class HardwareCletus extends Robot {
      * @param dist How far, in inches, to move the robot.
      * @param timeout If dist is never reached, how many seconds to wait before stopping.
      */
-   public void strafe(HardwareLilPanini.HorizontalDirection direction, double speed, double dist, double timeout) {
+   public void strafe(StrafeDirection direction, double speed, double dist, double timeout) {
         int distInCounts = (int)(dist * COUNTS_PER_SIDE_INCH);  // Once again, converting from things we understand to the language the motor understands
 
         int correctDirection;
-        if (direction == HardwareLilPanini.HorizontalDirection.LEFT) {
+        if (direction == HardwareCletus.StrafeDirection.LEFT) {
             correctDirection = 1;
         } else {
             correctDirection = -1;
@@ -213,7 +218,7 @@ public class HardwareCletus extends Robot {
         motorBackRight.setPower(-speed * correctDirection);
 
         while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-            if (direction == HardwareLilPanini.HorizontalDirection.LEFT) {
+            if (direction == HardwareCletus.StrafeDirection.LEFT) {
                 if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget) {
                     break;
                 }
