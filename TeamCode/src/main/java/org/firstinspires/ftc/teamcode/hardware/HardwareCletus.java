@@ -162,9 +162,9 @@ public class HardwareCletus extends Robot {
         motorBackLeft.setPower(-speed);
     }
 
-    public void driveAngleIndefinite(double degrees, double speed){
-        double a; // top left and bottom right
-        double b; // top right and bottom left
+    public void driveAngleIndefinite(double degrees, double speed, int quadrant){
+        double a; // larger movement vector
+        double b; // smaller movement vector
 
         double tangent = Math.tan(degrees);
 
@@ -176,19 +176,33 @@ public class HardwareCletus extends Robot {
         // (tangent ø - 1)/(tangent ø + 1) = b
         b = (tangent - 1)/(tangent + 1);
 
-        if (Math.abs(b) > 1) {
-            //need to figure ot why this
-            a /= Math.abs(b);
-            b /= Math.abs(b);
-        }
-
         // Find targets for motors
         if (degrees != 90) { //if degrees are not equal to 90, continue with driveAngle, if they are equal to 90, just use drive with speed and dist
-            motorFrontRight.setPower(b * speed);
-            motorFrontLeft.setPower(a * speed);
-            motorBackLeft.setPower(b * speed);
-            motorBackRight.setPower(a * speed);
+            if (quadrant == 1){
+                motorFrontRight.setPower(b * speed);
+                motorFrontLeft.setPower(a * speed);
+                motorBackLeft.setPower(b * speed);
+                motorBackRight.setPower(a * speed);
 
+            } else if (quadrant == 2){
+                motorFrontRight.setPower(a * speed);
+                motorFrontLeft.setPower(b * speed);
+                motorBackLeft.setPower(a * speed);
+                motorBackRight.setPower(b * speed);
+
+            } else if (quadrant == 3){
+                motorFrontRight.setPower(-b * speed);
+                motorFrontLeft.setPower(-a * speed);
+                motorBackLeft.setPower(-b * speed);
+                motorBackRight.setPower(-a * speed);
+
+            } else if (quadrant == 4){
+                motorFrontRight.setPower(-a * speed);
+                motorFrontLeft.setPower(-b * speed);
+                motorBackLeft.setPower(-a * speed);
+                motorBackRight.setPower(-b * speed);
+
+            }
         } else { // if degrees == 90
             driveIndefinite(speed); // this is because plugging 90 into driveAngle returns an angle (imagine a triangle with two 90 degree angles, obviously not possible), so we just use drive
         }
