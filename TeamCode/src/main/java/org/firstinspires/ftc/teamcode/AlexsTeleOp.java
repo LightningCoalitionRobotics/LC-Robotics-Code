@@ -20,7 +20,7 @@ public class AlexsTeleOp extends OpMode {
 
         if(gamepad1.dpad_up){
             speed *= 2;
-        } else if(gamepad1.dpad_down){
+        } else if(gamepad1.dpad_down) {
             speed /= 2;
         }
 
