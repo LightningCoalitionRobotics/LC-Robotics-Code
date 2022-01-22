@@ -20,8 +20,14 @@ public class AlexsTeleOp extends OpMode {
 
         if(gamepad1.dpad_up){
             speed *= 2;
+            telemetry.addLine("pad 1 dpad up pushed");
+            telemetry.addLine("speed is now " + speed);
+
         } else if(gamepad1.dpad_down) {
             speed /= 2;
+            telemetry.addLine("pad 1 dpad down pushed");
+            telemetry.addLine("speed is now " + speed);
+
         }
 
         //controls for the movement gamepad
