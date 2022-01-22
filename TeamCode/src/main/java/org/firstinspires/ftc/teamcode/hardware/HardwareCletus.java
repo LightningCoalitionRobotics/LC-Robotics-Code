@@ -283,7 +283,12 @@ public class HardwareCletus extends Robot {
     }
 
     public void extend(){
+        grabber.setPosition(1.0);
 
+    }
+
+    public void unextend(){
+        grabber.setPosition(0.0);
     }
     public enum StrafeDirection{
         RIGHT,
