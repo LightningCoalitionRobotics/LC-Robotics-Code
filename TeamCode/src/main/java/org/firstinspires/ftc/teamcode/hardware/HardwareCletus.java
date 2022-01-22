@@ -43,7 +43,7 @@ public class HardwareCletus extends Robot {
 
     //public DcMotor arm;
 
-    public Servo grabber;
+    //public Servo grabber;
 
     public HardwareCletus(OpMode opMode) {
         super(opMode);
@@ -56,8 +56,8 @@ public class HardwareCletus extends Robot {
         motorFrontRight = registerMotor("motorFrontRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER); //this direction is reverse because the motor is backward, so to make it go forwards you (if you had this forwards) would have to set a negative speed
         motorBackLeft = registerMotor("motorBackLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackRight = registerMotor("motorBackRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER); // Same problem as above with this motor
-        grabber = registerServo("grabber");
-        //grabber = registerMotor("grabber", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //grabber = registerServo("grabber", 0.0f);
+        //arm = registerMotor("arm", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     }
 
@@ -282,53 +282,48 @@ public class HardwareCletus extends Robot {
 
     }
 
-    public void extend(){
+    /*public void extend(){
         grabber.setPosition(1.0);
 
-    }
+    }*/
 
-    public void unextend(){
+    /*public void unextend(){
         grabber.setPosition(0.0);
-    }
-    public enum StrafeDirection{
-        RIGHT,
-        LEFT
-    }
+    }*/
 
     /**
      * Strafe the robot left or right.
-     * @param direction The direction in which to move the robot.
      * @param speed How fast the robot should move. Number should be in range (0, 1].
-     * @param dist How far, in inches, to move the robot.
+     * @param dist How far, in inches, to move the robot. Positive for moving right, negative for moving left
      * @param timeout If dist is never reached, how many seconds to wait before stopping.
      */
-   public void strafe(StrafeDirection direction, double speed, double dist, double timeout) {
+   public void strafe(double speed, double dist, double timeout) {
         int distInCounts = (int)(dist * COUNTS_PER_SIDE_INCH);  // Once again, converting from things we understand to the language the motor understands
 
         int correctDirection;
-        if (direction == HardwareCletus.StrafeDirection.LEFT) {
+        if (dist > 0) {
             correctDirection = 1;
         } else {
             correctDirection = -1;
         }
 
-        int topRightTarget = motorFrontRight.getCurrentPosition() + correctDirection * distInCounts;
-        int topLeftTarget = motorFrontLeft.getCurrentPosition() - correctDirection * distInCounts;
-        int bottomLeftTarget = motorBackLeft.getCurrentPosition() + correctDirection * distInCounts;
-        int bottomRightTarget = motorBackRight.getCurrentPosition() - correctDirection * distInCounts;
+        int topRightTarget = motorFrontRight.getCurrentPosition() - (correctDirection * distInCounts);
+        int topLeftTarget = motorFrontLeft.getCurrentPosition() + (correctDirection * distInCounts);
+        int bottomLeftTarget = motorBackLeft.getCurrentPosition() - (correctDirection * distInCounts);
+        int bottomRightTarget = motorBackRight.getCurrentPosition() + (correctDirection * distInCounts);
 
-        motorFrontRight.setPower(speed * correctDirection);
-        motorFrontLeft.setPower(-speed * correctDirection);
-        motorBackLeft.setPower(speed * correctDirection);
-        motorBackRight.setPower(-speed * correctDirection);
+        motorFrontRight.setPower(-speed * correctDirection);
+        motorFrontLeft.setPower(speed * correctDirection);
+        motorBackLeft.setPower(-speed * correctDirection);
+        motorBackRight.setPower(speed * correctDirection);
 
         while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-            if (direction == HardwareCletus.StrafeDirection.LEFT) {
-                if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget) {
+            if (dist > 0) {
+                if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
                     break;
                 }
             } else {
-                if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
+                if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget) {
                     break;
                 }
             }
