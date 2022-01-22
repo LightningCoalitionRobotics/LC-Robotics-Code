@@ -282,7 +282,11 @@ public class HardwareCletus extends Robot {
     }
 
     public void stop() {
-
+        motorFrontRight.setPower(0);
+        motorFrontLeft.setPower(0);
+        motorBackLeft.setPower(0);
+        motorBackRight.setPower(0);
+        arm.setPower(0);
     }
 
     public void extend(){
