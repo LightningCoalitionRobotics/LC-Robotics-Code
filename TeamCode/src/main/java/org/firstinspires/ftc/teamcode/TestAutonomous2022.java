@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareCletus;
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
 @Autonomous(name = "TestAutonomous2022", group = "autonomous")
-public class TestAutonomous2022 extends LinearOpMode{
+public class    TestAutonomous2022 extends LinearOpMode{
 
     private HardwareCletus robot = new HardwareCletus(this);
 
