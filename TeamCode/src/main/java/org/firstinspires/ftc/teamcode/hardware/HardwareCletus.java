@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * The class for the LCR 2021-22 robot.
@@ -40,9 +41,9 @@ public class HardwareCletus extends Robot {
 
     public DcMotor motorBackRight;
 
-    //public DcMotor grabber;
+    //public DcMotor arm;
 
-    //public Servo arm2;
+    public Servo grabber;
 
     public HardwareCletus(OpMode opMode) {
         super(opMode);
@@ -55,9 +56,9 @@ public class HardwareCletus extends Robot {
         motorFrontRight = registerMotor("motorFrontRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER); //this direction is reverse because the motor is backward, so to make it go forwards you (if you had this forwards) would have to set a negative speed
         motorBackLeft = registerMotor("motorBackLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackRight = registerMotor("motorBackRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_WITHOUT_ENCODER); // Same problem as above with this motor
-
+        grabber = registerServo("grabber");
         //grabber = registerMotor("grabber", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //arm2 = registerServo("arm2", 0.5f);
+
     }
 
     /**
@@ -281,6 +282,9 @@ public class HardwareCletus extends Robot {
 
     }
 
+    public void extend(){
+
+    }
     public enum StrafeDirection{
         RIGHT,
         LEFT
