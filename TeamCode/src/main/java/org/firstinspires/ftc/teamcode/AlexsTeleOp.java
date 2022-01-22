@@ -90,11 +90,13 @@ public class AlexsTeleOp extends OpMode {
         }
         //controls for the arm gamepad
         if(gamepad1.y){
-            //move to max height
+
             telemetry.addLine("pad 1 y button pushed");
+
         } else if(gamepad1.a){
-            //move to min height
+
             telemetry.addLine("pad 1 a button pushed");
+
         } else if(gamepad1.b){
             telemetry.addLine("pad 1 B button pushed");
 
@@ -106,9 +108,11 @@ public class AlexsTeleOp extends OpMode {
         if(gamepad2.y){
             robot.liftArm();
             telemetry.addLine("pad 2 y button pushed");
+
         } else if(gamepad2.a){
             robot.lowerArm();
             telemetry.addLine("pad 2 a button pushed");
+
         } else if(gamepad2.b){
             telemetry.addLine("pad 2 B button pushed");
             robot.extend();
@@ -118,14 +122,22 @@ public class AlexsTeleOp extends OpMode {
             robot.unextend();
 
         } else if(gamepad2.dpad_up){
+            telemetry.addLine("pad 2 dpad up pushed");
             robot.liftArm();
+
         } else if(gamepad2.dpad_down){
+            telemetry.addLine("pad 2 dpad down pushed");
             robot.lowerArm();
         }
         if(gamepad2.right_stick_y > 0){
             robot.liftArm();
         } else if(gamepad2.right_stick_y < 0){
             robot.lowerArm();
+        }
+        if(gamepad2.left_stick_y > 0){
+            robot.extend();
+        } else if(gamepad2.left_stick_y < 0){
+            robot.unextend();
         }
     }
 }

@@ -46,7 +46,7 @@ public class HardwareCletus extends Robot {
 
     public CRServo arm; //CRServo is a continuous rotation servo
 
-    //public Servo grabber;
+    public Servo grabber;
 
     public HardwareCletus(OpMode opMode) {
         super(opMode);
@@ -60,7 +60,7 @@ public class HardwareCletus extends Robot {
         motorBackLeft = registerMotor("motorBackLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackRight = registerMotor("motorBackRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER); // Same problem as above with this motor
         arm = hardwareMap.crservo.get("arm"); //continuous rotation servos don't have a registerServo() method like normal servos do
-        //grabber = registerServo("grabber", 0.0f);
+        grabber = registerServo("grabber", 0.0f);
 
     }
 
@@ -297,11 +297,11 @@ public class HardwareCletus extends Robot {
     }
 
     public void extend(){
-        //grabber.setPosition(1.0);
+        grabber.setPosition(1.0);
     }
 
     public void unextend(){
-        //grabber.setPosition(0.0);
+        grabber.setPosition(0.0);
     }
 
     public void liftArm(){
