@@ -2,10 +2,12 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 
 /**
  * The class for the LCR 2021-22 robot.
@@ -41,9 +43,9 @@ public class HardwareCletus extends Robot {
 
     public DcMotor motorBackRight;
 
-    //public DcMotor arm;
+    public CRServo arm;
 
-    //public Servo grabber;
+    public Servo grabber;
 
     public HardwareCletus(OpMode opMode) {
         super(opMode);
@@ -56,8 +58,8 @@ public class HardwareCletus extends Robot {
         motorFrontRight = registerMotor("motorFrontRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER); //this direction is reverse because the motor is backward, so to make it go forwards you (if you had this forwards) would have to set a negative speed
         motorBackLeft = registerMotor("motorBackLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackRight = registerMotor("motorBackRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER); // Same problem as above with this motor
-        //grabber = registerServo("grabber", 0.0f);
-        //arm = registerMotor("arm", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        grabber = registerServo("grabber", 0.0f);
+        arm = hardwareMap.crservo.get("arm");
 
     }
 
@@ -282,26 +284,26 @@ public class HardwareCletus extends Robot {
 
     }
 
-    /*public void extend(){
+    public void extend(){
         grabber.setPosition(1.0);
 
-    }*/
+    }
 
-    /*public void unextend(){
+    public void unextend(){
         grabber.setPosition(0.0);
-    }*/
+    }
 
     /**
      * Strafe the robot left or right.
-     * @param speed How fast the robot should move. Number should be in range (0, 1].
-     * @param dist How far, in inches, to move the robot. Positive for moving right, negative for moving left.
+     * @param speed How fast the robot should move. Number should be in range (0, 1]. Positive for moving right, negative for moving left.
+     * @param dist How far, in inches, to move the robot.
      * @param timeout If dist is never reached, how many seconds to wait before stopping.
      */
    public void strafe(double speed, double dist, double timeout) {
         int distInCounts = (int)(dist * COUNTS_PER_SIDE_INCH);  // Once again, converting from things we understand to the language the motor understands
 
         int correctDirection;
-        if (dist > 0) {
+        if (speed > 0) {
             correctDirection = 1;
         } else {
             correctDirection = -1;
@@ -318,7 +320,7 @@ public class HardwareCletus extends Robot {
         motorBackRight.setPower(speed * correctDirection);
 
         while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-            if (dist > 0) {
+            if (speed > 0) {
                 if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
                     break;
                 }
