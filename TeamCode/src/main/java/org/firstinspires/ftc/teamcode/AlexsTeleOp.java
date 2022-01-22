@@ -27,6 +27,7 @@ public class AlexsTeleOp extends OpMode {
         //controls for the movement gamepad
         if(gamepad1.atRest()){
            robot.stop();
+
         } else if(gamepad1.left_trigger > 0.49) {
             //moves forwards
             robot.motorBackLeft.setPower(speed);
@@ -41,7 +42,7 @@ public class AlexsTeleOp extends OpMode {
             robot.motorFrontLeft.setPower(-speed);
             robot.motorFrontRight.setPower(-speed);
 
-        } else if(gamepad1.left_bumper){
+       /* } else if(gamepad1.left_bumper){
             //strafes left
             robot.motorBackLeft.setPower(speed);
             robot.motorBackRight.setPower(-speed);
@@ -54,7 +55,7 @@ public class AlexsTeleOp extends OpMode {
             robot.motorBackRight.setPower(speed);
             robot.motorFrontLeft.setPower(speed);
             robot.motorFrontRight.setPower(-speed);
-
+*/
         } else if(gamepad1.left_stick_x > 0.25){
             //turn right
             robot.motorBackLeft.setPower(speed);
@@ -88,18 +89,43 @@ public class AlexsTeleOp extends OpMode {
             robot.driveAngleIndefinite(angle, speed, quadrant);
         }
         //controls for the arm gamepad
-        if(gamepad2.y){
+        if(gamepad1.y){
             //move to max height
-        } else if(gamepad2.a){
+            telemetry.addLine("pad 1 y button pushed");
+        } else if(gamepad1.a){
             //move to min height
+            telemetry.addLine("pad 1 a button pushed");
+        } else if(gamepad1.b){
+            telemetry.addLine("pad 1 B button pushed");
+
+        } else if(gamepad1.x){
+            telemetry.addLine("pad 1 x button pushed");
+
+        }
+
+        if(gamepad2.y){
+            robot.liftArm();
+            telemetry.addLine("pad 2 y button pushed");
+        } else if(gamepad2.a){
+            robot.lowerArm();
+            telemetry.addLine("pad 2 a button pushed");
         } else if(gamepad2.b){
-            //open claw
+            telemetry.addLine("pad 2 B button pushed");
+            robot.extend();
+
         } else if(gamepad2.x){
-            //close claw
+            telemetry.addLine("pad 2 x button pushed");
+            robot.unextend();
+
         } else if(gamepad2.dpad_up){
-            //move arm up
+            robot.liftArm();
         } else if(gamepad2.dpad_down){
-            //move arm down
+            robot.lowerArm();
+        }
+        if(gamepad2.right_stick_y > 0){
+            robot.liftArm();
+        } else if(gamepad2.right_stick_y < 0){
+            robot.lowerArm();
         }
     }
 }
