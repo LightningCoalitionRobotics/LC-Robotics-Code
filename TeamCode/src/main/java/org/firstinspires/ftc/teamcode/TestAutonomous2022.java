@@ -59,8 +59,8 @@ public class TestAutonomous2022 extends LinearOpMode{
 
     private void testExtend(){
         telemetry.addLine("Testing Extend and Unextend Functions");
-        robot.extend();
-        robot.unextend();
+        //robot.extend();
+        //robot.unextend();
 
     }
 
