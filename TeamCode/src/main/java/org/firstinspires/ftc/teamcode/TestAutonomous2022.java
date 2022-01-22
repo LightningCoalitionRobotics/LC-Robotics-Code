@@ -67,11 +67,12 @@ public class    TestAutonomous2022 extends LinearOpMode{
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
-        waitForStart( );
+        /*waitForStart( );
         testdrive();
         testturn();
         teststrafe();
         testdriveangle();
-        testExtend();
+        testExtend();*/
+        robot.liftArm();
     }
 }
