@@ -308,7 +308,7 @@ public class HardwareCletus extends Robot {
     public void liftArm(){
         arm.setPower(-0.5);
 
-        if(elapsedTime.seconds() > 900) {
+        if(elapsedTime.seconds() > 940) {
             telemetry.addLine("stopped");
             arm.setPower(0.0);
         }
@@ -321,7 +321,7 @@ public class HardwareCletus extends Robot {
     public void lowerArm(){
         arm.setPower(.5);
 
-        if(elapsedTime.seconds() > 900){
+        if(elapsedTime.seconds() > 940){
             arm.setPower(0.0);
     
         }
