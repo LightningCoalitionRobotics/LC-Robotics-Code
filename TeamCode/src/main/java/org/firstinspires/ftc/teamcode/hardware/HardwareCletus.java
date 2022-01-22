@@ -103,7 +103,7 @@ public class HardwareCletus extends Robot {
             }
             ((LinearOpMode) opMode).idle();
         }
-        stop();
+        stopMotor();
     }
 
     @Override
@@ -275,7 +275,7 @@ public class HardwareCletus extends Robot {
                 }
             }
 
-            stop();
+            stopMotor();
         } else { // if degrees == 90
             drive(speed, dist, timeout); // this is because plugging 90 into driveAngle returns an angle (imagine a triangle with two 90 degree angles, obviously not possible), so we just use drive
         }
