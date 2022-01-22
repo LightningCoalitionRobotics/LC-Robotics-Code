@@ -285,6 +285,8 @@ public class HardwareCletus extends Robot {
 
     }
 
+
+
     public void extend(){
         grabber.setPosition(1.0);
 
@@ -310,7 +312,7 @@ public class HardwareCletus extends Robot {
 arm.setPower(-.5);
 if(elapsedTime.seconds() > 1.5){
     arm.setPower(0.0);
-    
+
 }
     }
 
