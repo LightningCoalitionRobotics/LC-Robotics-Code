@@ -132,23 +132,17 @@ public class AlexsTeleOp extends OpMode {
             telemetry.addLine("pad 2 x button pushed");
             robot.unextend();
 
-        } else if(gamepad2.dpad_up){
-            telemetry.addLine("pad 2 dpad up pushed");
-            robot.liftArm();
-
-        } else if(gamepad2.dpad_down){
-            telemetry.addLine("pad 2 dpad down pushed");
-            robot.lowerArm();
         }
+
         if(gamepad2.right_stick_y > 0){
             robot.arm.setPower(0.5);
         } else if(gamepad2.right_stick_y < 0){
             robot.arm.setPower(-0.5);
         }
         if(gamepad2.left_stick_y > 0){
-            robot.extend();
+            robot.grabber.setPosition(robot.grabber.getPosition() + 0.1);
         } else if(gamepad2.left_stick_y < 0){
-            robot.unextend();
+            robot.grabber.setPosition(robot.grabber.getPosition() - 0.1);
         }
     }
 }

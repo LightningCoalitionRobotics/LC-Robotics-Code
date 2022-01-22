@@ -74,5 +74,7 @@ public class    TestAutonomous2022 extends LinearOpMode{
         testdriveangle();
         testExtend();*/
         robot.liftArm();
+        sleep(2000);
+        robot.stop();
     }
 }
