@@ -131,5 +131,10 @@ public class AlexsTeleOp extends OpMode {
         } else if(gamepad2.right_stick_y < 0){
             robot.lowerArm();
         }
+        if(gamepad2.left_stick_y > 0){
+            robot.extend();
+        } else if(gamepad2.left_stick_y < 0){
+            robot.unextend();
+        }
     }
 }
