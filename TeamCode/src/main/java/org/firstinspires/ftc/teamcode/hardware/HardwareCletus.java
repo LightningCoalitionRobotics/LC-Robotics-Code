@@ -289,8 +289,6 @@ public class HardwareCletus extends Robot {
         arm.setPower(0);
     }
 
-
-
     public void extend(){
         grabber.setPosition(1.0);
 
