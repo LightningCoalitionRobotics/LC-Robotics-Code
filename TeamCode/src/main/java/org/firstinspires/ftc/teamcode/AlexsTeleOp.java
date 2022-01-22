@@ -105,6 +105,11 @@ public class AlexsTeleOp extends OpMode {
 
         }
 
+        if(gamepad2.atRest()){
+            robot.arm.setPower(0);
+
+        }
+
         if(gamepad2.y){
             robot.liftArm();
             telemetry.addLine("pad 2 y button pushed");
