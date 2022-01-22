@@ -89,6 +89,7 @@ public class AlexsTeleOp extends OpMode {
             robot.driveAngleIndefinite(angle, speed, quadrant);
         }
         //controls for the arm gamepad
+
         if(gamepad1.y){
             //move to max height
             telemetry.addLine("pad 1 y button pushed");
@@ -103,7 +104,10 @@ public class AlexsTeleOp extends OpMode {
 
         }
 
-        if(gamepad2.y){
+        if(gamepad2.atRest()){
+            robot.arm.setPower(0);
+
+        } else if(gamepad2.y){
             robot.liftArm();
             telemetry.addLine("pad 2 y button pushed");
         } else if(gamepad2.a){
@@ -126,6 +130,11 @@ public class AlexsTeleOp extends OpMode {
             robot.liftArm();
         } else if(gamepad2.right_stick_y < 0){
             robot.lowerArm();
+        }
+        if(gamepad2.left_stick_y > 0){
+            robot.extend();
+        } else if(gamepad2.left_stick_y < 0){
+            robot.unextend();
         }
     }
 }
