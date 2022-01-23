@@ -13,6 +13,20 @@ public class AlexsTeleOp extends OpMode {
         robot.init(hardwareMap);
     }
     double speed = 0.5;
+    boolean lift = false;
+
+    public void fullLift(String direction){
+
+        if(lift){
+            if(direction.equals("up")){
+                robot.liftArm();
+            } else {
+                robot.lowerArm();
+            }
+
+        }
+        lift = false;
+    }
 
     public void loop() {
         //movement gamepad: triggers for forward/backward, b/x for strafing left and right, right joystick for moving tangent, left joystick for turning, dpad for changing speed
@@ -117,11 +131,13 @@ public class AlexsTeleOp extends OpMode {
         }
 
         if(gamepad2.y){
-            robot.liftArm();
+            lift = true;
+            fullLift("up");
             telemetry.addLine("pad 2 y button pushed");
 
         } else if(gamepad2.a){
-            robot.lowerArm();
+            lift = true;
+            fullLift("down");
             telemetry.addLine("pad 2 a button pushed");
 
         } else if(gamepad2.b){
@@ -132,23 +148,21 @@ public class AlexsTeleOp extends OpMode {
             telemetry.addLine("pad 2 x button pushed");
             robot.unextend();
 
-        } else if(gamepad2.dpad_up){
-            telemetry.addLine("pad 2 dpad up pushed");
-            robot.liftArm();
-
-        } else if(gamepad2.dpad_down){
-            telemetry.addLine("pad 2 dpad down pushed");
-            robot.lowerArm();
         }
+
         if(gamepad2.right_stick_y > 0){
             robot.arm.setPower(0.5);
+
         } else if(gamepad2.right_stick_y < 0){
             robot.arm.setPower(-0.5);
+
         }
         if(gamepad2.left_stick_y > 0){
-            robot.extend();
+            robot.grabber.setPosition(robot.grabber.getPosition() + 0.025);
+
         } else if(gamepad2.left_stick_y < 0){
-            robot.unextend();
+            robot.grabber.setPosition(robot.grabber.getPosition() - 0.025);
+
         }
     }
 }

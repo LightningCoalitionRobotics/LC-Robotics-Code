@@ -306,7 +306,7 @@ public class HardwareCletus extends Robot {
 
     public void liftArm(){
         arm.setPower(0.5);
-        if(elapsedTime.seconds() > 10) {
+        if(elapsedTime.seconds() > 1.5) {
             arm.setPower(0.0);
         }
 
@@ -319,7 +319,7 @@ public class HardwareCletus extends Robot {
     public void lowerArm(){
         arm.setPower(-.5);
 
-        if(elapsedTime.seconds() > 10){
+        if(elapsedTime.seconds() > 1.5){
             arm.setPower(0.0);
     
         }
