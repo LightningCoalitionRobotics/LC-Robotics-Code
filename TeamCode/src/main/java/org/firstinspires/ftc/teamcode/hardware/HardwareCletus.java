@@ -287,22 +287,22 @@ public class HardwareCletus extends Robot {
         motorBackLeft.setPower(0);
         motorBackRight.setPower(0);
         arm.setPower(0);
-    }
+    } //stops wheel movement and arm, but not grabber
 
     public void stopMotor(){
         motorFrontRight.setPower(0);
         motorFrontLeft.setPower(0);
         motorBackLeft.setPower(0);
         motorBackRight.setPower(0);
-    }
+    } //stops only the motors so arm can continue to run
 
     public void extend(){
         grabber.setPosition(1.0);
-    }
+    } //extends grabber
 
     public void unextend(){
         grabber.setPosition(0.0);
-    }
+    } //retracts grabber
 
     public void liftArm(){
         arm.setPower(0.5);
@@ -318,12 +318,11 @@ public class HardwareCletus extends Robot {
 
     public void lowerArm(){
         arm.setPower(-.5);
-
         if(elapsedTime.seconds() > 1.5){
             arm.setPower(0.0);
     
         }
-    }
+    } //Lowers arm, stops after 1.5 seconds
 
 
     /**

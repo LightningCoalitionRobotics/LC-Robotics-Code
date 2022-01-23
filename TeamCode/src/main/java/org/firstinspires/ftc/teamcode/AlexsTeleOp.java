@@ -29,8 +29,8 @@ public class AlexsTeleOp extends OpMode {
     }
 
     public void loop() {
-        //movement gamepad: triggers for forward/backward, b/x for strafing left and right, right joystick for moving tangent, left joystick for turning, dpad for changing speed
-        //arm gamepad: y/a to move arm to max/min height, b/x to open and close claw, dpad for more precise height changes
+        //movement gamepad: triggers for forward/backward, B/X for strafing left and right, right joystick for moving tangent, left joystick for turning, dpad for changing speed
+        //arm gamepad: Y/A to move arm to max/min height, B/X to open and close claw, dpad for more precise height changes
 
         if(gamepad1.dpad_up){
             speed *= 2;
@@ -111,17 +111,17 @@ public class AlexsTeleOp extends OpMode {
         //controls for the arm gamepad
         if(gamepad1.y){
 
-            telemetry.addLine("pad 1 y button pushed");
+            telemetry.addLine("pad 1 Y button pushed");
 
         } else if(gamepad1.a){
 
-            telemetry.addLine("pad 1 a button pushed");
+            telemetry.addLine("pad 1 A button pushed");
 
         } else if(gamepad1.b){
             telemetry.addLine("pad 1 B button pushed");
 
         } else if(gamepad1.x){
-            telemetry.addLine("pad 1 x button pushed");
+            telemetry.addLine("pad 1 X button pushed");
 
         }
 
