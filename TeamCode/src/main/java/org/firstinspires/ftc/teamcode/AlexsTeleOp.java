@@ -133,19 +133,19 @@ public class AlexsTeleOp extends OpMode {
         if(gamepad2.y){
             lift = true;
             fullLift("up");
-            telemetry.addLine("pad 2 y button pushed");
+            telemetry.addLine("pad 2 Y button pushed");
 
         } else if(gamepad2.a){
             lift = true;
             fullLift("down");
-            telemetry.addLine("pad 2 a button pushed");
+            telemetry.addLine("pad 2 A button pushed");
 
         } else if(gamepad2.b){
             telemetry.addLine("pad 2 B button pushed");
             robot.extend();
 
         } else if(gamepad2.x){
-            telemetry.addLine("pad 2 x button pushed");
+            telemetry.addLine("pad 2 X button pushed");
             robot.unextend();
 
         }
