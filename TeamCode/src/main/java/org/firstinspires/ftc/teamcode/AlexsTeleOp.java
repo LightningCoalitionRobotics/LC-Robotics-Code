@@ -14,7 +14,7 @@ public class AlexsTeleOp extends OpMode {
     }
     double speed = 0.5;
     boolean lift = false;
-    String direction;
+    String direction = null;
 
     public void fullLift(String direction){
 
@@ -133,20 +133,18 @@ public class AlexsTeleOp extends OpMode {
 
         if(gamepad2.y){
             lift = true;
+            direction = "up";
             fullLift(direction);
-            telemetry.addLine("pad 2 y button pushed");
 
         } else if(gamepad2.a){
             lift = true;
+            direction = "down";
             fullLift(direction);
-            telemetry.addLine("pad 2 a button pushed");
 
         } else if(gamepad2.b){
-            telemetry.addLine("pad 2 B button pushed");
             robot.extend();
 
         } else if(gamepad2.x){
-            telemetry.addLine("pad 2 x button pushed");
             robot.unextend();
 
         }
@@ -159,10 +157,10 @@ public class AlexsTeleOp extends OpMode {
 
         }
         if(gamepad2.left_stick_y > 0){
-            robot.grabber.setPosition(robot.grabber.getPosition() + 0.01);
+            robot.grabber.setPosition(robot.grabber.getPosition() + 0.001);
 
         } else if(gamepad2.left_stick_y < 0){
-            robot.grabber.setPosition(robot.grabber.getPosition() - 0.01);
+            robot.grabber.setPosition(robot.grabber.getPosition() - 0.001);
 
         }
 
