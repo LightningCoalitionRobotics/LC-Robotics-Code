@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -10,7 +11,7 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
  * ever have to edit this file
  *
  */
-
+@Disabled
 @TeleOp(name="TestTeleOp", group="TeleOp")
 public class TestTeleOp2019 extends OpMode {
     private HardwareLilPanini robot = new HardwareLilPanini(this);

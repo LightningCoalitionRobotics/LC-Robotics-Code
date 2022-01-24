@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
@@ -8,7 +9,7 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
  * This code is used to find the sky stone and then move it into the build zone.
  * This one is used for if the other team doesn't move the platform into the build zone
  */
-
+@Disabled
 @Autonomous(name = "BlueStart2Uncovered", group = "autonomous")
 public class BlueStart2Uncovered extends LcVuforiaOpMode {
 

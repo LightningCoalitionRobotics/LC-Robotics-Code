@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
-
+@Disabled
 @Autonomous(name="RedStart1", group = "autonomous")
 public class RedStart1  extends LinearOpMode {
     private HardwareLilPanini robot = new HardwareLilPanini(this);

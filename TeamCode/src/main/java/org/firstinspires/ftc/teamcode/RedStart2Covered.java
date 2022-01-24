@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
@@ -8,6 +9,7 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
  * This code is used to find the sky stone and then place it onto the build platform.
  * Its used for when the other team moves the build platform into the build zone.
  */
+@Disabled
  @Autonomous(name = "RedStart2Covered", group = "autonomous")
 public class RedStart2Covered extends LcVuforiaOpMode{
 
