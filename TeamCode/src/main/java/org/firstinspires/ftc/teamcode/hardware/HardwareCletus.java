@@ -310,8 +310,7 @@ public class HardwareCletus extends Robot {
             arm.setPower(0.0);
         }
 
-            }
-
+    }
 
     // height of lvl 1 = 3.5 inches
     // height of lvl 2 = 9 inches, lvl 3 = 15.5 inches
@@ -322,7 +321,7 @@ public class HardwareCletus extends Robot {
             arm.setPower(0.0);
     
         }
-    } //Lowers arm, stops after 1.5 seconds
+    }
 
 
     /**

@@ -13,21 +13,9 @@ public class AlexsTeleOp extends OpMode {
         robot.init(hardwareMap);
     }
     double speed = 0.5;
-    boolean lift = false;
-    String direction = null;
+    double speedArm = 0;
+    double startTime = getRuntime();
 
-    public void fullLift(String direction){
-
-        if(lift){
-            if(direction.equals("up")){
-                robot.liftArm();
-            } else {
-                robot.lowerArm();
-            }
-
-        }
-        lift = false;
-    }
 
     public void loop() {
         //movement gamepad: triggers for forward/backward, b/x for strafing left and right, right joystick for moving tangent, left joystick for turning, dpad for changing speed
@@ -91,7 +79,7 @@ public class AlexsTeleOp extends OpMode {
             robot.motorFrontLeft.setPower(-speed);
             robot.motorFrontRight.setPower(speed);
 
-        } else if(gamepad1.right_stick_x != 0 && gamepad1.right_stick_y != 0){
+        } /*else if(gamepad1.right_stick_x != 0 && gamepad1.right_stick_y != 0){
             double angle = Math.toDegrees(Math.atan(Math.abs(gamepad1.right_stick_y)/Math.abs(gamepad1.right_stick_x)));
             int quadrant = 0;
             if(gamepad1.right_stick_x > 0){
@@ -108,38 +96,25 @@ public class AlexsTeleOp extends OpMode {
                 }
             }
             robot.driveAngleIndefinite(angle, speed, quadrant);
-        }
+        }*/
         //controls for the arm gamepad
-        if(gamepad1.y){
-
-            telemetry.addLine("pad 1 y button pushed");
-
-        } else if(gamepad1.a){
-
-            telemetry.addLine("pad 1 a button pushed");
-
-        } else if(gamepad1.b){
-            telemetry.addLine("pad 1 B button pushed");
-
-        } else if(gamepad1.x){
-            telemetry.addLine("pad 1 x button pushed");
-
-        }
 
         if(gamepad2.atRest()){
             robot.arm.setPower(0);
 
         }
 
+        if(startTime > 1){
+            speedArm = 0;
+        }
+
         if(gamepad2.y){
-            lift = true;
-            direction = "up";
-            fullLift(direction);
+            resetStartTime();
+            speedArm = 0.5;
 
         } else if(gamepad2.a){
-            lift = true;
-            direction = "down";
-            fullLift(direction);
+            resetStartTime();
+            speedArm = -0.5;
 
         } else if(gamepad2.b){
             robot.extend();
@@ -164,6 +139,8 @@ public class AlexsTeleOp extends OpMode {
 
         }
 
-        telemetry.addLine("Direction is " + direction);
+        robot.arm.setPower(speedArm);
     }
+
+
 }
