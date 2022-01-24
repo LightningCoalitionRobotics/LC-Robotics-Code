@@ -31,7 +31,6 @@ public class HardwareCletus extends Robot {
     private static final int COUNTS_PER_SIDE_FOOT = 2000;                          // The amount of counts per the robot moving to the SIDE 1 foot is 2000, NOTICE this is different than the amount of counts going forward or backwards
     private static final int COUNTS_PER_SIDE_INCH = COUNTS_PER_SIDE_FOOT / 12;
 
-    private static final double ARM_INCHES_PER_SECOND = 7.5;                       // for 0.5 speed
     // Not experimentally determined:
     private static final int COUNTS_PER_45_INCH = (int) Math.hypot(COUNTS_PER_FORWARD_INCH, COUNTS_PER_SIDE_INCH);
 
@@ -288,44 +287,42 @@ public class HardwareCletus extends Robot {
         motorBackLeft.setPower(0);
         motorBackRight.setPower(0);
         arm.setPower(0);
-    }
+    } //stops wheel movement and arm, but not grabber
 
     public void stopMotor(){
         motorFrontRight.setPower(0);
         motorFrontLeft.setPower(0);
         motorBackLeft.setPower(0);
         motorBackRight.setPower(0);
-    }
+    } //stops only the motors so arm can continue to run
 
     public void extend(){
         grabber.setPosition(1.0);
-    }
+    } //extends grabber
 
     public void unextend(){
         grabber.setPosition(0.0);
-    }
+    } //retracts grabber
 
     public void liftArm(){
-        arm.setPower(-0.5);
-
-        if(elapsedTime.seconds() > 940) {
-            telemetry.addLine("stopped");
+        arm.setPower(0.5);
+        if(elapsedTime.seconds() > 1.5) {
             arm.setPower(0.0);
         }
 
-    }
+            }
+
 
     // height of lvl 1 = 3.5 inches
     // height of lvl 2 = 9 inches, lvl 3 = 15.5 inches
 
     public void lowerArm(){
-        arm.setPower(.5);
-
-        if(elapsedTime.seconds() > 940){
+        arm.setPower(-.5);
+        if(elapsedTime.seconds() > 1.5){
             arm.setPower(0.0);
     
         }
-    }
+    } //Lowers arm, stops after 1.5 seconds
 
 
     /**
