@@ -111,12 +111,12 @@ public class AlexsTeleOp extends OpMode {
 
         }
 
-        if(gamepad2.y){
+        if(gamepad2.y && speedArm == 0){
             resetStartTime();
             speedArm = -0.75;
             robot.arm.setPower(speedArm);
 
-        } else if(gamepad2.a){
+        } else if(gamepad2.a && speedArm == 0){
             resetStartTime();
             speedArm = 0.75;
             robot.arm.setPower(speedArm);
@@ -151,7 +151,5 @@ public class AlexsTeleOp extends OpMode {
             robot.grabber.setPosition(robot.grabber.getPosition() - 0.001);
 
         }
-
     }
-
 }
