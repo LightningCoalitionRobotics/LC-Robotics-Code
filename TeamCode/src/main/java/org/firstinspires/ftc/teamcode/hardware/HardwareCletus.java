@@ -298,10 +298,6 @@ public class HardwareCletus extends Robot {
 
     public void extend(){
         grabber.setPosition(1.0);
-        if(grabber.equals(.85)){
-            arm.setPower(0.0);
-
-        }
     } //extends grabber
 
     public void unextend(){
@@ -314,28 +310,7 @@ public class HardwareCletus extends Robot {
             arm.setPower(0.0);
         }
 
-            }
-    public void init() {
-        init(hardwareMap);
     }
-    double speed = 0.5;
-    boolean lift = false;
-
-    public void fullLift(String direction){
-        if(lift){
-            if(direction.equals("up")){
-                liftArm();
-            } else {
-                lowerArm();
-            }
-
-        }
-        lift = false;
-    }
-
-
-
-
 
     // height of lvl 1 = 3.5 inches
     // height of lvl 2 = 9 inches, lvl 3 = 15.5 inches
@@ -344,9 +319,9 @@ public class HardwareCletus extends Robot {
         arm.setPower(-.5);
         if(elapsedTime.seconds() > 1.5){
             arm.setPower(0.0);
-
+    
         }
-    } //Lowers arm, stops after 1.5 seconds
+    }
 
 
     /**
