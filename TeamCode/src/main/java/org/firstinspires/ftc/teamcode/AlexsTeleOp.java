@@ -116,13 +116,13 @@ public class AlexsTeleOp extends OpMode {
 
         if(gamepad2.y){
             resetStartTime();
-            robot.arm.setDirection(DcMotorSimple.Direction.FORWARD);
+            robot.arm.setDirection(CRServoImpl.Direction.FORWARD);
             speedArm = -0.75;
             robot.arm.setPower(speedArm);
 
         } else if(gamepad2.a){
             resetStartTime();
-            robot.arm.setDirection(DcMotorSimple.Direction.REVERSE);
+            robot.arm.setDirection(CRServoImpl.Direction.REVERSE);
             speedArm = -0.75;
             robot.arm.setPower(speedArm);
 
@@ -138,12 +138,12 @@ public class AlexsTeleOp extends OpMode {
 
         if(gamepad2.right_stick_y > 0){
             resetStartTime();
-            robot.arm.setDirection(DcMotorSimple.Direction.FORWARD);
+            robot.arm.setDirection(CRServoImpl.Direction.FORWARD);
             robot.arm.setPower(-0.75);
 
         } else if(gamepad2.right_stick_y < 0){
             resetStartTime();
-            robot.arm.setDirection(DcMotorSimple.Direction.REVERSE);
+            robot.arm.setDirection(CRServoImpl.Direction.REVERSE);
             robot.arm.setPower(-0.75);
 
         }
