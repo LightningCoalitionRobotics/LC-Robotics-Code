@@ -13,25 +13,14 @@ public class AlexsTeleOp extends OpMode {
         robot.init(hardwareMap);
     }
     double speed = 0.5;
-    boolean lift = false;
-    String direction;
-
-    public void fullLift(String direction){
-
-        if(lift){
-            if(direction.equals("up")){
-                robot.liftArm();
-            } else {
-                robot.lowerArm();
-            }
-
-        }
-        lift = false;
-    }
+    double speedArm = 0;
 
     public void loop() {
         //movement gamepad: triggers for forward/backward, b/x for strafing left and right, right joystick for moving tangent, left joystick for turning, dpad for changing speed
         //arm gamepad: y/a to move arm to max/min height, b/x to open and close claw, dpad for more precise height changes
+        double startTime = getRuntime();
+        telemetry.addLine("double startTime = " + startTime );
+        telemetry.addLine("double speedArm = " + speedArm );
 
         if(gamepad1.dpad_up){
             speed *= 2;
@@ -91,7 +80,7 @@ public class AlexsTeleOp extends OpMode {
             robot.motorFrontLeft.setPower(-speed);
             robot.motorFrontRight.setPower(speed);
 
-        } else if(gamepad1.right_stick_x != 0 && gamepad1.right_stick_y != 0){
+        } /*else if(gamepad1.right_stick_x != 0 && gamepad1.right_stick_y != 0){
             double angle = Math.toDegrees(Math.atan(Math.abs(gamepad1.right_stick_y)/Math.abs(gamepad1.right_stick_x)));
             int quadrant = 0;
             if(gamepad1.right_stick_x > 0){
@@ -108,64 +97,54 @@ public class AlexsTeleOp extends OpMode {
                 }
             }
             robot.driveAngleIndefinite(angle, speed, quadrant);
-        }
+        }*/
         //controls for the arm gamepad
-        if(gamepad1.y){
-
-            telemetry.addLine("pad 1 y button pushed");
-
-        } else if(gamepad1.a){
-
-            telemetry.addLine("pad 1 a button pushed");
-
-        } else if(gamepad1.b){
-            telemetry.addLine("pad 1 B button pushed");
-
-        } else if(gamepad1.x){
-            telemetry.addLine("pad 1 x button pushed");
-
-        }
 
         if(gamepad2.atRest()){
             robot.arm.setPower(0);
 
         }
 
+        if(startTime >= 0.33){
+            speedArm = 0;
+            //telemetry.addLine("Start time is " + startTime);
+        }
+
         if(gamepad2.y){
-            lift = true;
-            fullLift(direction);
-            telemetry.addLine("pad 2 y button pushed");
+            startTime -= startTime;
+            //resetStartTime();
+            speedArm = -0.75;
 
         } else if(gamepad2.a){
-            lift = true;
-            fullLift(direction);
-            telemetry.addLine("pad 2 a button pushed");
+            startTime -= startTime;
+            //resetStartTime();
+            speedArm = 0.75;
 
         } else if(gamepad2.b){
-            telemetry.addLine("pad 2 B button pushed");
             robot.extend();
 
         } else if(gamepad2.x){
-            telemetry.addLine("pad 2 x button pushed");
             robot.unextend();
 
         }
 
         if(gamepad2.right_stick_y > 0){
-            robot.arm.setPower(0.5);
+            robot.arm.setPower(-0.5);
 
         } else if(gamepad2.right_stick_y < 0){
-            robot.arm.setPower(-0.5);
+            robot.arm.setPower(0.5);
 
         }
         if(gamepad2.left_stick_y > 0){
-            robot.grabber.setPosition(robot.grabber.getPosition() + 0.01);
+            robot.grabber.setPosition(robot.grabber.getPosition() + 0.001);
 
         } else if(gamepad2.left_stick_y < 0){
-            robot.grabber.setPosition(robot.grabber.getPosition() - 0.01);
+            robot.grabber.setPosition(robot.grabber.getPosition() - 0.001);
 
         }
 
-        telemetry.addLine("Direction is " + direction);
+        //robot.arm.setPower(speedArm);
     }
+
+
 }
