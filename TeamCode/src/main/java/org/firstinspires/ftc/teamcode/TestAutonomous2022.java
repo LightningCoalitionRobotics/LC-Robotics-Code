@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.hardware.HardwareCletus;
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
@@ -63,11 +64,22 @@ public class    TestAutonomous2022 extends LinearOpMode{
         robot.unextend();
 
     }
+    private void testLowerArm(){
+        robot.arm.setPower(-1);
+        sleep(1500);{
+            robot.arm.setPower(0);
+        }
+
+
+    }
+
+
+
 
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
-        robot.arm.setPower(-0.75);
+        robot.arm.setPower(-1);
         sleep(1270);
         //sleep(1000); //675 degrees of rotation
         robot.arm.setPower(0);
@@ -80,5 +92,6 @@ public class    TestAutonomous2022 extends LinearOpMode{
         //robot.liftArm();
         //sleep(2000);
         robot.stop();
+
     }
 }
