@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -7,7 +8,7 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
 import static org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini.DRAWER_SLIDE_TOP_POSITION;
 import static org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini.DRAWER_SLIDE_BOTTOM_POSITION;
-
+@Disabled
 @TeleOp(name="TeleOp Arbitrary Direction", group="TeleOp")
 public class TeleOpArbitraryDirection extends OpMode {
     private HardwareLilPanini robot = new HardwareLilPanini(this);
