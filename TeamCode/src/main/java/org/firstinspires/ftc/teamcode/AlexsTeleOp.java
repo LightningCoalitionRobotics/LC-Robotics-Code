@@ -102,25 +102,26 @@ public class AlexsTeleOp extends OpMode {
         }*/
         //controls for the arm gamepad
 
-        if(gamepad2.atRest()){
+        if(gamepad2.atRest() && speedArm == 0){
             robot.arm.setPower(0);
 
         }
 
-        if(startTime >= 0.33){
+        if(startTime >= 0.45){
             speedArm = 0;
-            //telemetry.addLine("Start time is " + startTime);
+            robot.arm.setPower(speedArm);
+
         }
 
         if(gamepad2.y){
-            startTime -= startTime;
-            //resetStartTime();
+            resetStartTime();
             speedArm = -0.75;
+            robot.arm.setPower(speedArm);
 
         } else if(gamepad2.a){
-            startTime -= startTime;
-            //resetStartTime();
+            resetStartTime();
             speedArm = 0.75;
+            robot.arm.setPower(speedArm);
 
         } else if(gamepad2.b){
             robot.extend();
@@ -131,10 +132,12 @@ public class AlexsTeleOp extends OpMode {
         }
 
         if(gamepad2.right_stick_y > 0){
-            robot.arm.setPower(-0.5);
+            resetStartTime();
+            robot.arm.setPower(-0.75);
 
         } else if(gamepad2.right_stick_y < 0){
-            robot.arm.setPower(0.5);
+            resetStartTime();
+            robot.arm.setPower(0.75);
 
         }
         if(gamepad2.left_stick_y > 0){
@@ -145,7 +148,6 @@ public class AlexsTeleOp extends OpMode {
 
         }
 
-        //robot.arm.setPower(speedArm);
     }
 
 
