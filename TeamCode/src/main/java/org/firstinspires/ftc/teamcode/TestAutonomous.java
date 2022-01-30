@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
@@ -9,7 +10,7 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
  * Each clump of 3 lines first sends telemetry describing what the robot should do, then does it, then sleeps for 2 seconds
  * @author Chris
  */
-
+@Disabled
 @Autonomous(name="TestAutonomous", group = "autonomous")
 public class TestAutonomous extends LinearOpMode {
 
