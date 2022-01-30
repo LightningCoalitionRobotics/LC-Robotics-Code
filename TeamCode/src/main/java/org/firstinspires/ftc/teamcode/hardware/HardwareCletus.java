@@ -306,30 +306,20 @@ public class HardwareCletus extends Robot {
 
     public void liftArm(){
         arm.setPower(0.5);
-        if(elapsedTime.seconds() > .8) { //max height for arm
-            arm.setPower(0.0);
-        }
-
     }
 
     // height of lvl 1 = 3.5 inches
     // height of lvl 2 = 9 inches, lvl 3 = 15.5 inches
 
-    public void lowerArm(){
-        arm.setPower(-.5);
-        if(elapsedTime.seconds() > .8){ //min height for arm
-            arm.setPower(0.0);
-    
-        }
+    public void lowerArm() {
+        arm.setPower(.5);
+        //min height for arm
+
     }
 
-    public void ArmLvl1 (){
-        arm.setPower(.3);
-        if (elapsedTime.seconds() > .3) {
-            arm.setPower(0.0);
-        }
 
-        }
+
+
 
 
 
