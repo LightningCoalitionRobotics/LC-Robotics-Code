@@ -31,12 +31,10 @@ public class AlexsTeleOp extends OpMode {
 
         if(gamepad1.dpad_up){
             speed *= 2;
-            telemetry.addLine("pad 1 dpad up pushed");
             telemetry.addLine("speed is now " + speed);
 
         } else if(gamepad1.dpad_down) {
             speed /= 2;
-            telemetry.addLine("pad 1 dpad down  pushed");
             telemetry.addLine("speed is now " + speed);
 
         }
@@ -71,7 +69,9 @@ public class AlexsTeleOp extends OpMode {
             robot.motorBackLeft.setPower(-speed);
             robot.motorBackRight.setPower(speed);
             robot.motorFrontLeft.setPower(speed);
-            robot.motorFrontRight.setPower(-speed); */
+            robot.motorFrontRight.setPower(-speed);
+
+        */
         } else if(gamepad1.left_stick_x > 0.25){
             //turn right
             robot.motorBackLeft.setPower(speed);
@@ -83,6 +83,20 @@ public class AlexsTeleOp extends OpMode {
             //turn left
             robot.motorBackLeft.setPower(-speed);
             robot.motorBackRight.setPower(speed);
+            robot.motorFrontLeft.setPower(-speed);
+            robot.motorFrontRight.setPower(speed);
+
+        }else if(gamepad1.right_stick_x > 0.25){
+            //strafe right
+            robot.motorBackLeft.setPower(-speed);
+            robot.motorBackRight.setPower(speed);
+            robot.motorFrontLeft.setPower(speed);
+            robot.motorFrontRight.setPower(-speed);
+
+        } else if(gamepad1.right_stick_x < -0.25){
+            //strafe left
+            robot.motorBackLeft.setPower(speed);
+            robot.motorBackRight.setPower(-speed);
             robot.motorFrontLeft.setPower(-speed);
             robot.motorFrontRight.setPower(speed);
 
@@ -108,6 +122,7 @@ public class AlexsTeleOp extends OpMode {
 
         if(startTime >= 0.45){
             speedArm = 0;
+            robot.arm.setPower(speedArm);
 
         }
 
