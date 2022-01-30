@@ -67,14 +67,18 @@ public class    TestAutonomous2022 extends LinearOpMode{
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
+        robot.arm.setPower(-0.75);
+        sleep(1270);
+        //sleep(1000); //675 degrees of rotation
+        robot.arm.setPower(0);
         /*waitForStart( );
         testdrive();
         testturn();
         teststrafe();
         testdriveangle();
         testExtend();*/
-        robot.liftArm();
-        sleep(2000);
+        //robot.liftArm();
+        //sleep(2000);
         robot.stop();
     }
 }
