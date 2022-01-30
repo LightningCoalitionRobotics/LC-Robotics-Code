@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServoImpl;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.hardware.HardwareCletus;
 
@@ -115,15 +116,19 @@ public class AlexsTeleOp extends OpMode {
 
         if(gamepad2.y){
             resetStartTime();
+            robot.arm.setDirection(DcMotorSimple.Direction.FORWARD);
             speedArm = -0.75;
             robot.arm.setPower(speedArm);
 
         } else if(gamepad2.a){
             resetStartTime();
-            speedArm = 0.75;
+            robot.arm.setDirection(DcMotorSimple.Direction.REVERSE);
+            speedArm = -0.75;
             robot.arm.setPower(speedArm);
 
-        } else if(gamepad2.b){
+        }
+
+        if(gamepad2.b){
             robot.extend();
 
         } else if(gamepad2.x){
@@ -133,13 +138,16 @@ public class AlexsTeleOp extends OpMode {
 
         if(gamepad2.right_stick_y > 0){
             resetStartTime();
+            robot.arm.setDirection(DcMotorSimple.Direction.FORWARD);
             robot.arm.setPower(-0.75);
 
         } else if(gamepad2.right_stick_y < 0){
             resetStartTime();
-            robot.arm.setPower(0.75);
+            robot.arm.setDirection(DcMotorSimple.Direction.REVERSE);
+            robot.arm.setPower(-0.75);
 
         }
+
         if(gamepad2.left_stick_y > 0){
             robot.grabber.setPosition(robot.grabber.getPosition() + 0.001);
 
