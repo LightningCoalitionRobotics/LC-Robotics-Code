@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServoImpl;
 
 import org.firstinspires.ftc.teamcode.hardware.HardwareCletus;
 
@@ -13,7 +14,8 @@ public class AlexsTeleOp extends OpMode {
         robot.init(hardwareMap);
     }
     double speed = 0.5;
-    double speedArm = 0;
+    double speedArm = 0.0;
+
 
     public void loop() {
         //movement gamepad: triggers for forward/backward, b/x for strafing left and right, right joystick for moving tangent, left joystick for turning, dpad for changing speed
