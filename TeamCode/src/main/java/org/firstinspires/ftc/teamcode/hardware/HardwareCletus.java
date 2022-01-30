@@ -305,14 +305,14 @@ public class HardwareCletus extends Robot {
     } //retracts grabber
 
     public void liftArm(){
-        arm.setPower(0.5);
+        arm.setPower(0.75);
     }
 
     // height of lvl 1 = 3.5 inches
     // height of lvl 2 = 9 inches, lvl 3 = 15.5 inches
 
     public void lowerArm() {
-        arm.setPower(.5);
+        arm.setPower(.75);
         //min height for arm
 
     }
