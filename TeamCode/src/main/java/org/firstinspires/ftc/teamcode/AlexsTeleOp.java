@@ -110,11 +110,13 @@ public class AlexsTeleOp extends OpMode {
         }
 
         if(gamepad2.y){
-            resetStartTime();
+            startTime -= startTime;
+            //resetStartTime();
             speedArm = 0.75;
 
         } else if(gamepad2.a){
-            resetStartTime();
+            startTime -= startTime;
+            //resetStartTime();
             speedArm = -0.75;
 
         } else if(gamepad2.b){
