@@ -14,12 +14,13 @@ public class AlexsTeleOp extends OpMode {
     }
     double speed = 0.5;
     double speedArm = 0;
-    double startTime = getRuntime();
-
 
     public void loop() {
         //movement gamepad: triggers for forward/backward, b/x for strafing left and right, right joystick for moving tangent, left joystick for turning, dpad for changing speed
         //arm gamepad: y/a to move arm to max/min height, b/x to open and close claw, dpad for more precise height changes
+        double startTime = getRuntime();
+        telemetry.addLine("double startTime = " + startTime);
+
 
         if(gamepad1.dpad_up){
             speed *= 2;
@@ -104,20 +105,20 @@ public class AlexsTeleOp extends OpMode {
 
         }
 
-        if(startTime > 0.33){
+        if(startTime >= 0.33){
             speedArm = 0;
-            telemetry.addLine("Start time is " + startTime);
+            //telemetry.addLine("Start time is " + startTime);
         }
 
         if(gamepad2.y){
             startTime -= startTime;
             //resetStartTime();
-            speedArm = 0.75;
+            //speedArm = -0.75;
 
         } else if(gamepad2.a){
             startTime -= startTime;
             //resetStartTime();
-            speedArm = -0.75;
+            //speedArm = 0.75;
 
         } else if(gamepad2.b){
             robot.extend();
@@ -128,10 +129,10 @@ public class AlexsTeleOp extends OpMode {
         }
 
         if(gamepad2.right_stick_y > 0){
-            robot.arm.setPower(0.5);
+            robot.arm.setPower(-0.5);
 
         } else if(gamepad2.right_stick_y < 0){
-            robot.arm.setPower(-0.5);
+            robot.arm.setPower(0.5);
 
         }
         if(gamepad2.left_stick_y > 0){
