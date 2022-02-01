@@ -124,9 +124,11 @@ public class AlexsTeleOp extends OpMode {
 
         }
 
-        if(startTime >= 0.45){
+        if(startTime >= 0.45 && speedArm != 0){
             speedArm = 0;
 
+        } else if(startTime >= 0.65 && speedArm == 0){
+             robot.arm.setPower(0);
         }
 
         if(gamepad2.y){
