@@ -151,11 +151,11 @@ public class AlexsTeleOp extends OpMode {
 
         if(gamepad2.right_stick_y > 0){
             resetStartTime();
-            robot.arm.setPower(0.75);
+            robot.arm.setPower(0.5);
 
         } else if(gamepad2.right_stick_y < 0){
             resetStartTime();
-            robot.arm.setPower(-0.75);
+            robot.arm.setPower(-0.5);
 
         }
 
