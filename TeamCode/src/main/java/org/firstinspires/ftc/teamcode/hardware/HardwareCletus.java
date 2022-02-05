@@ -75,27 +75,11 @@ public class HardwareCletus extends Robot {
 
 
         // Target count value for each motor given dist, calculated from current position in counts plus (or minus if going backwards) distance in counts
-        int topRightTarget;
-        int topLeftTarget;
-        int bottomRightTarget;
-        int bottomLeftTarget;
 
-        if(speed > 0){
-            topRightTarget = motorFrontRight.getCurrentPosition() - distInCounts;
-            topLeftTarget = motorFrontLeft.getCurrentPosition() - distInCounts;
-            bottomRightTarget = motorBackRight.getCurrentPosition() - distInCounts;
-            bottomLeftTarget = motorBackLeft.getCurrentPosition() - distInCounts;
-        } else if(speed < 0){
-            topRightTarget = motorFrontRight.getCurrentPosition() + distInCounts;
-            topLeftTarget = motorFrontLeft.getCurrentPosition() + distInCounts;
-            bottomRightTarget = motorBackRight.getCurrentPosition() + distInCounts;
-            bottomLeftTarget = motorBackLeft.getCurrentPosition() + distInCounts;
-        } else {
-            topRightTarget = 0;
-            topLeftTarget = 0;
-            bottomRightTarget = 0;
-            bottomLeftTarget = 0;
-        }
+        int topRightTarget = motorFrontRight.getCurrentPosition() + distInCounts;
+        int topLeftTarget = motorFrontLeft.getCurrentPosition() + distInCounts;
+        int bottomRightTarget = motorBackRight.getCurrentPosition() + distInCounts;
+        int bottomLeftTarget = motorBackLeft.getCurrentPosition() + distInCounts;
 
         motorFrontRight.setPower(speed); //set motors to speed
         motorFrontLeft.setPower(speed);
