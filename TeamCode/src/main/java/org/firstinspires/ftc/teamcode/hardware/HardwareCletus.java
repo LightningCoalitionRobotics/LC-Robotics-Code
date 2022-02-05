@@ -22,11 +22,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class HardwareCletus extends Robot {
 
     // These are constants that we have experimentally determined, relating counts (the way an encoder measures movement) to inches or degrees (the way we understand movement)
-    private static final int COUNTS_PER_REVOLUTION = 1400;                         // One full revolution of a wheel is 1400 counts
-    private static final int COUNTS_PER_FORWARD_INCH = COUNTS_PER_REVOLUTION / 12; // 1 revolution FORWARDS is very close to 1 foot, so to get counts per inch, take counts per revolution and divide it by 12
+    //private static final int COUNTS_PER_REVOLUTION = 1400;                         // One full revolution of a wheel is 1400 counts
+    private static final int COUNTS_PER_FORWARD_INCH = 121; // 1 revolution FORWARDS is very close to 1 foot, so to get counts per inch, take counts per revolution and divide it by 12
 
-    private static final int COUNTS_PER_360 = 10000;                               // One full turn 360 degrees is 10000 counts
-    private static final int COUNTS_PER_DEGREE = COUNTS_PER_360 / 360;
+    //private static final int COUNTS_PER_360 = 10000;                               // One full turn 360 degrees is 10000 counts
+    private static final int COUNTS_PER_DEGREE = 25;
 
     private static final int COUNTS_PER_SIDE_FOOT = 2000;                          // The amount of counts per the robot moving to the SIDE 1 foot is 2000, NOTICE this is different than the amount of counts going forward or backwards
     private static final int COUNTS_PER_SIDE_INCH = COUNTS_PER_SIDE_FOOT / 12;
@@ -61,7 +61,6 @@ public class HardwareCletus extends Robot {
         motorBackRight = registerMotor("motorBackRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER); // Same problem as above with this motor
         arm = hardwareMap.crservo.get("arm"); //continuous rotation servos don't have a registerServo() method like normal servos do
         grabber = registerServo("grabber", 0.0f);
-
     }
 
     /**
@@ -76,10 +75,27 @@ public class HardwareCletus extends Robot {
 
 
         // Target count value for each motor given dist, calculated from current position in counts plus (or minus if going backwards) distance in counts
-        int topRightTarget = motorFrontRight.getCurrentPosition() + distInCounts;
-        int topLeftTarget = motorFrontLeft.getCurrentPosition() + distInCounts;
-        int bottomRightTarget = motorBackRight.getCurrentPosition() + distInCounts;
-        int bottomLeftTarget = motorBackLeft.getCurrentPosition() + distInCounts;
+        int topRightTarget;
+        int topLeftTarget;
+        int bottomRightTarget;
+        int bottomLeftTarget;
+
+        if(speed > 0){
+            topRightTarget = motorFrontRight.getCurrentPosition() - distInCounts;
+            topLeftTarget = motorFrontLeft.getCurrentPosition() - distInCounts;
+            bottomRightTarget = motorBackRight.getCurrentPosition() - distInCounts;
+            bottomLeftTarget = motorBackLeft.getCurrentPosition() - distInCounts;
+        } else if(speed < 0){
+            topRightTarget = motorFrontRight.getCurrentPosition() + distInCounts;
+            topLeftTarget = motorFrontLeft.getCurrentPosition() + distInCounts;
+            bottomRightTarget = motorBackRight.getCurrentPosition() + distInCounts;
+            bottomLeftTarget = motorBackLeft.getCurrentPosition() + distInCounts;
+        } else {
+            topRightTarget = 0;
+            topLeftTarget = 0;
+            bottomRightTarget = 0;
+            bottomLeftTarget = 0;
+        }
 
         motorFrontRight.setPower(speed); //set motors to speed
         motorFrontLeft.setPower(speed);

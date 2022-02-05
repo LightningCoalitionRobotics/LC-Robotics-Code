@@ -28,6 +28,7 @@ public class AlexsTeleOp extends OpMode {
         double startTime = getRuntime();
         telemetry.addLine("double startTime = " + startTime );
         telemetry.addLine("double speedArm = " + speedArm );
+        telemetry.addLine("counts in order (fR, fL, bR, bL) is: " + robot.motorFrontRight.getCurrentPosition() + ", " + robot.motorFrontLeft.getCurrentPosition() + ", " + robot.motorBackRight.getCurrentPosition() + ", " + robot.motorBackLeft.getCurrentPosition());
 
         if(gamepad1.dpad_up && speed <= 1){
             speed *= 2;
@@ -153,11 +154,13 @@ public class AlexsTeleOp extends OpMode {
 
         if(gamepad2.right_stick_y > 0){
             resetStartTime();
+            robot.arm.setDirection(DcMotorSimple.Direction.FORWARD);
             robot.arm.setPower(0.5);
 
         } else if(gamepad2.right_stick_y < 0){
             resetStartTime();
-            robot.arm.setPower(-20);
+            robot.arm.setDirection(DcMotorSimple.Direction.REVERSE);
+            robot.arm.setPower(0.5);
 
         }
 

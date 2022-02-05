@@ -20,7 +20,9 @@ public class RedAuto2022 extends LinearOpMode {
         sleep(2000);
         robot.extend();
         sleep(2000);
-        robot.turn(0.5, 135, 500);
+        robot.turn(0.5, 45, 500);
+        sleep(2000);
+        robot.turn(0.5, 90, 500);
         sleep(2000);
         robot.drive(-0.5, 66, 1000);
         robot.stop();
