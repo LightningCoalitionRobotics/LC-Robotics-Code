@@ -143,10 +143,10 @@ public class AlexsTeleOp extends OpMode {
 
         }
 
-        if(gamepad2.x){
+        if(gamepad2.dpad_up){
             robot.extend();
 
-        } else if(gamepad2.b){
+        } else if(gamepad2.dpad_down){
             robot.unextend();
 
         }

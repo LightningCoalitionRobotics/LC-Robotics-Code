@@ -14,10 +14,13 @@ public class RedAuto2022 extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
 
-        robot.drive(0.25, 28, 5);
+        robot.drive(-0.25, 28, 500);
+        sleep(2000);
         robot.extend();
-        robot.turn(-0.5, 90, 5);
-        robot.drive(0.5, 66, 10);
+        sleep(2000);
+        robot.turn(0.5, 90, 500);
+        sleep(2000);
+        robot.drive(-0.5, 66, 1000);
         robot.stop();
     }
 }
