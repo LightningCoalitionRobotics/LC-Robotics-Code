@@ -22,11 +22,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class HardwareCletus extends Robot {
 
     // These are constants that we have experimentally determined, relating counts (the way an encoder measures movement) to inches or degrees (the way we understand movement)
-    private static final int COUNTS_PER_REVOLUTION = 1400;                         // One full revolution of a wheel is 1400 counts
-    private static final int COUNTS_PER_FORWARD_INCH = COUNTS_PER_REVOLUTION / 12; // 1 revolution FORWARDS is very close to 1 foot, so to get counts per inch, take counts per revolution and divide it by 12
+    //private static final int COUNTS_PER_REVOLUTION = 1400;                         // One full revolution of a wheel is 1400 counts
+    private static final int COUNTS_PER_FORWARD_INCH = 121; // 1 revolution FORWARDS is very close to 1 foot, so to get counts per inch, take counts per revolution and divide it by 12
 
-    private static final int COUNTS_PER_360 = 10000;                               // One full turn 360 degrees is 10000 counts
-    private static final int COUNTS_PER_DEGREE = COUNTS_PER_360 / 360;
+    //private static final int COUNTS_PER_360 = 10000;                               // One full turn 360 degrees is 10000 counts
+    private static final int COUNTS_PER_DEGREE = 25;
 
     private static final int COUNTS_PER_SIDE_FOOT = 2000;                          // The amount of counts per the robot moving to the SIDE 1 foot is 2000, NOTICE this is different than the amount of counts going forward or backwards
     private static final int COUNTS_PER_SIDE_INCH = COUNTS_PER_SIDE_FOOT / 12;
@@ -61,7 +61,6 @@ public class HardwareCletus extends Robot {
         motorBackRight = registerMotor("motorBackRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER); // Same problem as above with this motor
         arm = hardwareMap.crservo.get("arm"); //continuous rotation servos don't have a registerServo() method like normal servos do
         grabber = registerServo("grabber", 0.0f);
-
     }
 
     /**
@@ -74,12 +73,31 @@ public class HardwareCletus extends Robot {
     public void drive(double speed, double dist, double timeout) {
         int distInCounts = (int) (dist * COUNTS_PER_FORWARD_INCH); //convert distance from human inches to motor counts
 
-
         // Target count value for each motor given dist, calculated from current position in counts plus (or minus if going backwards) distance in counts
-        int topRightTarget = motorFrontRight.getCurrentPosition() + distInCounts;
-        int topLeftTarget = motorFrontLeft.getCurrentPosition() + distInCounts;
-        int bottomRightTarget = motorBackRight.getCurrentPosition() + distInCounts;
-        int bottomLeftTarget = motorBackLeft.getCurrentPosition() + distInCounts;
+
+        int topRightTarget;
+        int topLeftTarget;
+        int bottomRightTarget;
+        int bottomLeftTarget;
+
+        if(speed > 0){
+            topRightTarget = motorFrontRight.getCurrentPosition() + distInCounts;
+            topLeftTarget = motorFrontLeft.getCurrentPosition() + distInCounts;
+            bottomRightTarget = motorBackRight.getCurrentPosition() + distInCounts;
+            bottomLeftTarget = motorBackLeft.getCurrentPosition() + distInCounts;
+
+        } else if(speed < 0){
+            topRightTarget = motorFrontRight.getCurrentPosition() - distInCounts;
+            topLeftTarget = motorFrontLeft.getCurrentPosition() - distInCounts;
+            bottomRightTarget = motorBackRight.getCurrentPosition() - distInCounts;
+            bottomLeftTarget = motorBackLeft.getCurrentPosition() - distInCounts;
+
+        } else {
+            topRightTarget = motorFrontRight.getCurrentPosition();
+            topLeftTarget = motorFrontLeft.getCurrentPosition();
+            bottomRightTarget = motorBackRight.getCurrentPosition();
+            bottomLeftTarget = motorBackLeft.getCurrentPosition();
+        }
 
         motorFrontRight.setPower(speed); //set motors to speed
         motorFrontLeft.setPower(speed);
@@ -106,18 +124,23 @@ public class HardwareCletus extends Robot {
         stopMotor();
     }
 
+    /**
+     * @param speed A value from 0 to 1, a higher value meaning a higher speed.
+     * @param angle In degrees, how far the robot should turn. A positive amount is clockwise.
+     * @param timeout In seconds, how long the robot should attempt to reach the target angle.
+     */
     @Override
     public void turn(double speed, double angle, double timeout) {
         int angleInCounts = (int)(angle * COUNTS_PER_DEGREE);
         //changes the angle variable from degrees to counts
 
-        int topRightTarget = motorFrontRight.getCurrentPosition() + angleInCounts;
-        int topLeftTarget = motorFrontLeft.getCurrentPosition() - angleInCounts;
-        int bottomLeftTarget = motorBackLeft.getCurrentPosition() - angleInCounts;
-        int bottomRightTarget = motorBackRight.getCurrentPosition() + angleInCounts;
+        int topRightTarget = motorFrontRight.getCurrentPosition() - angleInCounts;
+        int topLeftTarget = motorFrontLeft.getCurrentPosition() + angleInCounts;
+        int bottomLeftTarget = motorBackLeft.getCurrentPosition() + angleInCounts;
+        int bottomRightTarget = motorBackRight.getCurrentPosition() - angleInCounts;
         //finds target number of counts for each motor
 
-        if (angle > 0) {
+        if (angle < 0) {
             motorFrontRight.setPower(speed);
             motorFrontLeft.setPower(-speed);
             motorBackLeft.setPower(-speed);
@@ -131,7 +154,7 @@ public class HardwareCletus extends Robot {
             //sets left motors to positive and right to negative for clockwise turn
         }
         while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout){ //while opmode active and timenout not reached
-            if (angle > 0){
+            if (angle < 0){
                 if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
                     break;
                 }
@@ -147,72 +170,6 @@ public class HardwareCletus extends Robot {
 
     }
 
-    public void driveIndefinite(double speed){
-        motorFrontRight.setPower(speed); //set motors to speed
-        motorFrontLeft.setPower(speed);
-        motorBackRight.setPower(speed);
-        motorBackLeft.setPower(speed);
-    }
-
-    public void turnIndefinite(double speed){
-        motorFrontRight.setPower(-speed);
-        motorFrontLeft.setPower(speed);
-        motorBackLeft.setPower(speed);
-        motorBackRight.setPower(-speed);
-    }
-
-    public void strafeIndefinite(double speed){
-        motorFrontRight.setPower(-speed); //set motors to speed
-        motorFrontLeft.setPower(speed);
-        motorBackRight.setPower(speed);
-        motorBackLeft.setPower(-speed);
-    }
-
-    public void driveAngleIndefinite(double degrees, double speed, int quadrant){
-        double a; // larger movement vector
-        double b; // smaller movement vector
-
-        double tangent = Math.tan(degrees);
-
-        a = 1;
-        // tan ø = a+b / a-b
-        // tangent ø = 1+b/1-b
-        // tangent ø - tangent*b = 1+b
-        // tangent ø = (tangent+1)b + 1
-        // (tangent ø - 1)/(tangent ø + 1) = b
-        b = (tangent - 1)/(tangent + 1);
-
-        // Find targets for motors
-        if (degrees != 90) { //if degrees are not equal to 90, continue with driveAngle, if they are equal to 90, just use drive with speed and dist
-            if (quadrant == 1){
-                motorFrontRight.setPower(b * speed);
-                motorFrontLeft.setPower(a * speed);
-                motorBackLeft.setPower(b * speed);
-                motorBackRight.setPower(a * speed);
-
-            } else if (quadrant == 2){
-                motorFrontRight.setPower(a * speed);
-                motorFrontLeft.setPower(b * speed);
-                motorBackLeft.setPower(a * speed);
-                motorBackRight.setPower(b * speed);
-
-            } else if (quadrant == 3){
-                motorFrontRight.setPower(-b * speed);
-                motorFrontLeft.setPower(-a * speed);
-                motorBackLeft.setPower(-b * speed);
-                motorBackRight.setPower(-a * speed);
-
-            } else if (quadrant == 4){
-                motorFrontRight.setPower(-a * speed);
-                motorFrontLeft.setPower(-b * speed);
-                motorBackLeft.setPower(-a * speed);
-                motorBackRight.setPower(-b * speed);
-
-            }
-        } else { // if degrees == 90
-            driveIndefinite(speed); // this is because plugging 90 into driveAngle returns an angle (imagine a triangle with two 90 degree angles, obviously not possible), so we just use drive
-        }
-    }
     /**
      * Drive the robot at a particular angle.
      * @param degrees The angle at which to move the robot. Measured in degrees above the positive X axis. Do not type 90.
@@ -306,6 +263,7 @@ public class HardwareCletus extends Robot {
 
     public void liftArm(){
         arm.setPower(0.75);
+        //make it so that this stops eventually
     }
 
     // height of lvl 1 = 3.5 inches
@@ -316,13 +274,6 @@ public class HardwareCletus extends Robot {
         //min height for arm
 
     }
-
-
-
-
-
-
-
 
     /**
      * Strafe the robot left or right.
