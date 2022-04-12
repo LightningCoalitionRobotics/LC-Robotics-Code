@@ -13,7 +13,7 @@ import java.util.Arrays;
 public abstract class JacksTeleOp extends OpMode {
     private HardwareCletus robot = new HardwareCletus(this);
 
-    public void init(){robot.init(hardwareMap);}
+    public void init(){ robot.init(hardwareMap);}
 
     double speed = 0.5; // WARNING! DO NOT CHANGE THIS CONSTANT! ONLY CHANGE THE SPEED ON THE ROBOT USING BUMPERS! 
 
@@ -29,8 +29,9 @@ public abstract class JacksTeleOp extends OpMode {
         telemetry. addLine("Speed is now" + speed);
 
 
-        if(gamepad1.atRest()){
+        if(gamepad1.atRest()) {
             robot.stopMotor();
+        }
 
         
          if(gamepad1.right_stick_y > 0){ //right stick moves forward, normal position = 0
@@ -76,4 +77,4 @@ public abstract class JacksTeleOp extends OpMode {
 }
 
 }
-}
+
