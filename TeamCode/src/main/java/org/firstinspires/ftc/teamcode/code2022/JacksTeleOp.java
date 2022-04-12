@@ -16,17 +16,37 @@ public class JacksTeleOp extends OpMode {
     public void init(){ robot.init(hardwareMap);}
 
     double speed = 0.5; // WARNING! DO NOT CHANGE THIS CONSTANT! ONLY CHANGE THE SPEED ON THE ROBOT USING BUMPERS! 
-
+    boolean leftPressed = false;
+    boolean rightPressed = false;
     public void loop() {
-//Speed setting --> Final Speed Variable will be fspeed
-        if (gamepad1.left_bumper && speed <.95){  //for increasing or decreasing speed from starting speed of .5 on interval (0, 1)
+
+        /* if (gamepad1.left_bumper && speed <= .95) {  //for increasing or decreasing speed from starting speed of .5 on interval (0, 1)
            speed +=  0.05;
 
-        } else if(gamepad1.right_bumper && speed >.05 ) {
+        } else if(gamepad1.right_bumper &&  speed >= .05) {
              speed -= 0.05;
+        }*/
+
+        if(gamepad1.left_bumper){
+            leftPressed = true;
+        }
+        if(!gamepad1.left_bumper && leftPressed){
+            speed += 0.05;
+            leftPressed = false;
         }
 
-        telemetry.addLine("Speed is now" + speed);
+
+        if(gamepad1.right_bumper){
+            rightPressed = true;
+        }
+
+        if(!gamepad1.right_bumper && rightPressed) {
+            speed -= 0.05;
+            leftPressed = false;
+        }
+
+
+        telemetry.addLine("Speed is now " + speed);
 
 
         if(gamepad1.atRest()) {
@@ -63,8 +83,6 @@ public class JacksTeleOp extends OpMode {
 
          else if (gamepad1.a){ //max speed A button
              speed = .95;
-
-
 
          } else if (gamepad1.b){//min speed B button
              speed = .05;
