@@ -127,7 +127,7 @@ public abstract class LcVuforiaOpMode extends LinearOpMode {
         targetsSkyStone.deactivate();
     }
 
-    abstract void runTasks();
+    public abstract void runTasks();
 
     protected boolean isVisible(VuforiaTrackable trackable) {
         if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
