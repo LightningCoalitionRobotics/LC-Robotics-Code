@@ -316,4 +316,40 @@ public class HardwareCletus extends Robot {
 
         stop();
     }
+
+        public void strafeindef(int speed) {
+
+            int correctDirection;
+            if (speed > 0) {
+                correctDirection = 1;
+            } else {
+                correctDirection = -1;
+            }
+
+            int topRightTarget = motorFrontRight.getCurrentPosition() - (correctDirection * speed);
+            int topLeftTarget = motorFrontLeft.getCurrentPosition() + (correctDirection * speed);
+            int bottomLeftTarget = motorBackLeft.getCurrentPosition() - (correctDirection * speed);
+            int bottomRightTarget = motorBackRight.getCurrentPosition() + (correctDirection * speed);
+
+            motorFrontRight.setPower(-speed * correctDirection);
+            motorFrontLeft.setPower(speed * correctDirection);
+            motorBackLeft.setPower(-speed * correctDirection);
+            motorBackRight.setPower(speed * correctDirection);
+
+            /* while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < time) {
+                if (speed > 0) {
+                    if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
+                        break;
+                    }
+                } else {
+                    if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget) {
+                        break;
+                    }
+                }
+                ((LinearOpMode) opMode).idle();
+            }
+
+            stop();*/
+        }
+
 }
