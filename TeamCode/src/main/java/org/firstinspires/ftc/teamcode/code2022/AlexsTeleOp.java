@@ -27,6 +27,8 @@ public class AlexsTeleOp extends OpMode {
         //movement gamepad: triggers for forward/backward, b/x for strafing left and right, right joystick for moving tangent, left joystick for turning, dpad for changing speed
         //arm gamepad: y/a to move arm to max/min height, b/x to open and close claw, dpad for more precise height changes
         double startTime = getRuntime();
+        float rightX = Math.abs(gamepad1.right_stick_x);
+        float rightY = Math.abs(gamepad1.right_stick_y);
         telemetry.addLine("double startTime = " + startTime);
         telemetry.addLine("double speedArm = " + speedArm);
 
@@ -42,11 +44,12 @@ public class AlexsTeleOp extends OpMode {
 
         }
 
+
         //controls for the movement gamepad
         if (gamepad1.atRest()) {
             robot.stopMotor();
 
-        } else if(Math.abs(gamepad1.right_stick_y) > Math.abs(gamepad1.right_stick_x)){
+        } else if(rightY > rightX){
             if (gamepad1.right_stick_y > 0) {
                 robot.motorBackLeft.setPower(speed);
                 robot.motorBackRight.setPower(speed);
@@ -57,14 +60,14 @@ public class AlexsTeleOp extends OpMode {
                 robot.motorBackLeft.setPower(-speed);
                 robot.motorBackRight.setPower(-speed);
                 robot.motorFrontLeft.setPower(-speed);
-                robot.motorFrontRight.setPower(speed);
+                robot.motorFrontRight.setPower(-speed);
             }
-        } else if(Math.abs(gamepad1.right_stick_x) > Math.abs(gamepad1.right_stick_y)){
+        } else if(rightY > rightX){
             if (gamepad1.right_stick_x > 0) { //strafe right
                 robot.motorBackLeft.setPower(-speed);
                 robot.motorBackRight.setPower(speed);
                 robot.motorFrontLeft.setPower(speed);
-                robot.motorFrontRight.setPower(speed);
+                robot.motorFrontRight.setPower(-speed);
 
             } else if (gamepad1.right_stick_x < 0) { //strafe left
                 robot.motorBackLeft.setPower(speed);
