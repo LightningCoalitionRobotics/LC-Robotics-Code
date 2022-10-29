@@ -27,8 +27,8 @@ public class AlexsTeleOp extends OpMode {
         //movement gamepad: triggers for forward/backward, b/x for strafing left and right, right joystick for moving tangent, left joystick for turning, dpad for changing speed
         //arm gamepad: y/a to move arm to max/min height, b/x to open and close claw, dpad for more precise height changes
         double startTime = getRuntime();
-        float rightX = Math.abs(gamepad1.right_stick_x);
-        float rightY = Math.abs(gamepad1.right_stick_y);
+        float speedX = Math.abs(gamepad1.right_stick_x);
+        float speedY = Math.abs(gamepad1.right_stick_y);
         telemetry.addLine("double startTime = " + startTime);
         telemetry.addLine("double speedArm = " + speedArm);
 
@@ -49,31 +49,31 @@ public class AlexsTeleOp extends OpMode {
         if (gamepad1.atRest()) {
             robot.stopMotor();
 
-        } else if(rightY > rightX){
+        } else if(speedY > speedX){
             if (gamepad1.right_stick_y > 0) {
-                robot.motorBackLeft.setPower(speed);
-                robot.motorBackRight.setPower(speed);
-                robot.motorFrontLeft.setPower(speed);
-                robot.motorFrontRight.setPower(speed);
+                robot.motorBackLeft.setPower(speedY);
+                robot.motorBackRight.setPower(speedY);
+                robot.motorFrontLeft.setPower(speedY);
+                robot.motorFrontRight.setPower(speedY);
 
             } else if (gamepad1.right_stick_y < 0) {
-                robot.motorBackLeft.setPower(-speed);
-                robot.motorBackRight.setPower(-speed);
-                robot.motorFrontLeft.setPower(-speed);
-                robot.motorFrontRight.setPower(-speed);
+                robot.motorBackLeft.setPower(-speedY);
+                robot.motorBackRight.setPower(-speedY);
+                robot.motorFrontLeft.setPower(-speedY);
+                robot.motorFrontRight.setPower(-speedY);
             }
-        } else if(rightY > rightX){
+        } else if(speedX > speedY){
             if (gamepad1.right_stick_x > 0) { //strafe right
-                robot.motorBackLeft.setPower(-speed);
-                robot.motorBackRight.setPower(speed);
-                robot.motorFrontLeft.setPower(speed);
-                robot.motorFrontRight.setPower(-speed);
+                robot.motorBackLeft.setPower(-speedX);
+                robot.motorBackRight.setPower(speedX);
+                robot.motorFrontLeft.setPower(speedX);
+                robot.motorFrontRight.setPower(-speedX);
 
             } else if (gamepad1.right_stick_x < 0) { //strafe left
-                robot.motorBackLeft.setPower(speed);
-                robot.motorBackRight.setPower(-speed);
-                robot.motorFrontLeft.setPower(-speed);
-                robot.motorFrontRight.setPower(speed);
+                robot.motorBackLeft.setPower(speedX);
+                robot.motorBackRight.setPower(-speedX);
+                robot.motorFrontLeft.setPower(-speedX);
+                robot.motorFrontRight.setPower(speedX);
             }
 
         /* } else if(gamepad1.left_trigger > 0.49) {
