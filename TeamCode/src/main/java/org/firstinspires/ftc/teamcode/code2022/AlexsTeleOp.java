@@ -14,6 +14,7 @@ public class AlexsTeleOp extends OpMode {
     public void init() {
         robot.init(hardwareMap);
     }
+
     double speed = 0.5; // a double that stores a speed that can be increased or decreased using the dpad
     double speedArm = 0.0;
     /*  a double that stores the speed used when moving the arm with the y or a buttons
@@ -26,15 +27,15 @@ public class AlexsTeleOp extends OpMode {
         //movement gamepad: triggers for forward/backward, b/x for strafing left and right, right joystick for moving tangent, left joystick for turning, dpad for changing speed
         //arm gamepad: y/a to move arm to max/min height, b/x to open and close claw, dpad for more precise height changes
         double startTime = getRuntime();
-        telemetry.addLine("double startTime = " + startTime );
-        telemetry.addLine("double speedArm = " + speedArm );
+        telemetry.addLine("double startTime = " + startTime);
+        telemetry.addLine("double speedArm = " + speedArm);
 
-        if(gamepad1.dpad_up && speed <= 1){
+        if (gamepad1.dpad_up && speed <= 1) {
             speed *= 2;
             telemetry.addLine("pad 1 dpad up pushed");
             telemetry.addLine("speed is now " + speed);
 
-        } else if(gamepad1.dpad_down && speed >= 0.25) {
+        } else if (gamepad1.dpad_down && speed >= 0.25) {
             speed /= 2;
             telemetry.addLine("pad 1 dpad down  pushed");
             telemetry.addLine("speed is now " + speed);
@@ -42,31 +43,31 @@ public class AlexsTeleOp extends OpMode {
         }
 
         //controls for the movement gamepad
-        if(gamepad1.atRest()){
-           robot.stopMotor();
+        if (gamepad1.atRest()) {
+            robot.stopMotor();
 
-        } else if(gamepad1.right_stick_y > 0) {
+        } else if (gamepad1.right_stick_y > 0) {
             robot.motorBackLeft.setPower(speed);
             robot.motorBackRight.setPower(speed);
             robot.motorFrontLeft.setPower(speed);
-            robot.motorFrontRight.setPower(speed);
+            robot.motorFrontRight.setPower(1.02*speed);
 
-        } else if(gamepad1.right_stick_y < 0) {
+        } else if (gamepad1.right_stick_y < 0) {
             robot.motorBackLeft.setPower(-speed);
             robot.motorBackRight.setPower(-speed);
             robot.motorFrontLeft.setPower(-speed);
-            robot.motorFrontRight.setPower(-speed);
+            robot.motorFrontRight.setPower(-1.02*speed);
 
-        } else if(gamepad1.right_stick_x > 0){ //strafe right
-            robot.motorBackLeft.setPower(speed);
+        } else if (gamepad1.right_stick_x > 0) { //strafe right
+            robot.motorBackLeft.setPower(-speed);
             robot.motorBackRight.setPower(speed);
-            robot.motorFrontLeft.setPower(-speed);
+            robot.motorFrontLeft.setPower(speed);
             robot.motorFrontRight.setPower(-speed);
 
-        } else if(gamepad1.right_stick_x > 0){ //strafe left
-            robot.motorBackLeft.setPower(-speed);
+        } else if (gamepad1.right_stick_x > 0) { //strafe left
+            robot.motorBackLeft.setPower(speed);
             robot.motorBackRight.setPower(-speed);
-            robot.motorFrontLeft.setPower(speed);
+            robot.motorFrontLeft.setPower(-speed);
             robot.motorFrontRight.setPower(speed);
 
         /* } else if(gamepad1.left_trigger > 0.49) {
@@ -97,14 +98,14 @@ public class AlexsTeleOp extends OpMode {
             robot.motorFrontLeft.setPower(speed);
             robot.motorFrontRight.setPower(-speed); */
 
-        } else if(gamepad1.left_stick_x > 0.25){
+        } else if (gamepad1.left_stick_x > 0.25) {
             //turn right
             robot.motorBackLeft.setPower(-speed);
             robot.motorBackRight.setPower(speed);
             robot.motorFrontLeft.setPower(-speed);
             robot.motorFrontRight.setPower(speed);
 
-        } else if(gamepad1.left_stick_x < -0.25){
+        } else if (gamepad1.left_stick_x < -0.25) {
             //turn left
             robot.motorBackLeft.setPower(speed);
             robot.motorBackRight.setPower(-speed);
@@ -131,7 +132,7 @@ public class AlexsTeleOp extends OpMode {
         }*/
         //controls for the arm gamepad
 
-        if(gamepad2.atRest() && speedArm == 0){
+       /* if(gamepad2.atRest() && speedArm == 0){
             robot.arm.setPower(0);
 
         }
@@ -181,4 +182,6 @@ public class AlexsTeleOp extends OpMode {
 
     }
 
+ */
+    }
 }
