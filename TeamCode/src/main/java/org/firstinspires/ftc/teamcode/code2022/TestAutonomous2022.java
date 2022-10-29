@@ -1,20 +1,15 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.code2022;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+import org.firstinspires.ftc.teamcode.hardware.HardwareCletus;
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
-/**
- * This OpMode should be used to test the functions of HardwareLilPanini.java.
- * Each clump of 3 lines first sends telemetry describing what the robot should do, then does it, then sleeps for 2 seconds
- * @author Chris
- */
-@Disabled
-@Autonomous(name="TestAutonomous", group = "autonomous")
-public class TestAutonomous extends LinearOpMode {
+@Autonomous(name = "TestAutonomous2022", group = "autonomous")
+public class    TestAutonomous2022 extends LinearOpMode{
 
-    private HardwareLilPanini robot = new HardwareLilPanini(this);
+    private HardwareCletus robot = new HardwareCletus(this);
 
     private void testdrive() {
         telemetry.addLine("Testing Drive function: Forwards at half speed");
@@ -41,13 +36,13 @@ public class TestAutonomous extends LinearOpMode {
 
     private void teststrafe() {
         telemetry.addLine("Testing Strafe function: Left at half speed for 10 inches");
-        robot.strafe(HardwareLilPanini.HorizontalDirection.LEFT,.5,10,60);
+        robot.strafe(0-.5,10,60);
 
         telemetry.addLine("Testing Strafe function: Right at half speed for 10 inches");
-        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,.5,10,60);
+        robot.strafe(0.5,10,60);
 
         telemetry.addLine("Testing Strafe function: Timeout after 5 seconds");
-        robot.strafe(HardwareLilPanini.HorizontalDirection.RIGHT,.5,40,5);
+        robot.strafe(.5,40,5);
         //once again, speed and distance should always be positive so no need to test those
     }
 
@@ -62,27 +57,28 @@ public class TestAutonomous extends LinearOpMode {
         robot.driveAngle(45, .5, 100, 5);
     }
 
-//    private void testextend() {
-//        telemetry.addLine("Testing extend function: extending at default speed all the way");
-//        robot.extend(HardwareLilPanini.EXTENSION_INCHES, 60);
-//
-//        telemetry.addLine("Testing extend function: retracting halfway slowly");
-//        robot.extend(-(HardwareLilPanini.INCHES_PER_HALF_EXTENSION), 60, 0.25);
-//
-//        telemetry.addLine("Testing extend function: extending a little bit at default speed");
-//        robot.extend(5,60);
-//    }
+    private void testExtend(){
+        telemetry.addLine("Testing Extend and Unextend Functions");
+        robot.extend();
+        robot.unextend();
+
+    }
+
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
+        robot.arm.setPower(-1);
+        sleep(1270);
+        //sleep(1000); //675 degrees of rotation
+        robot.arm.setPower(0);
         waitForStart( );
         testdrive();
         testturn();
         teststrafe();
         testdriveangle();
-//        testextend();
-
-        telemetry.addLine("Should drive forward");
-        robot.driveAngle(90,.5,10,60); //This is testing driveAngle's ability to recognize that 90 degrees should just be using drive function
+        testExtend();
+        //robot.liftArm();
+        //sleep(2000);
+        robot.stop();
     }
 }

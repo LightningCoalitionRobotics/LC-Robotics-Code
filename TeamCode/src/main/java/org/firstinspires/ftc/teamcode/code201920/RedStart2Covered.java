@@ -1,8 +1,9 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.code201920;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
+import org.firstinspires.ftc.teamcode.LcVuforiaOpMode;
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
 /**
@@ -11,7 +12,7 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
  */
 @Disabled
  @Autonomous(name = "RedStart2Covered", group = "autonomous")
-public class RedStart2Covered extends LcVuforiaOpMode{
+public class RedStart2Covered extends LcVuforiaOpMode {
 
     @Override
     public void runTasks() {
