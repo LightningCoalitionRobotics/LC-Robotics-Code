@@ -71,12 +71,12 @@ public class    TestAutonomous2022 extends LinearOpMode{
         sleep(1270);
         //sleep(1000); //675 degrees of rotation
         robot.arm.setPower(0);
-        /*waitForStart( );
+        waitForStart( );
         testdrive();
         testturn();
         teststrafe();
         testdriveangle();
-        testExtend();*/
+        testExtend();
         //robot.liftArm();
         //sleep(2000);
         robot.stop();
