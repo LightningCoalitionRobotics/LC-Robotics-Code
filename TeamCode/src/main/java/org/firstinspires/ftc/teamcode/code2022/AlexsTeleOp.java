@@ -75,7 +75,7 @@ public class AlexsTeleOp extends OpMode {
                 robot.motorFrontLeft.setPower(-speedX);
                 robot.motorFrontRight.setPower(speedX);
             }
-
+                robot.strafe(100,4,4);
         /* } else if(gamepad1.left_trigger > 0.49) {
             //moves forwards
             robot.motorBackLeft.setPower(speed);
