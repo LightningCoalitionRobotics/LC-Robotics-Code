@@ -31,6 +31,7 @@ public class AlexsTeleOp extends OpMode {
         float speedY = Math.abs(gamepad1.right_stick_y);
         telemetry.addLine("double startTime = " + startTime);
         telemetry.addLine("double speedArm = " + speedArm);
+        telemetry.addLine("Counts = " + telemetry.update());
 
         if (gamepad1.dpad_up && speed <= 1) {
             speed *= 2;
