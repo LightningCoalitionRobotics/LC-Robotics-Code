@@ -65,6 +65,8 @@ public class TestTelemetry extends LinearOpMode {
         rightMotor2.setPower(0);
 
         resetStartTime();
+
+        //ready to test 11/14; make note of registered counts for each motor HERE!
     }
 
 
