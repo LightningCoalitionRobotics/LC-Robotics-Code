@@ -23,6 +23,7 @@ public class AlexsTeleOp extends OpMode {
         changing it to if(gamepad2.atRest() && speedArm == 0) will make sure that if the arm is moving because of y or a buttons, it will finish the movement before stopping
     */
 
+
     public void loop() {
         //movement gamepad: triggers for forward/backward, b/x for strafing left and right, right joystick for moving tangent, left joystick for turning, dpad for changing speed
         //arm gamepad: y/a to move arm to max/min height, b/x to open and close claw, dpad for more precise height changes
@@ -56,12 +57,14 @@ public class AlexsTeleOp extends OpMode {
                 robot.motorBackRight.setPower(speedY);
                 robot.motorFrontLeft.setPower(speedY);
                 robot.motorFrontRight.setPower(speedY);
+                telemetry.update();
 
             } else if (gamepad1.right_stick_y < 0) {
                 robot.motorBackLeft.setPower(-speedY);
                 robot.motorBackRight.setPower(-speedY);
                 robot.motorFrontLeft.setPower(-speedY);
                 robot.motorFrontRight.setPower(-speedY);
+                telemetry.update();
             }
         } else if(speedX > speedY){
             if (gamepad1.right_stick_x > 0) { //strafe right
@@ -69,12 +72,14 @@ public class AlexsTeleOp extends OpMode {
                 robot.motorBackRight.setPower(speedX);
                 robot.motorFrontLeft.setPower(speedX);
                 robot.motorFrontRight.setPower(-speedX);
+                telemetry.update();
 
             } else if (gamepad1.right_stick_x < 0) { //strafe left
                 robot.motorBackLeft.setPower(speedX);
                 robot.motorBackRight.setPower(-speedX);
                 robot.motorFrontLeft.setPower(-speedX);
                 robot.motorFrontRight.setPower(speedX);
+                telemetry.update();
             }
 
         /* } else if(gamepad1.left_trigger > 0.49) {
