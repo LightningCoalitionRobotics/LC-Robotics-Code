@@ -45,37 +45,64 @@ public class AlexsTeleOp extends OpMode {
 
         }
 
-
+/*
+ * code associated with motion of robot is in this block, gamepad 1
+ */
         //controls for the movement gamepad
         if (gamepad1.atRest()) {
             robot.stopMotor();
 
         } else if(speedY > speedX){
+            //speed Y is the right joy stick Y deflection, speed X is the right joy stick X deflection
+            //speed Y and speed X are defined as the absolute value of the speed
+            //if speed Y > than speed X then we are moving forward or backward
             if (gamepad1.right_stick_y > 0) {
+                //straight forward
                 robot.motorBackLeft.setPower(speedY);
                 robot.motorBackRight.setPower(speedY);
                 robot.motorFrontLeft.setPower(speedY);
                 robot.motorFrontRight.setPower(speedY);
 
             } else if (gamepad1.right_stick_y < 0) {
+                //straight reverse
                 robot.motorBackLeft.setPower(-speedY);
                 robot.motorBackRight.setPower(-speedY);
                 robot.motorFrontLeft.setPower(-speedY);
                 robot.motorFrontRight.setPower(-speedY);
             }
         } else if(speedX > speedY){
-            if (gamepad1.right_stick_x > 0) { //strafe right
+            //if speed X > than speed Y then we are strafing left or right
+            if (gamepad1.right_stick_x > 0) {
+                //strafe right
                 robot.motorBackLeft.setPower(-speedX);
                 robot.motorBackRight.setPower(speedX);
                 robot.motorFrontLeft.setPower(speedX);
                 robot.motorFrontRight.setPower(-speedX);
 
-            } else if (gamepad1.right_stick_x < 0) { //strafe left
+            } else if (gamepad1.right_stick_x < 0) {
+                //strafe left
                 robot.motorBackLeft.setPower(speedX);
                 robot.motorBackRight.setPower(-speedX);
                 robot.motorFrontLeft.setPower(-speedX);
                 robot.motorFrontRight.setPower(speedX);
             }
+
+        } else if (gamepad1.left_stick_x > 0.25) {
+            //turn left
+            //pushing joy stick to the right = negative and pushing joy stick to the left = positive
+            //if joy stick is deflected more than a quarter of the distance to the left, then we are turning left
+            robot.motorBackLeft.setPower(-speed);
+            robot.motorBackRight.setPower(speed);
+            robot.motorFrontLeft.setPower(-speed);
+            robot.motorFrontRight.setPower(speed);
+
+        } else if (gamepad1.left_stick_x < -0.25) {
+            //turn right
+            //if joy stick is deflected less than a quarter of the distance to the right, then we are turning right
+            robot.motorBackLeft.setPower(speed);
+            robot.motorBackRight.setPower(-speed);
+            robot.motorFrontLeft.setPower(speed);
+            robot.motorFrontRight.setPower(-speed);
 
         /* } else if(gamepad1.left_trigger > 0.49) {
             //moves forwards
@@ -105,19 +132,7 @@ public class AlexsTeleOp extends OpMode {
             robot.motorFrontLeft.setPower(speed);
             robot.motorFrontRight.setPower(-speed); */
 
-        } else if (gamepad1.left_stick_x > 0.25) {
-            //turn right
-            robot.motorBackLeft.setPower(-speed);
-            robot.motorBackRight.setPower(speed);
-            robot.motorFrontLeft.setPower(-speed);
-            robot.motorFrontRight.setPower(speed);
 
-        } else if (gamepad1.left_stick_x < -0.25) {
-            //turn left
-            robot.motorBackLeft.setPower(speed);
-            robot.motorBackRight.setPower(-speed);
-            robot.motorFrontLeft.setPower(speed);
-            robot.motorFrontRight.setPower(-speed);
 
         } /*else if(gamepad1.right_stick_x != 0 && gamepad1.right_stick_y != 0){
             double angle = Math.toDegrees(Math.atan(Math.abs(gamepad1.right_stick_y)/Math.abs(gamepad1.right_stick_x)));
@@ -136,9 +151,10 @@ public class AlexsTeleOp extends OpMode {
                 }
             }
             robot.driveAngleIndefinite(angle, speed, quadrant);
-        }*/
-        //controls for the arm gamepad
-
+        }*
+/*
+ * controls for the arm gamepad 2
+*/
        /* if(gamepad2.atRest() && speedArm == 0){
             robot.arm.setPower(0);
 
