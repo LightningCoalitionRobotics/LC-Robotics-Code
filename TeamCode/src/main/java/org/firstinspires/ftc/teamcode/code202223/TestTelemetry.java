@@ -19,10 +19,18 @@ public class TestTelemetry extends LinearOpMode {
     DcMotor rightMotor2;
 
     @Override
-        public void runOpMode(){
+    public void runOpMode() {
         robot.init(hardwareMap);
+        robot.drive(.5, 10, 5);
+        telemetry.addData("Counts = ", telemetry.update());
 
-        leftMotor1 = hardwareMap.dcMotor.get("motorFrontLeft");
+
+    }
+}
+
+
+
+       /* leftMotor1 = hardwareMap.dcMotor.get("motorFrontLeft");
         leftMotor2 = hardwareMap.dcMotor.get("motorBackLeft");
         rightMotor1 = hardwareMap.dcMotor.get("motorFrontRight");
         rightMotor2 = hardwareMap.dcMotor.get("motorBackRight");
@@ -70,5 +78,5 @@ public class TestTelemetry extends LinearOpMode {
     }
 
 
-    }
+    } */
 

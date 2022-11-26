@@ -17,6 +17,7 @@ public class AlexsTeleOp extends OpMode {
 
     double speed = 0.5; // a double that stores a speed that can be increased or decreased using the dpad
     double speedArm = 0.0;
+
     /*  a double that stores the speed used when moving the arm with the y or a buttons
         used to make sure that the arm doesn't stop halfway up
         if (gamepad2.atRest()) would stop it halfway through, as the button is only pressed once
@@ -195,5 +196,6 @@ public class AlexsTeleOp extends OpMode {
     }
 
  */
+        telemetry.update();
     }
 }
