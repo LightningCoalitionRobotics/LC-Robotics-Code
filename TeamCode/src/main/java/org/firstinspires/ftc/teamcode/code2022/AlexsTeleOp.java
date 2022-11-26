@@ -29,8 +29,8 @@ public class AlexsTeleOp extends OpMode {
         //movement gamepad: triggers for forward/backward, b/x for strafing left and right, right joystick for moving tangent, left joystick for turning, dpad for changing speed
         //arm gamepad: y/a to move arm to max/min height, b/x to open and close claw, dpad for more precise height changes
         double startTime = getRuntime();
-        float speedX = Math.abs(gamepad1.right_stick_x);
-        float speedY = Math.abs(gamepad1.right_stick_y);
+        float joyR_X = Math.abs(gamepad1.right_stick_x);
+        float joyR_Y = Math.abs(gamepad1.right_stick_y);
         telemetry.addLine("double startTime = " + startTime);
         telemetry.addLine("double speedArm = " + speedArm);
         telemetry.addLine("Counts = " + telemetry.update());
@@ -48,45 +48,69 @@ public class AlexsTeleOp extends OpMode {
         }
 
 
-        //controls for the movement gamepad
+        //controls for the movement gamepad 1
+        //joyR_Y is the absolute value of the position of the joy stick when moved forward or backward
+        //joyR_X is the absolute value of the position of the joy stick when moved left or right
         if (gamepad1.atRest()) {
             robot.stopMotor();
 
-        } else if(speedY > speedX) {
-            //straight forward
+        } else if(joyR_Y > joyR_X) {
+            //when joyR_Y is > than joyR_X, the robot moves forward or backward
             if (gamepad1.right_stick_y > 0) {
-                robot.motorBackLeft.setPower(speedY);
-                robot.motorBackRight.setPower(speedY);
-                robot.motorFrontLeft.setPower(speedY);
-                robot.motorFrontRight.setPower(speedY);
+                //straight forward
+                //when right joy stick is moved upward and its y-axis position on the cartesian plane is greater than zero, robot moves forward
+                robot.motorBackLeft.setPower(joyR_Y);
+                robot.motorBackRight.setPower(joyR_Y);
+                robot.motorFrontLeft.setPower(joyR_Y);
+                robot.motorFrontRight.setPower(joyR_Y);
                 telemetry.update();
 
             } else if (gamepad1.right_stick_y < 0) {
                 //straight backward
-                robot.motorBackLeft.setPower(-speedY);
-                robot.motorBackRight.setPower(-speedY);
-                robot.motorFrontLeft.setPower(-speedY);
-                robot.motorFrontRight.setPower(-speedY);
+                //when right joy stick is moved downward and its y-axis position on the cartesian plane is less than zero, robot moves backward
+                robot.motorBackLeft.setPower(-joyR_Y);
+                robot.motorBackRight.setPower(-joyR_Y);
+                robot.motorFrontLeft.setPower(-joyR_Y);
+                robot.motorFrontRight.setPower(-joyR_Y);
                 telemetry.update();
             }
-        } else if(speedX > speedY){
-            if (gamepad1.right_stick_x > 0) {
+        } else if(joyR_X > joyR_Y){
+            //when joyR_X is > than joyR_Y, the robot strafes left or right
+            if (gamepad1.right_stick_x < 0) {
                 //strafe right
-                robot.motorBackLeft.setPower(-speedX);
-                robot.motorBackRight.setPower(speedX);
-                robot.motorFrontLeft.setPower(speedX);
-                robot.motorFrontRight.setPower(-speedX);
+                //when right joy stick is moved right and its x-axis position on the cartesian plane is less than zero, robot strafes right
+                robot.motorBackLeft.setPower(-joyR_X);
+                robot.motorBackRight.setPower(joyR_X);
+                robot.motorFrontLeft.setPower(joyR_X);
+                robot.motorFrontRight.setPower(-joyR_X);
                 telemetry.update();
 
-            } else if (gamepad1.right_stick_x < 0) {
+            } else if (gamepad1.right_stick_x > 0) {
                 //strafe left
-                robot.motorBackLeft.setPower(speedX);
-                robot.motorBackRight.setPower(-speedX);
-                robot.motorFrontLeft.setPower(-speedX);
-                robot.motorFrontRight.setPower(speedX);
+                //when right joy stick is moved left and its x-axis position on the cartesian plane is greater than than zero, robot strafes left
+                robot.motorBackLeft.setPower(joyR_X);
+                robot.motorBackRight.setPower(-joyR_X);
+                robot.motorFrontLeft.setPower(-joyR_X);
+                robot.motorFrontRight.setPower(joyR_X);
                 telemetry.update();
             }
+        } else if (gamepad1.left_stick_x > 0.25) {
+            //turn left
+            //when joy stick's displacement is greater than a quarter, the robot turns left
+            robot.motorBackLeft.setPower(-speed);
+            robot.motorBackRight.setPower(speed);
+            robot.motorFrontLeft.setPower(-speed);
+            robot.motorFrontRight.setPower(speed);
 
+        } else if (gamepad1.left_stick_x < -0.25) {
+            //turn right
+            //when joy stick's displacement is less than a quarter, the robot turns right
+            robot.motorBackLeft.setPower(speed);
+            robot.motorBackRight.setPower(-speed);
+            robot.motorFrontLeft.setPower(speed);
+            robot.motorFrontRight.setPower(-speed);
+
+        }
         /* } else if(gamepad1.left_trigger > 0.49) {
             //moves forwards
             robot.motorBackLeft.setPower(speed);
@@ -115,21 +139,7 @@ public class AlexsTeleOp extends OpMode {
             robot.motorFrontLeft.setPower(speed);
             robot.motorFrontRight.setPower(-speed); */
 
-        } else if (gamepad1.left_stick_x > 0.25) {
-            //turn left
-            robot.motorBackLeft.setPower(-speed);
-            robot.motorBackRight.setPower(speed);
-            robot.motorFrontLeft.setPower(-speed);
-            robot.motorFrontRight.setPower(speed);
-
-        } else if (gamepad1.left_stick_x < -0.25) {
-            //turn right
-            robot.motorBackLeft.setPower(speed);
-            robot.motorBackRight.setPower(-speed);
-            robot.motorFrontLeft.setPower(speed);
-            robot.motorFrontRight.setPower(-speed);
-
-        } /*else if(gamepad1.right_stick_x != 0 && gamepad1.right_stick_y != 0){
+         /*else if(gamepad1.right_stick_x != 0 && gamepad1.right_stick_y != 0){
             double angle = Math.toDegrees(Math.atan(Math.abs(gamepad1.right_stick_y)/Math.abs(gamepad1.right_stick_x)));
             int quadrant = 0;
             if(gamepad1.right_stick_x > 0){
