@@ -53,6 +53,7 @@ public class AlexsTeleOp extends OpMode {
             robot.stopMotor();
 
         } else if(speedY > speedX) {
+            //straight forward
             if (gamepad1.right_stick_y > 0) {
                 robot.motorBackLeft.setPower(speedY);
                 robot.motorBackRight.setPower(speedY);
@@ -61,6 +62,7 @@ public class AlexsTeleOp extends OpMode {
                 telemetry.update();
 
             } else if (gamepad1.right_stick_y < 0) {
+                //straight backward
                 robot.motorBackLeft.setPower(-speedY);
                 robot.motorBackRight.setPower(-speedY);
                 robot.motorFrontLeft.setPower(-speedY);
@@ -68,14 +70,16 @@ public class AlexsTeleOp extends OpMode {
                 telemetry.update();
             }
         } else if(speedX > speedY){
-            if (gamepad1.right_stick_x > 0) { //strafe right
+            if (gamepad1.right_stick_x > 0) {
+                //strafe right
                 robot.motorBackLeft.setPower(-speedX);
                 robot.motorBackRight.setPower(speedX);
                 robot.motorFrontLeft.setPower(speedX);
                 robot.motorFrontRight.setPower(-speedX);
                 telemetry.update();
 
-            } else if (gamepad1.right_stick_x < 0) { //strafe left
+            } else if (gamepad1.right_stick_x < 0) {
+                //strafe left
                 robot.motorBackLeft.setPower(speedX);
                 robot.motorBackRight.setPower(-speedX);
                 robot.motorFrontLeft.setPower(-speedX);
@@ -112,14 +116,14 @@ public class AlexsTeleOp extends OpMode {
             robot.motorFrontRight.setPower(-speed); */
 
         } else if (gamepad1.left_stick_x > 0.25) {
-            //turn right
+            //turn left
             robot.motorBackLeft.setPower(-speed);
             robot.motorBackRight.setPower(speed);
             robot.motorFrontLeft.setPower(-speed);
             robot.motorFrontRight.setPower(speed);
 
         } else if (gamepad1.left_stick_x < -0.25) {
-            //turn left
+            //turn right
             robot.motorBackLeft.setPower(speed);
             robot.motorBackRight.setPower(-speed);
             robot.motorFrontLeft.setPower(speed);
