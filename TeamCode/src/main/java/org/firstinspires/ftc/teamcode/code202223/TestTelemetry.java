@@ -21,12 +21,25 @@ public class TestTelemetry extends LinearOpMode {
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
-        robot.drive(.5, 10, 5);
-        telemetry.addData("Counts = ", telemetry.update());
+        waitForStart();
+
+        robot.drive(.25, 30, 5);
+
+        while (opModeIsActive()){
+            telemetry.addLine("Counts are now: " + leftMotor1.getCurrentPosition());
+            telemetry.update();
+            telemetry.addLine("Counts are now: " + leftMotor2.getCurrentPosition());
+            telemetry.update();
+            telemetry.addLine("Counts are now: " + rightMotor1.getCurrentPosition());
+            telemetry.update();
+            telemetry.addLine("Counts are now: " + rightMotor2.getCurrentPosition());
+            telemetry.update();
 
 
     }
+    }
 }
+
 
 
 

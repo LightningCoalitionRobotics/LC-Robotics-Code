@@ -7,25 +7,21 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareCletus;
 
 @Autonomous(name="RedAuto2022", group = "autonomous")
 
-public class RedAuto2022 extends LinearOpMode {
+public class TestAuto2023 extends LinearOpMode {
     private HardwareCletus robot = new HardwareCletus(this);
     @Override
     public void runOpMode(){
         robot.init(hardwareMap);
         waitForStart();
 
-        robot.drive(-0.5, 20, 500);
+        telemetry.addLine("Counts are 0");
+
+        robot.drive(0.25, 30, 500);
         sleep(2000);
-        robot.turn(-0.5, 45, 500);
-        sleep(2000);
-        robot.extend();
-        sleep(2000);
-        robot.turn(0.5, 45, 500);
-        sleep(2000);
-        robot.turn(0.5, 90, 500);
-        sleep(2000);
-        robot.drive(-0.5, 66, 1000);
-        robot.stop();
+
+        telemetry.addData("Counts=", telemetry.update());
+
+
     }
 }
 
