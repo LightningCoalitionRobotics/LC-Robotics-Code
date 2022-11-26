@@ -23,16 +23,20 @@ public class TestTelemetry extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
 
-        robot.drive(.25, 30, 5);
 
-        while (opModeIsActive()){
-            telemetry.addLine("Counts are now: " + leftMotor1.getCurrentPosition());
-            telemetry.update();
-            telemetry.addLine("Counts are now: " + leftMotor2.getCurrentPosition());
-            telemetry.update();
-            telemetry.addLine("Counts are now: " + rightMotor1.getCurrentPosition());
-            telemetry.update();
-            telemetry.addLine("Counts are now: " + rightMotor2.getCurrentPosition());
+        robot.drive(.25, 50, 25);
+
+
+        leftMotor1 = hardwareMap.dcMotor.get("motorFrontLeft");
+        leftMotor2 = hardwareMap.dcMotor.get("motorBackLeft");
+        rightMotor1 = hardwareMap.dcMotor.get("motorFrontRight");
+        rightMotor2 = hardwareMap.dcMotor.get("motorBackRight");
+
+        while (!opModeIsActive()) {
+            telemetry.addLine("Left 1 Counts are now: " + leftMotor1.getCurrentPosition());
+            telemetry.addLine("Left 2 Counts are now: " + leftMotor2.getCurrentPosition());
+            telemetry.addLine("Right 1 Counts are now: " + rightMotor1.getCurrentPosition());
+            telemetry.addLine("Right 2 Counts are now: " + rightMotor2.getCurrentPosition());
             telemetry.update();
 
 
