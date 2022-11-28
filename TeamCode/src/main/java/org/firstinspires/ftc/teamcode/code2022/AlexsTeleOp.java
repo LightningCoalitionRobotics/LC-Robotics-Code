@@ -47,7 +47,8 @@ public class AlexsTeleOp extends OpMode {
             telemetry.addLine("speed is now " + speed);
 
         }
-
+        float joyL_X = Math.abs(gamepad1.left_stick_x);
+        float joyL_Y = Math.abs(gamepad1.left_stick_y);
 
         //controls for the movement gamepad 1
         //joyR_Y is the absolute value of the position of the joy stick when moved forward or backward
@@ -98,18 +99,18 @@ public class AlexsTeleOp extends OpMode {
         } else if (gamepad1.left_stick_x > 0.25) {
             //turn left
             //when joy stick's displacement is greater than a quarter, the robot turns left
-            robot.motorBackLeft.setPower(-speed);
-            robot.motorBackRight.setPower(speed);
-            robot.motorFrontLeft.setPower(-speed);
-            robot.motorFrontRight.setPower(speed);
+            robot.motorBackLeft.setPower(-joyL_X);
+            robot.motorBackRight.setPower(joyL_X);
+            robot.motorFrontLeft.setPower(-joyL_X);
+            robot.motorFrontRight.setPower(joyL_X);
 
         } else if (gamepad1.left_stick_x < -0.25) {
             //turn right
             //when joy stick's displacement is less than a quarter, the robot turns right
-            robot.motorBackLeft.setPower(speed);
-            robot.motorBackRight.setPower(-speed);
-            robot.motorFrontLeft.setPower(speed);
-            robot.motorFrontRight.setPower(-speed);
+            robot.motorBackLeft.setPower(joyL_X);
+            robot.motorBackRight.setPower(-joyL_X);
+            robot.motorFrontLeft.setPower(joyL_X);
+            robot.motorFrontRight.setPower(-joyL_X);
 
         }
         /* } else if(gamepad1.left_trigger > 0.49) {
