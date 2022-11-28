@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.code202223;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.hardware.HardwareCletus;
 
@@ -13,36 +12,44 @@ public class TestTelemetry extends LinearOpMode {
 
     private HardwareCletus robot = new HardwareCletus(this);
 
-    DcMotor leftMotor1;
-    DcMotor leftMotor2;
-    DcMotor rightMotor1;
-    DcMotor rightMotor2;
+    DcMotor leftMotor1 = hardwareMap.dcMotor.get("motorFrontLeft"); //defines each motor of the robot
+    DcMotor leftMotor2 = hardwareMap.dcMotor.get("motorBackLeft");
+    DcMotor rightMotor1 = hardwareMap.dcMotor.get("motorFrontRight");
+    DcMotor rightMotor2 = hardwareMap.dcMotor.get("motorBackRight");
+
+    //front motors are motor 1 and back motors are motor 2
+
+
 
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
         waitForStart();
 
+        leftMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //makes sure encoders start at zero counts
+        leftMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        robot.drive(.25, 50, 25);
+        robot.drive(.25, 50, 25); //simple autonomous command
 
+        while(opModeIsActive()) {      //using while loop allows for more time to check telemetry
 
-        leftMotor1 = hardwareMap.dcMotor.get("motorFrontLeft");
-        leftMotor2 = hardwareMap.dcMotor.get("motorBackLeft");
-        rightMotor1 = hardwareMap.dcMotor.get("motorFrontRight");
-        rightMotor2 = hardwareMap.dcMotor.get("motorBackRight");
+            telemetry.addData("Counts:", "leftMotor1=%d leftMotor2=%d rightMotor1=%d rightMotor2=%d",
+                    leftMotor1.getCurrentPosition(), leftMotor2.getCurrentPosition(), rightMotor1.getCurrentPosition(), rightMotor2.getCurrentPosition());
 
-        while (!opModeIsActive()) {
-            telemetry.addLine("Left 1 Counts are now: " + leftMotor1.getCurrentPosition());
-            telemetry.addLine("Left 2 Counts are now: " + leftMotor2.getCurrentPosition());
-            telemetry.addLine("Right 1 Counts are now: " + rightMotor1.getCurrentPosition());
-            telemetry.addLine("Right 2 Counts are now: " + rightMotor2.getCurrentPosition());
             telemetry.update();
 
+        }
+
+
+
+
+
 
     }
     }
-}
+
 
 
 

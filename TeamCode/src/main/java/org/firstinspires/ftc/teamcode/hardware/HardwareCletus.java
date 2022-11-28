@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-/**
+/*
  * The class for the LCR 2021-22 robot.
  *
  * If more components are added, please add them to this class
