@@ -115,7 +115,7 @@ public class AlexsTeleOp extends OpMode {
                 robot.motorFrontRight.setPower(joyR_X);
                 telemetry.update();
             }
-        } else if (gamepad1.left_stick_x > 0.25) {
+        } else if (gamepad1.left_stick_x > 0) {
             // TURN CLOCKWISE/COUNTERCLOCKWISE MOTION
             //when joyL is moved, the robot turns clockwise (left) or counterclockwise (right)
             //note we needed to resample joystick position for direction input (+/-)
@@ -128,7 +128,7 @@ public class AlexsTeleOp extends OpMode {
             robot.motorBackRight.setPower(joyL_X);
             robot.motorFrontLeft.setPower(-joyL_X);
             robot.motorFrontRight.setPower(joyL_X);
-        } else if (gamepad1.left_stick_x < -0.25) {
+        } else if (gamepad1.left_stick_x < 0) {
             //turn right
             //when joy stick's displacement is less than a quarter, the robot turns right
             robot.motorBackLeft.setPower(joyL_X);
