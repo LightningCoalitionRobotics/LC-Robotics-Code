@@ -96,7 +96,7 @@ public class AlexsTeleOp extends OpMode {
                 robot.motorFrontRight.setPower(joyR_X);
                 telemetry.update();
             }
-        } else if (gamepad1.left_stick_x > 0.25) {
+        } else if (gamepad1.left_stick_x > 0) {
             //turn left
             //when joy stick's displacement is greater than a quarter, the robot turns left
             robot.motorBackLeft.setPower(-joyL_X);
@@ -104,7 +104,7 @@ public class AlexsTeleOp extends OpMode {
             robot.motorFrontLeft.setPower(-joyL_X);
             robot.motorFrontRight.setPower(joyL_X);
 
-        } else if (gamepad1.left_stick_x < -0.25) {
+        } else if (gamepad1.left_stick_x < 0) {
             //turn right
             //when joy stick's displacement is less than a quarter, the robot turns right
             robot.motorBackLeft.setPower(joyL_X);
