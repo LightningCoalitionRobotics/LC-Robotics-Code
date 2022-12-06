@@ -12,19 +12,22 @@ public class TestTelemetry extends LinearOpMode {
 
     private HardwareCletus robot = new HardwareCletus(this);
 
-    DcMotor leftMotor1 = hardwareMap.dcMotor.get("motorFrontLeft"); //defines each motor of the robot
-    DcMotor leftMotor2 = hardwareMap.dcMotor.get("motorBackLeft");
-    DcMotor rightMotor1 = hardwareMap.dcMotor.get("motorFrontRight");
-    DcMotor rightMotor2 = hardwareMap.dcMotor.get("motorBackRight");
+    private DcMotor leftMotor1; //defines each motor of the robot
+    private DcMotor leftMotor2;
+    private DcMotor rightMotor1;
+    private DcMotor rightMotor2;
 
     //front motors are motor 1 and back motors are motor 2
-
-
 
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
         waitForStart();
+
+        leftMotor1 = hardwareMap.get(DcMotor.class, "motorFrontLeft");
+        leftMotor2 = hardwareMap.get(DcMotor.class, "motorBackLeft");
+        rightMotor1 = hardwareMap.get(DcMotor.class, "motorFrontRight");
+        rightMotor2 = hardwareMap.get(DcMotor.class, "motorBackRight");
 
         leftMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //makes sure encoders start at zero counts
         leftMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
