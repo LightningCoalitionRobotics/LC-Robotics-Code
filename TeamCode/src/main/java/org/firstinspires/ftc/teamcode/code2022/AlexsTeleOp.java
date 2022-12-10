@@ -123,14 +123,14 @@ public class AlexsTeleOp extends OpMode {
             //correct direction is commanded by negating in the motor commands below
             //
             //turn left
-            //when joy stick's displacement is greater than a quarter, the robot turns left
+            //when joy stick's displacement is greater than zero, the robot turns left
             robot.motorBackLeft.setPower(-joyL_X);
             robot.motorBackRight.setPower(joyL_X);
             robot.motorFrontLeft.setPower(-joyL_X);
             robot.motorFrontRight.setPower(joyL_X);
         } else if (gamepad1.left_stick_x < 0) {
             //turn right
-            //when joy stick's displacement is less than a quarter, the robot turns right
+            //when joy stick's displacement is less than zero, the robot turns right
             robot.motorBackLeft.setPower(joyL_X);
             robot.motorBackRight.setPower(-joyL_X);
             robot.motorFrontLeft.setPower(joyL_X);
