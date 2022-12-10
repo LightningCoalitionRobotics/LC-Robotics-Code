@@ -69,7 +69,7 @@ public class AlexsTeleOp extends OpMode {
         if (gamepad1.atRest()) {
             robot.stopMotor();
 
-        } else if(joyR_Y > joyR_X) {
+        } else if (joyR_Y > joyR_X) {
             // FORWARD / REVERSE MOTION
             //when joyR_Y is > than joyR_X, the robot moves forward/reverse
             //note we need to resample joystick position for direction input (+/-)
@@ -92,7 +92,7 @@ public class AlexsTeleOp extends OpMode {
                 robot.motorFrontRight.setPower(-joyR_Y);
                 telemetry.update();
             }
-        } else if(joyR_X > joyR_Y){
+        } else if (joyR_X > joyR_Y) {
             // STRAFE LEFT / RIGHT MOTION
             //when joyR_X is > than joyR_Y, the robot strafes left or right
             //note we need to resample joystick position for direction input (+/-)
@@ -136,6 +136,19 @@ public class AlexsTeleOp extends OpMode {
             robot.motorFrontLeft.setPower(joyL_X);
             robot.motorFrontRight.setPower(-joyL_X);
         }
+         if (gamepad1.dpad_up) {
+             robot.liftLeft.setPower(0.5);
+             robot.liftRight.setPower(0.5);
+         }
+         else if (gamepad1.dpad_down) {
+             robot.liftLeft.setPower(-0.5);
+             robot.liftRight.setPower(-0.5);
+         }
+
+
+
+
+
 
         /* LEGACY ROBOT MOTION CODE TO BE CLEANED UP, NO LONGER USED.
         } else if(gamepad1.left_trigger > 0.49) {

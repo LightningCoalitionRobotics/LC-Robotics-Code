@@ -2,13 +2,9 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  * The class for the LCR 2021-22 robot.
@@ -44,9 +40,9 @@ public class HardwareCletus extends Robot {
 
     public DcMotor motorBackRight;
 
-    public CRServo arm; //CRServo is a continuous rotation servo
+    public DcMotor liftLeft;
 
-    public Servo grabber;
+    public DcMotor liftRight;
 
     public HardwareCletus(OpMode opMode) {
         super(opMode);
@@ -59,8 +55,8 @@ public class HardwareCletus extends Robot {
         motorFrontRight = registerMotor("motorFrontRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER); //this direction is reverse because the motor is backward, so to make it go forwards you (if you had this forwards) would have to set a negative speed
         motorBackLeft = registerMotor("motorBackLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackRight = registerMotor("motorBackRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER); // Same problem as above with this motor
-        arm = hardwareMap.crservo.get("arm"); //continuous rotation servos don't have a registerServo() method like normal servos do
-        grabber = registerServo("grabber", 0.0f);
+        liftLeft = registerMotor("liftLeft", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
+        liftRight = registerMotor("liftRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     /**
@@ -243,37 +239,14 @@ public class HardwareCletus extends Robot {
         motorFrontLeft.setPower(0);
         motorBackLeft.setPower(0);
         motorBackRight.setPower(0);
-        arm.setPower(0);
-    } //stops wheel movement and arm, but not grabber
+    } //stops wheel movement
 
     public void stopMotor(){
         motorFrontRight.setPower(0);
         motorFrontLeft.setPower(0);
         motorBackLeft.setPower(0);
         motorBackRight.setPower(0);
-    } //stops only the motors so arm can continue to run
-
-    public void extend(){
-        grabber.setPosition(1.0);
-    } //extends grabber
-
-    public void unextend(){
-        grabber.setPosition(0.0);
-    } //retracts grabber
-
-    public void liftArm(){
-        arm.setPower(0.75);
-        //make it so that this stops eventually
-    }
-
-    // height of lvl 1 = 3.5 inches
-    // height of lvl 2 = 9 inches, lvl 3 = 15.5 inches
-
-    public void lowerArm() {
-        arm.setPower(.75);
-        //min height for arm
-
-    }
+    } //stops only the motors
 
     /**
      * Strafe the robot left or right.
