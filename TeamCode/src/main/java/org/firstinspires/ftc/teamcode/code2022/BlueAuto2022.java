@@ -18,7 +18,7 @@ public class BlueAuto2022 extends LinearOpMode {
         sleep(2000);
         robot.turn(0.5, 45, 500);
         sleep(2000);
-        robot.extend();
+//        robot.extend();       //Commenting out for now, because HardwareCletus does not have extend() defined, or the arm defined yet, and build will fail.
         sleep(2000);
         robot.turn(0.5, 45, 500);
         sleep(2000);
@@ -26,7 +26,7 @@ public class BlueAuto2022 extends LinearOpMode {
         sleep(2000);
         robot.drive(-0.5, 66, 1000);
         robot.stop();
-        robot.arm.setPower(-20);
+//        robot.arm.setPower(-20);      //Commenting out for now, because HardwareCletus does not have arm defined yet, and build will fail.
 
     }
 }
