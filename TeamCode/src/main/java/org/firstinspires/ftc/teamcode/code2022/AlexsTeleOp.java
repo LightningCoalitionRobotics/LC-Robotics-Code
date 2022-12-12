@@ -137,7 +137,11 @@ public class AlexsTeleOp extends OpMode {
             robot.motorFrontRight.setPower(-joyL_X);
         }
 
-         if (gamepad2.dpad_up) {
+        // Safety stop - if buttons on controller are not being touched, make sure robot does not move.
+        if (gamepad2.atRest()) {
+            robot.stopMotor();
+
+        }if (gamepad2.dpad_up) {
              robot.liftLeft.setPower(0.5);
              robot.liftRight.setPower(0.5);
          }
