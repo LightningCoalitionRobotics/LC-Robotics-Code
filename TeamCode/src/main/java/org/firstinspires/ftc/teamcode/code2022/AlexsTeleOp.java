@@ -136,11 +136,12 @@ public class AlexsTeleOp extends OpMode {
             robot.motorFrontLeft.setPower(joyL_X);
             robot.motorFrontRight.setPower(-joyL_X);
         }
-         if (gamepad1.dpad_up) {
+
+         if (gamepad2.dpad_up) {
              robot.liftLeft.setPower(0.5);
              robot.liftRight.setPower(0.5);
          }
-         else if (gamepad1.dpad_down) {
+         else if (gamepad2.dpad_down) {
              robot.liftLeft.setPower(-0.5);
              robot.liftRight.setPower(-0.5);
          }
