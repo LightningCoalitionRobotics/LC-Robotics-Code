@@ -5,7 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 /**
  * The class for the LCR 2021-22 robot.
  *
@@ -44,6 +45,8 @@ public class HardwareCletus extends Robot {
 
     public DcMotor liftRight;
 
+    public Servo claw;
+
     public HardwareCletus(OpMode opMode) {
         super(opMode);
     }
@@ -57,6 +60,7 @@ public class HardwareCletus extends Robot {
         motorBackRight = registerMotor("motorBackRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER); // Same problem as above with this motor
         liftLeft = registerMotor("liftLeft", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
         liftRight = registerMotor("liftRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
+        claw = registerServo("claw", 0.0f);
     }
 
     /**
@@ -239,14 +243,38 @@ public class HardwareCletus extends Robot {
         motorFrontLeft.setPower(0);
         motorBackLeft.setPower(0);
         motorBackRight.setPower(0);
-    } //stops wheel movement
+        liftLeft.setPower(0);
+        liftRight.setPower(0);
+    } //stops wheel movement and lift, but not claw
 
     public void stopMotor(){
         motorFrontRight.setPower(0);
         motorFrontLeft.setPower(0);
         motorBackLeft.setPower(0);
         motorBackRight.setPower(0);
-    } //stops only the motors
+    } //stops only the motors so lift can continue to run
+
+   /* public void extend(){
+        grabber.setPosition(1.0);
+    } //extends grabber
+
+    public void unextend(){
+        grabber.setPosition(0.0);
+    } //retracts grabber
+
+    public void liftArm(){
+        arm.setPower(0.75);
+        //make it so that this stops eventually
+    }
+
+    // height of lvl 1 = 3.5 inches
+    // height of lvl 2 = 9 inches, lvl 3 = 15.5 inches
+
+    public void lowerArm() {
+        arm.setPower(.75);
+        //min height for arm
+
+    } // code for arm and grabber from last year.
 
     /**
      * Strafe the robot left or right.

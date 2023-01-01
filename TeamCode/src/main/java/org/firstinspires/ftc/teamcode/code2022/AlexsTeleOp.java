@@ -43,6 +43,8 @@ public class AlexsTeleOp extends OpMode {
         float joyL_Y = Math.abs(gamepad1.left_stick_y);
         float liftjoyL_X = Math.abs(gamepad2.left_stick_x); // variables used for lift mechanism
         float liftjoyL_Y = Math.abs(gamepad2.left_stick_y);
+        float clawjoyR_X = Math.abs(gamepad2.right_stick_x);
+        float clawjoyR_Y = Math.abs(gamepad2.right_stick_x);
 
         // LEGACY CODE TO BE CLEANED UP
         telemetry.addLine("double startTime = " + startTime);
@@ -178,6 +180,10 @@ public class AlexsTeleOp extends OpMode {
                 robot.liftRight.setPower(-liftjoyL_Y);
                 telemetry.update();
             }
+        }
+        if (gamepad1.y){
+            //move to -135 degrees
+            robot.claw.setPosition(0);
         }
 
 
