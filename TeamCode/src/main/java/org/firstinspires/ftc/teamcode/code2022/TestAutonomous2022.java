@@ -59,18 +59,18 @@ public class    TestAutonomous2022 extends LinearOpMode{
 
     private void testExtend(){
         telemetry.addLine("Testing Extend and Unextend Functions");
-        robot.extend();
-        robot.unextend();
+        //robot.extend();
+       // robot.unextend();
 
     }
 
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
-        robot.arm.setPower(-1);
+      //  robot.arm.setPower(-1);
         sleep(1270);
         //sleep(1000); //675 degrees of rotation
-        robot.arm.setPower(0);
+       // robot.arm.setPower(0);
         waitForStart( );
         testdrive();
         testturn();

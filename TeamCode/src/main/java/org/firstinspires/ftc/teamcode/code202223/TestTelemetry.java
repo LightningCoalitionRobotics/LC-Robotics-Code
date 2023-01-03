@@ -29,11 +29,11 @@ public class TestTelemetry extends LinearOpMode {
         rightMotor1 = hardwareMap.get(DcMotor.class, "motorFrontRight");
         rightMotor2 = hardwareMap.get(DcMotor.class, "motorBackRight");
 
-        leftMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //makes sure encoders start at zero counts
+       /* leftMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //makes sure encoders start at zero counts
         leftMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+*/
         robot.drive(.25, 50, 25); //simple autonomous command
 
         while(opModeIsActive()) {      //using while loop allows for more time to check telemetry

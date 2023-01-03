@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.hardware.HardwareCletus;
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
-@Autonomous(name="First Atomomous", group = "autonomous")
+@Autonomous(name="First Autonomous", group = "autonomous")
 
 public class Autonomous_Code extends LinearOpMode {
     private HardwareCletus robot = new HardwareCletus(this);
