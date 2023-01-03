@@ -274,7 +274,7 @@ public class HardwareCletus extends Robot {
         arm.setPower(.75);
         //min height for arm
 
-    } // code for arm and grabber from last year.
+    } // code commented out above was for arm and grabber from last year.
 
     /**
      * Strafe the robot left or right.

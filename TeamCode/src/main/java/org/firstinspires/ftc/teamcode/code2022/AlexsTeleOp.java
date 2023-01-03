@@ -181,10 +181,17 @@ public class AlexsTeleOp extends OpMode {
                 telemetry.update();
             }
         }
-        /* if (gamepad1.y){
+        // Code for claw in progress
+         if (gamepad2.y){
             //move to -135 degrees
             robot.claw.setPosition(0);
-        }
+        } else if (gamepad2.x || gamepad2.b){
+             //move to 0 degrees
+             robot.claw.setPosition(0.5);
+         } else if (gamepad2.a){
+             //move to 135 degrees
+             robot.claw.setPosition(1);
+         }
 
 
 
