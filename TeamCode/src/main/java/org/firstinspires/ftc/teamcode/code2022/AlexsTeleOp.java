@@ -163,7 +163,7 @@ public class AlexsTeleOp extends OpMode {
         if (gamepad2.atRest()) {
             robot.stopMotor();
 
-        } else if (liftjoyL_Y != 0) {
+        } else if (gamepad2.left_stick_y != 0) {
             // LIFT UP / LIFT DOWN MOVEMENT (@ LINEAR SPEED)
             //when liftjoyL_Y is > than liftjoyL_Y, the lift mechanism lifts up/down
             //speed magnitude is the absolute value of joystick position
