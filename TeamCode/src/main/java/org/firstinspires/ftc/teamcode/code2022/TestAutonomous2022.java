@@ -57,28 +57,31 @@ public class    TestAutonomous2022 extends LinearOpMode{
         robot.driveAngle(45, .5, 100, 5);
     }
 
+    /* commented out to get clean compile: EJW, 12/26/22
     private void testExtend(){
         telemetry.addLine("Testing Extend and Unextend Functions");
-        //robot.extend();
-       // robot.unextend();
+        robot.extend();
+        robot.unextend();
 
     }
+*/
 
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
-      //  robot.arm.setPower(-1);
+        //robot.arm.setPower(-1);
         sleep(1270);
         //sleep(1000); //675 degrees of rotation
-       // robot.arm.setPower(0);
+        //robot.arm.setPower(0);
         waitForStart( );
         testdrive();
         testturn();
         teststrafe();
         testdriveangle();
-        testExtend();
+        //testExtend();
         //robot.liftArm();
         //sleep(2000);
         robot.stop();
     }
+
 }

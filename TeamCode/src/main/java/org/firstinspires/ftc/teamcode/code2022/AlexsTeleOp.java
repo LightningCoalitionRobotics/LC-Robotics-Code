@@ -41,6 +41,10 @@ public class AlexsTeleOp extends OpMode {
         float joyR_Y = Math.abs(gamepad1.right_stick_y);
         float joyL_X = Math.abs(gamepad1.left_stick_x);
         float joyL_Y = Math.abs(gamepad1.left_stick_y);
+        float liftjoyL_X = Math.abs(gamepad2.left_stick_x); // variables used for lift mechanism
+        float liftjoyL_Y = Math.abs(gamepad2.left_stick_y);
+        float clawjoyR_X = Math.abs(gamepad2.right_stick_x);
+        float clawjoyR_Y = Math.abs(gamepad2.right_stick_x);
 
         // LEGACY CODE TO BE CLEANED UP
         telemetry.addLine("double startTime = " + startTime);
@@ -137,14 +141,58 @@ public class AlexsTeleOp extends OpMode {
             robot.motorFrontRight.setPower(-joyL_X);
         }
 
-         if (gamepad2.dpad_up) {
-             robot.liftLeft.setPower(0.5);
-             robot.liftRight.setPower(0.5);
+        // Code for the 2nd controller
+
+        // LIFT UP / LIFT DOWN MOVEMENT (@ CONSTANT SPEED).
+        // when dpad is pressed up or down, lift moves up and down at a set speed.
+        // later we will need to find a good speed to set lift to.
+       if (gamepad2.dpad_up) {
+                robot.liftLeft.setPower(0.5);
+                robot.liftRight.setPower(0.5);
+            }
+            else if (gamepad2.dpad_down) {
+                robot.liftLeft.setPower(-0.5);
+                robot.liftRight.setPower(-0.5);
+            }
+            else{
+                robot.liftLeft.setPower(0.0);
+                robot.liftRight.setPower(0.0);
+        }
+
+        // Safety stop - if joysticks not being touched, make sure robot does not move.
+        if (gamepad2.atRest()) {
+            robot.stopMotor();
+
+        } else if (liftjoyL_Y != 0) {
+            // LIFT UP / LIFT DOWN MOVEMENT (@ LINEAR SPEED)
+            //when liftjoyL_Y is > than liftjoyL_Y, the lift mechanism lifts up/down
+            //speed magnitude is the absolute value of joystick position
+            if (gamepad2.left_stick_y > 0) {
+                //upward motion
+                //when left joy stick is moved upward and its y-axis position on cartesian plane is > than 0, lift moves upward
+                robot.liftLeft.setPower(liftjoyL_Y);
+                robot.liftRight.setPower(liftjoyL_Y);
+                telemetry.update();
+            } else if (gamepad2.left_stick_y < 0) {
+                //downward motion
+                //when left joy stick is moved upward and its y-axis position on cartesian plane is < than 0, lift moved upward
+                robot.liftLeft.setPower(-liftjoyL_Y);
+                robot.liftRight.setPower(-liftjoyL_Y);
+                telemetry.update();
+            }
+        }
+        // Code for claw in progress
+         if (gamepad2.y){
+            //move to -135 degrees
+            robot.claw.setPosition(0);
+        } else if (gamepad2.x || gamepad2.b){
+             //move to 0 degrees
+             robot.claw.setPosition(0.5);
+         } else if (gamepad2.a){
+             //move to 135 degrees
+             robot.claw.setPosition(1);
          }
-         else if (gamepad2.dpad_down) {
-             robot.liftLeft.setPower(-0.5);
-             robot.liftRight.setPower(-0.5);
-         }
+
 
 
 
