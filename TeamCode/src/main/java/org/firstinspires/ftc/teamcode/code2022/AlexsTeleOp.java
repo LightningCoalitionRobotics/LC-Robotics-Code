@@ -146,24 +146,22 @@ public class AlexsTeleOp extends OpMode {
         // LIFT UP / LIFT DOWN MOVEMENT (@ CONSTANT SPEED).
         // when dpad is pressed up or down, lift moves up and down at a set speed.
         // later we will need to find a good speed to set lift to.
-       if (gamepad2.dpad_up) {
-                robot.liftLeft.setPower(0.5);
-                robot.liftRight.setPower(0.5);
-            }
-            else if (gamepad2.dpad_down) {
-                robot.liftLeft.setPower(-0.5);
-                robot.liftRight.setPower(-0.5);
-            }
-            else{
-                robot.liftLeft.setPower(0.0);
-                robot.liftRight.setPower(0.0);
+        if (gamepad2.dpad_up) {
+            robot.liftLeft.setPower(0.5);
+            robot.liftRight.setPower(0.5);
+        } else if (gamepad2.dpad_down) {
+            robot.liftLeft.setPower(-0.5);
+            robot.liftRight.setPower(-0.5);
+        } else {
+            robot.liftLeft.setPower(0.0);
+            robot.liftRight.setPower(0.0);
         }
 
         // Safety stop - if joysticks not being touched, make sure robot does not move.
-        if (gamepad2.atRest()) {
-            robot.stopMotor();
 
-        } else if (gamepad2.left_stick_y != 0) {
+
+            //*******************
+          if (gamepad2.left_stick_y != 0) {
             // LIFT UP / LIFT DOWN MOVEMENT (@ LINEAR SPEED)
             //when liftjoyL_Y is > than liftjoyL_Y, the lift mechanism lifts up/down
             //speed magnitude is the absolute value of joystick position
@@ -171,13 +169,15 @@ public class AlexsTeleOp extends OpMode {
                 //upward motion
                 //when left joy stick is moved upward and its y-axis position on cartesian plane is > than 0, lift moves upward
                 robot.liftLeft.setPower(liftjoyL_Y);
-                robot.liftRight.setPower(liftjoyL_Y);
+                robot.liftRight.setPower(-liftjoyL_Y);
                 telemetry.update();
-            } else if (gamepad2.left_stick_y < 0) {
+
+
+            }  else if (gamepad2.left_stick_y < 0) {
                 //downward motion
                 //when left joy stick is moved upward and its y-axis position on cartesian plane is < than 0, lift moved upward
                 robot.liftLeft.setPower(-liftjoyL_Y);
-                robot.liftRight.setPower(-liftjoyL_Y);
+                robot.liftRight.setPower(liftjoyL_Y);
                 telemetry.update();
             }
         }
@@ -247,10 +247,10 @@ public class AlexsTeleOp extends OpMode {
         }
         */
 
-        // ROBOT ACTUATOR CODE
-        // Input = gamepad2 controls (TBD)
-        // Output = power commands to the actuators (TBD)
-        // Actuators: (1) lift arm mechanism, (2) claw
+            // ROBOT ACTUATOR CODE
+            // Input = gamepad2 controls (TBD)
+            // Output = power commands to the actuators (TBD)
+            // Actuators: (1) lift arm mechanism, (2) claw
 
        /* LEGACY CODE TO BE UPDATED AFTER NEW MECHANISMS ARE DESIGNED.
        if(gamepad2.atRest() && speedArm == 0){
@@ -294,8 +294,8 @@ public class AlexsTeleOp extends OpMode {
     }
 
  */
-        // update telemetry values
-        telemetry.update();
+            // update telemetry values
+            telemetry.update();
 
-    } // end main loop
-} // end TeleOp
+        } // end main loop
+    } // end TeleOp
