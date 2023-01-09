@@ -16,7 +16,7 @@ public class Autonomous_Code extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
 
-        robot.drive(0.5,15,50);
+       /* robot.drive(0.5,15,50);
         robot.turn(0.5,90,50);
         robot.drive(0.5,15,50);
         robot.turn(0.5,90,50);
@@ -24,6 +24,10 @@ public class Autonomous_Code extends LinearOpMode {
         robot.turn(0.5,90,50);
         robot.drive(0.5,15,50);
         robot.turn(0.5,90,50);
+*/
+        //Red Start 2 Test Code
+        robot.drive(.5, 26,5);
+        robot.turn(.45, -90, 5);
 
     }
 }
