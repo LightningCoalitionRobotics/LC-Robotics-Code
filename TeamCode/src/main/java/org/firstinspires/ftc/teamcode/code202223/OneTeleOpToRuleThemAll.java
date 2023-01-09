@@ -3,12 +3,12 @@ package org.firstinspires.ftc.teamcode.code202223;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.hardware.HardwareCletus;
+import org.firstinspires.ftc.teamcode.hardware.HardwareGoobus;
 
 @TeleOp(name = "OneTeleOpToRuleThemAll", group = "TeleOp")
 public class OneTeleOpToRuleThemAll extends OpMode {
 
-    private HardwareCletus robot = new HardwareCletus(this);
+    private HardwareGoobus robot = new HardwareGoobus(this);
 
     public void init() {
         robot.init(hardwareMap);
@@ -46,6 +46,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
         //variables for lift
         float liftjoyL_X = Math.abs(gamepad2.left_stick_x);
         float liftjoyL_Y = Math.abs(gamepad2.left_stick_y);
+        float extendArm = Math.abs(gamepad2.right_stick_y);
 
         //variables for grab
         float clawjoyR_X = Math.abs(gamepad2.right_stick_x);
@@ -141,14 +142,14 @@ public class OneTeleOpToRuleThemAll extends OpMode {
         // when dpad is pressed up or down, lift moves up and down at a set speed.
         // later we will need to find a good speed to set lift to.
         if (gamepad2.dpad_up) {
-            robot.liftLeft.setPower(0.5);
-            robot.liftRight.setPower(0.5);
+            robot.motorLiftLeft.setPower(0.5);
+            robot.motorLiftRight.setPower(0.5);
         } else if (gamepad2.dpad_down) {
-            robot.liftLeft.setPower(-0.5);
-            robot.liftRight.setPower(-0.5);
+            robot.motorLiftLeft.setPower(-0.5);
+            robot.motorLiftRight.setPower(-0.5);
         } else {
-            robot.liftLeft.setPower(0.0);
-            robot.liftRight.setPower(0.0);
+            robot.motorLiftLeft.setPower(0.0);
+            robot.motorLiftRight.setPower(0.0);
         }
 
         if (gamepad2.left_stick_y != 0) {
@@ -158,8 +159,8 @@ public class OneTeleOpToRuleThemAll extends OpMode {
             if (gamepad2.left_stick_y > 0) {
                 //upward motion
                 //when left joy stick is moved upward and its y-axis position on cartesian plane is > than 0, lift moves upward
-                robot.liftLeft.setPower(liftjoyL_Y);
-                robot.liftRight.setPower(-liftjoyL_Y);
+                robot.motorLiftLeft.setPower(liftjoyL_Y);
+                robot.motorLiftRight.setPower(-liftjoyL_Y);
                 telemetry.update();
 
 
@@ -167,11 +168,22 @@ public class OneTeleOpToRuleThemAll extends OpMode {
                 //downward motion
                 //when left joy stick is moved upward and its y-axis position on cartesian plane is < than 0, lift moved upward
                 //Motors have to running in opposite directions (L = up: ccw; down: cw || R = up: cw; down: ccw)
-                robot.liftLeft.setPower(-liftjoyL_Y);
-                robot.liftRight.setPower(liftjoyL_Y);
+                robot.motorLiftLeft.setPower(-liftjoyL_Y);
+                robot.motorLiftRight.setPower(liftjoyL_Y);
                 telemetry.update();
             }
         }
+            //code to extend arm out and in
+            if(gamepad2.right_stick_y != 0){
+                if(gamepad2.right_stick_y > 0){
+                    robot.motorExtendArm.setPower(extendArm);
+                }
+                else if (gamepad2.right_stick_y < 0){
+                    robot.motorExtendArm.setPower(-extendArm);
+                }
+            }
+
+
         // Code for claw in progress
         if (gamepad2.y) {
             //move to -135 degrees
