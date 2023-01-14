@@ -15,5 +15,6 @@ public class BlueStart1 extends LinearOpMode {
     public void runOpMode() {
         robot.init(hardwareMap);
         waitForStart();
+        //this is a test
     }
 }
