@@ -8,6 +8,4 @@ dependencies {
     implementation (name: 'tensorflow-lite-0.0.0-nightly', ext:'aar')
 }
 
-dependencies {
-    implementation 'org.openftc:easyopencv:1.5.3'
-}
+
