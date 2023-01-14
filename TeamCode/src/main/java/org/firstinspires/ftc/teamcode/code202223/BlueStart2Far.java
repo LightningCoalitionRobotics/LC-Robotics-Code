@@ -6,14 +6,20 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareGoobus;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
-@Autonomous(name="BlueStart2", group = "autonomous")
+@Autonomous(name="BlueStart2Far", group = "autonomous")
 
-public class BlueStart2 extends LinearOpMode {
+public class BlueStart2Far extends LinearOpMode {
     private HardwareGoobus robot = new HardwareGoobus(this);
 
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
         waitForStart();
+
+        robot.drive(.5,84,5);
+        robot.turn(.5,-90,5);
+        robot.drive(.5,96,5);
+        robot.turn(.5,90,5);
+        robot.drive(.5,29,5);
     }
 }
