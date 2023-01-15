@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.hardware.HardwareGoobus;
 
+// Use the OneTeleOpToRuleThemAll for the 2022-23 Robotics Season; Ignore this one!
+
 @TeleOp(name = "TeleOpCompetition", group = "TeleOp")
 public class TeleOpCompetition extends OpMode {
 

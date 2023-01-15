@@ -12,10 +12,10 @@ public class TestTelemetry extends LinearOpMode {
 
     private HardwareCletus robot = new HardwareCletus(this);
 
-    private DcMotor leftMotor1; //defines each motor of the robot
-    private DcMotor leftMotor2;
-    private DcMotor rightMotor1;
-    private DcMotor rightMotor2;
+    private DcMotor motorFrontLeft; //defines each motor of the robot
+    private DcMotor motorBackLeft;
+    private DcMotor motorFrontRight;
+    private DcMotor motorBackRight;
 
     //front motors are motor 1 and back motors are motor 2
 
@@ -24,10 +24,10 @@ public class TestTelemetry extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
 
-        leftMotor1 = hardwareMap.get(DcMotor.class, "motorFrontLeft");
-        leftMotor2 = hardwareMap.get(DcMotor.class, "motorBackLeft");
-        rightMotor1 = hardwareMap.get(DcMotor.class, "motorFrontRight");
-        rightMotor2 = hardwareMap.get(DcMotor.class, "motorBackRight");
+        motorFrontLeft = hardwareMap.get(DcMotor.class, "motorFrontLeft");
+        motorBackLeft = hardwareMap.get(DcMotor.class, "motorBackLeft");
+        motorFrontRight = hardwareMap.get(DcMotor.class, "motorFrontRight");
+        motorBackRight = hardwareMap.get(DcMotor.class, "motorBackRight");
 
        /* leftMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //makes sure encoders start at zero counts
         leftMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -39,7 +39,7 @@ public class TestTelemetry extends LinearOpMode {
         while(opModeIsActive()) {      //using while loop allows for more time to check telemetry
 
             telemetry.addData("Counts:", "leftMotor1=%d leftMotor2=%d rightMotor1=%d rightMotor2=%d",
-                    leftMotor1.getCurrentPosition(), leftMotor2.getCurrentPosition(), rightMotor1.getCurrentPosition(), rightMotor2.getCurrentPosition());
+                    motorFrontLeft.getCurrentPosition(), motorBackLeft.getCurrentPosition(), motorFrontRight.getCurrentPosition(), motorBackRight.getCurrentPosition());
 
             telemetry.update();
 
