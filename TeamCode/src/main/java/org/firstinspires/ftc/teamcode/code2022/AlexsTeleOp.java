@@ -181,17 +181,35 @@ public class AlexsTeleOp extends OpMode {
                 telemetry.update();
             }
         }
-        // Code for claw in progress
+
+
+
+        //CLAW OPEN AND CLOSE MOVEMENT
+        //When y, x, b, or a button is pressed, the claw opens or closes to the position that the servo was programed to move to.
          if (gamepad2.y){
-            //move to -135 degrees
+            //moves servo in claw to -135 degrees
             robot.claw.setPosition(0);
+            telemetry.addData("Servo Position", robot.claw.getPosition());
+            telemetry.update();
+
+
         } else if (gamepad2.x || gamepad2.b){
-             //move to 0 degrees
+             //moves servo in claw to 0 degrees or its default position
              robot.claw.setPosition(0.5);
+             telemetry.addData("Servo Position", robot.claw.getPosition());
+             telemetry.update();
+
+
          } else if (gamepad2.a){
-             //move to 135 degrees
+             //moves servo in claw to 135 degrees
              robot.claw.setPosition(1);
+             telemetry.addData("Servo Position", robot.claw.getPosition());
+             telemetry.update();
          }
+
+
+
+
 
 
 
