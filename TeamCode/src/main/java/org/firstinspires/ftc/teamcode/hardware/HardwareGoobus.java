@@ -20,7 +20,7 @@ public class HardwareGoobus extends Robot {
 
     // These are constants that we have experimentally determined, relating counts (the way an encoder measures movement) to inches or degrees (the way we understand movement)
     //private static final int COUNTS_PER_REVOLUTION = 1400;                         // One full revolution of a wheel is 1400 counts
-    private static final int COUNTS_PER_FORWARD_INCH = 121; // 1 revolution FORWARDS is very close to 1 foot, so to get counts per inch, take counts per revolution and divide it by 12
+    private static final int COUNTS_PER_FORWARD_INCH = 114; // 1 revolution FORWARDS is very close to 1 foot, so to get counts per inch, take counts per revolution and divide it by 12
 
     //private static final int COUNTS_PER_360 = 10000;                               // One full turn 360 degrees is 10000 counts
     private static final int COUNTS_PER_DEGREE = 25;
