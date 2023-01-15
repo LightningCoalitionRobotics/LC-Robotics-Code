@@ -391,24 +391,21 @@ public class HardwareGoobus extends Robot {
         }
     }
   */
-    @Override
+
     public void close() {
         claw.setPosition(1.0);
     } //closes claw to a position that will secure cone in the claw
 
-    @Override
     public void open() {
         claw.setPosition(0.0);
     } //opens claw
 
-    @Override
     public void liftArm() {
         motorLiftLeft.setPower(0.75);
         motorLiftRight.setPower(0.75);
         //make it so that this stops eventually
     }
 
-    @Override
     public void lowerArm() {
         motorLiftLeft.setPower(-0.75);
         motorLiftRight.setPower(-0.75);
