@@ -6,10 +6,10 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareGoobus;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
-@Autonomous(name="OpeningMoveLeftSide", group = "autonomous")
+@Autonomous(name="BlueRightSide", group = "autonomous")
 
 
-public class OpeningMoveRightSide extends LinearOpMode {
+public class BlueRightSide extends LinearOpMode {
     private HardwareGoobus robot = new HardwareGoobus(this);
 
     @Override
