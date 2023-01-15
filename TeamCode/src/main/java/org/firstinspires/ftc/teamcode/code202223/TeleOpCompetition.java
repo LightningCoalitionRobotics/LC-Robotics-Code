@@ -3,12 +3,12 @@ package org.firstinspires.ftc.teamcode.code202223;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.hardware.HardwareGoobus2;
+import org.firstinspires.ftc.teamcode.hardware.HardwareGoobus;
 
 @TeleOp(name = "TeleOpCompetition", group = "TeleOp")
 public class TeleOpCompetition extends OpMode {
 
-    private HardwareGoobus2 robot = new HardwareGoobus2(this);
+    private HardwareGoobus robot = new HardwareGoobus(this);
 
     public void init() {
         robot.init(hardwareMap);
