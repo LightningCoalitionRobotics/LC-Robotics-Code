@@ -56,7 +56,8 @@ public class HardwareGoobus extends Robot {
         super(opMode);
     }
 
-    @Override  // Since this class extends the class Robot, these @Overrides let the code know that this will super cede any conflicting properties of init present in class Robot
+    @Override
+    // Since this class extends the class Robot, these @Overrides let the code know that this will super cede any conflicting properties of init present in class Robot
     public void init(HardwareMap hardwareMap) { //This section registers the motors to the encoders and sets their default direction
         this.hardwareMap = hardwareMap;
         motorFrontLeft = registerMotor("motorFrontLeft", DcMotorSimple.Direction.FORWARD, DcMotor.RunMode.RUN_USING_ENCODER);
@@ -74,11 +75,11 @@ public class HardwareGoobus extends Robot {
 
     /**
      * Drive the robot forward or backwards.
-     * @param speed An integer between -1 and 1, greater distance from origin is greater speed, negative is backwards and positive is forwards
-     * @param dist Distance, in inches, that you want the robot to go (always positive)
+     *
+     * @param speed   An integer between -1 and 1, greater distance from origin is greater speed, negative is backwards and positive is forwards
+     * @param dist    Distance, in inches, that you want the robot to go (always positive)
      * @param timeout How many seconds before stopping wherever it is
      */
-
 
 
     @Override
@@ -92,13 +93,13 @@ public class HardwareGoobus extends Robot {
         int bottomRightTarget;
         int bottomLeftTarget;
 
-        if(speed > 0){
+        if (speed > 0) {
             topRightTarget = motorFrontRight.getCurrentPosition() + distInCounts;
             topLeftTarget = motorFrontLeft.getCurrentPosition() + distInCounts;
             bottomRightTarget = motorBackRight.getCurrentPosition() + distInCounts;
             bottomLeftTarget = motorBackLeft.getCurrentPosition() + distInCounts;
 
-        } else if(speed < 0){
+        } else if (speed < 0) {
             topRightTarget = motorFrontRight.getCurrentPosition() - distInCounts;
             topLeftTarget = motorFrontLeft.getCurrentPosition() - distInCounts;
             bottomRightTarget = motorBackRight.getCurrentPosition() - distInCounts;
@@ -126,14 +127,13 @@ public class HardwareGoobus extends Robot {
                 if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget) { //if at or beyond target
                     break; //break from while loop and move on to stop()
                 } else {
-                    ((LinearOpMode)opMode).idle();
+                    ((LinearOpMode) opMode).idle();
                 }
-            }
-            else if (speed < 0) { // if you want the robot to go backwards (negative speed)
+            } else if (speed < 0) { // if you want the robot to go backwards (negative speed)
                 if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorBackRight.getCurrentPosition() <= topLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget) { //if at or beyond target
                     break; //break from while loop and move on to stop()
                 } else {
-                    ((LinearOpMode)opMode).idle();
+                    ((LinearOpMode) opMode).idle();
                 }
             }
             ((LinearOpMode) opMode).idle();
@@ -142,16 +142,15 @@ public class HardwareGoobus extends Robot {
     }
 
     /**
-     * @param speed A value from 0 to 1, a higher value meaning a higher speed.
-     * @param angle In degrees, how far the robot should turn. A positive amount is clockwise.
+     * @param speed   A value from 0 to 1, a higher value meaning a higher speed.
+     * @param angle   In degrees, how far the robot should turn. A positive amount is clockwise.
      * @param timeout In seconds, how long the robot should attempt to reach the target angle.
      */
 
 
-
     @Override
     public void turn(double speed, double angle, double timeout) {
-        int angleInCounts = (int)(angle * COUNTS_PER_DEGREE);
+        int angleInCounts = (int) (angle * COUNTS_PER_DEGREE);
         //changes the angle variable from degrees to counts
 
         int topRightTarget = motorFrontRight.getCurrentPosition() - angleInCounts;
@@ -173,13 +172,13 @@ public class HardwareGoobus extends Robot {
             motorBackRight.setPower(-speed);
             //sets left motors to positive and right to negative for clockwise turn
         }
-        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout){ //while opmode active and timenout not reached
+        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) { //while opmode active and timenout not reached
             telemetry.addData("Encoder Value of motorFrontRight:", motorFrontRight.getCurrentPosition());
             telemetry.addData("Encoder Value of motorFrontLeft:", motorFrontLeft.getCurrentPosition());
             telemetry.addData("Encoder Value of motorBackLeft:", motorBackLeft.getCurrentPosition());
             telemetry.addData("Encoder Value of motorBackRight:", motorBackRight.getCurrentPosition());
             telemetry.update();
-            if (angle < 0){
+            if (angle < 0) {
                 if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
                     break;
                 }
@@ -198,9 +197,10 @@ public class HardwareGoobus extends Robot {
 
     /**
      * Drive the robot at a particular angle.
+     *
      * @param degrees The angle at which to move the robot. Measured in degrees above the positive X axis. Do not type 90.
-     * @param speed How fast the robot should move. Number should be in range (0, 1].
-     * @param dist How far, in inches, to move the robot.
+     * @param speed   How fast the robot should move. Number should be in range (0, 1].
+     * @param dist    How far, in inches, to move the robot.
      * @param timeout If dist is never reached, how many seconds to wait before stopping.
      */
 
@@ -217,7 +217,7 @@ public class HardwareGoobus extends Robot {
         // tangent ø - tangent*b = 1+b
         // tangent ø = (tangent+1)b + 1
         // (tangent ø - 1)/(tangent ø + 1) = b
-        b = (tangent - 1)/(tangent + 1);
+        b = (tangent - 1) / (tangent + 1);
 
         if (Math.abs(b) > 1) {
             a /= Math.abs(b);
@@ -226,8 +226,8 @@ public class HardwareGoobus extends Robot {
 
         // Find targets for motors
 
-        int aDistInCounts = (int)(dist * Math.sin(45 + degrees) * COUNTS_PER_45_INCH);
-        int bDistInCounts = (int)(dist * Math.cos(45 + degrees) * COUNTS_PER_45_INCH);
+        int aDistInCounts = (int) (dist * Math.sin(45 + degrees) * COUNTS_PER_45_INCH);
+        int bDistInCounts = (int) (dist * Math.cos(45 + degrees) * COUNTS_PER_45_INCH);
 
         int topRightTarget = motorFrontRight.getCurrentPosition() + bDistInCounts;
         int topLeftTarget = motorFrontLeft.getCurrentPosition() + aDistInCounts;
@@ -272,7 +272,6 @@ public class HardwareGoobus extends Robot {
     }
 
 
-
     public void stop() {
         motorFrontRight.setPower(0);
         motorFrontLeft.setPower(0);
@@ -283,8 +282,7 @@ public class HardwareGoobus extends Robot {
     } //stops wheel movement and lift, but not claw
 
 
-
-    public void stopMotor(){
+    public void stopMotor() {
         motorFrontRight.setPower(0);
         motorFrontLeft.setPower(0);
         motorBackLeft.setPower(0);
@@ -321,11 +319,10 @@ public class HardwareGoobus extends Robot {
      */
 
 
+    public void strafe(double speed, double dist, double timeout) {
+        int distInCounts = (int) (dist * COUNTS_PER_SIDE_INCH);  // Once again, converting from things we understand to the language the motor understands
 
-   public void strafe(double speed, double dist, double timeout) {
-       int distInCounts = (int)(dist * COUNTS_PER_SIDE_INCH);  // Once again, converting from things we understand to the language the motor understands
-
-       int correctDirection;
+        int correctDirection;
         if (speed > 0) {
             correctDirection = 1;
         } else {
@@ -342,55 +339,81 @@ public class HardwareGoobus extends Robot {
         motorBackLeft.setPower(-speed * correctDirection);
         motorBackRight.setPower(speed * correctDirection);
 
-       while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-           telemetry.addData("Encoder Value of motorFrontRight:", motorFrontRight.getCurrentPosition());
-           telemetry.addData("Encoder Value of motorFrontLeft:", motorFrontLeft.getCurrentPosition());
-           telemetry.addData("Encoder Value of motorBackLeft:", motorBackLeft.getCurrentPosition());
-           telemetry.addData("Encoder Value of motorBackRight:", motorBackRight.getCurrentPosition());
-           telemetry.update();
-           if (speed > 0) {
-               if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
-                   break;
-               }
-           } else {
-               if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget) {
-                   break;
-               }
-           }
-           ((LinearOpMode) opMode).idle();
-       }
+        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
+            telemetry.addData("Encoder Value of motorFrontRight:", motorFrontRight.getCurrentPosition());
+            telemetry.addData("Encoder Value of motorFrontLeft:", motorFrontLeft.getCurrentPosition());
+            telemetry.addData("Encoder Value of motorBackLeft:", motorBackLeft.getCurrentPosition());
+            telemetry.addData("Encoder Value of motorBackRight:", motorBackRight.getCurrentPosition());
+            telemetry.update();
+            if (speed > 0) {
+                if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
+                    break;
+                }
+            } else {
+                if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget) {
+                    break;
+                }
+            }
+            ((LinearOpMode) opMode).idle();
+        }
 
-       stop();
-   }
+        stop();
+    }
 
 
     /*code to extend and unextend the arm
     to unextend, plug in a negative dist*/
-    public void extend(double dist, double timeout){
-       int distInCounts = (int)(dist * COUNTS_PER_SIDE_INCH);  // Once again, converting from things we understand to the language the motor understands
+    /*
+    public void extend(double dist, double timeout) {
+        int distInCounts = (int) (dist * COUNTS_PER_SIDE_INCH);  // Once again, converting from things we understand to the language the motor understands
 
-       int correctDirection;
-       if (dist > 0) {
-           correctDirection = 1;
-       } else {
-           correctDirection = -1;
-       }
+        int correctDirection;
+        if (dist > 0) {
+            correctDirection = 1;
+        } else {
+            correctDirection = -1;
+        }
 
-       int targetCounts = motorExtendArm.getCurrentPosition() + distInCounts;
-       motorExtendArm.setPower(1.0 * correctDirection);
+        int targetCounts = motorExtendArm.getCurrentPosition() + distInCounts;
+        motorExtendArm.setPower(1.0 * correctDirection);
 
-       while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-           if (dist > 0) {
-               if (motorExtendArm.getCurrentPosition() >= targetCounts){
-                       break;
-               }
-           } else {
-               if (motorExtendArm.getCurrentPosition() <= targetCounts){
-                       break;
-               }
-           }
-           ((LinearOpMode) opMode).idle();
-       }
-   }
+        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
+            if (dist > 0) {
+                if (motorExtendArm.getCurrentPosition() >= targetCounts) {
+                    break;
+                }
+            } else {
+                if (motorExtendArm.getCurrentPosition() <= targetCounts) {
+                    break;
+                }
+            }
+            ((LinearOpMode) opMode).idle();
+        }
+    }
+  */
+    @Override
+    public void close() {
+        claw.setPosition(1.0);
+    } //closes claw to a position that will secure cone in the claw
+
+    @Override
+    public void open() {
+        claw.setPosition(0.0);
+    } //opens claw
+
+    @Override
+    public void liftArm() {
+        motorLiftLeft.setPower(0.75);
+        motorLiftRight.setPower(0.75);
+        //make it so that this stops eventually
+    }
+
+    @Override
+    public void lowerArm() {
+        motorLiftLeft.setPower(-0.75);
+        motorLiftRight.setPower(-0.75);
+        //lowers arm
+    }
 }
+
 
