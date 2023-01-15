@@ -17,11 +17,21 @@ public class OpeningMoveRightSide extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
 
-        robot.drive(.5, 84, 5);
+
+        robot.drive(.5, 3,  5);
         robot.turn(.5, -90, 5);
-        robot.drive(.5, 96, 5);
+        robot.drive(.5, 24, 5);
         robot.turn(.5, 90, 5);
-        robot.drive(.5, 29, 5);
+        robot.drive(.5, 24, 5);
+        robot.turn(.5, -45, 5);
+        robot.liftArm();
+        robot.drive(.5, 11.97, 5);
+        robot.open();
+        robot.drive(-.5, 11.97, 5);
+        robot.lowerArm();
+        robot.turn(.5, 45, 5);
+        robot.drive(-.5, 24, 5);
+        robot.strafe(-.5, 12, 5);
     }
 }
 

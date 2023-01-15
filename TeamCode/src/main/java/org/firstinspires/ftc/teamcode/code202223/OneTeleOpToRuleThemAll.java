@@ -173,6 +173,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
                 telemetry.update();
             }
         }
+           /*
             //code to extend arm out and in
             if(gamepad2.right_stick_y != 0){
                 if(gamepad2.right_stick_y > 0){
@@ -182,7 +183,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
                     robot.motorExtendArm.setPower(-extendArm);
                 }
             }
-
+    */
         //CLAW OPEN AND CLOSE MOVEMENT
         //When y, x, b, or a button is pressed, the claw opens or closes to the position that the servo was programed to move to.
         if (gamepad2.y){
