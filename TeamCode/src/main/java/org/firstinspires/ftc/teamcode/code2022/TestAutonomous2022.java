@@ -4,12 +4,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.hardware.HardwareCletus;
+import org.firstinspires.ftc.teamcode.hardware.HardwareGoobus;
 import org.firstinspires.ftc.teamcode.hardware.HardwareLilPanini;
 
 @Autonomous(name = "TestAutonomous2022", group = "autonomous")
 public class    TestAutonomous2022 extends LinearOpMode{
 
-    private HardwareCletus robot = new HardwareCletus(this);
+    private HardwareGoobus robot = new HardwareGoobus(this);
 
     private void testdrive() {
         telemetry.addLine("Testing Drive function: Forwards at half speed");

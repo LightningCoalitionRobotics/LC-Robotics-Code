@@ -191,13 +191,11 @@ public class OneTeleOpToRuleThemAll extends OpMode {
             telemetry.addData("Servo Position", robot.claw.getPosition());
             telemetry.update();
 
-
         } else if (gamepad2.x || gamepad2.b){
             //moves servo in claw to 0 degrees or its default position
             robot.claw.setPosition(0.5);
             telemetry.addData("Servo Position", robot.claw.getPosition());
             telemetry.update();
-
 
         } else if (gamepad2.a){
             //moves servo in claw to 135 degrees
