@@ -68,7 +68,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
             robot.stopMotor();
 
         } else if (joyR_Y > joyR_X) {
-            // FORWARD / REVERSE MOTION
+            // FORWARD / REVERSE MOTION (@ LINEAR SPEED)
             //when joyR_Y is > than joyR_X, the robot moves forward/reverse
             //note we need to resample joystick position for direction input (+/-)
             //speed magnitude is absolute value of joystick position
@@ -76,18 +76,18 @@ public class OneTeleOpToRuleThemAll extends OpMode {
             if (gamepad1.right_stick_y > 0) {
                 //straight forward
                 //when right joy stick is moved upward and its y-axis position on the cartesian plane is greater than zero, robot moves forward
-                robot.motorBackLeft.setPower(joyR_Y);
-                robot.motorBackRight.setPower(joyR_Y);
-                robot.motorFrontLeft.setPower(joyR_Y);
-                robot.motorFrontRight.setPower(joyR_Y);
+                robot.motorBackLeft.setPower(joyR_Y * speed);
+                robot.motorBackRight.setPower(joyR_Y * speed);
+                robot.motorFrontLeft.setPower(joyR_Y * speed);
+                robot.motorFrontRight.setPower(joyR_Y * speed);
                 telemetry.update();
             } else if (gamepad1.right_stick_y < 0) {
                 //straight backward
                 //when right joy stick is moved downward and its y-axis position on the cartesian plane is less than zero, robot moves backward
-                robot.motorBackLeft.setPower(-joyR_Y);
-                robot.motorBackRight.setPower(-joyR_Y);
-                robot.motorFrontLeft.setPower(-joyR_Y);
-                robot.motorFrontRight.setPower(-joyR_Y);
+                robot.motorBackLeft.setPower(-joyR_Y * speed );
+                robot.motorBackRight.setPower(-joyR_Y * speed);
+                robot.motorFrontLeft.setPower(-joyR_Y * speed);
+                robot.motorFrontRight.setPower(-joyR_Y * speed);
                 telemetry.update();
             }
         } else if (joyR_X > joyR_Y) {
@@ -99,18 +99,18 @@ public class OneTeleOpToRuleThemAll extends OpMode {
             if (gamepad1.right_stick_x < 0) {
                 //strafe right
                 //when right joy stick is moved right and its x-axis position on the cartesian plane is less than zero, robot strafes right
-                robot.motorBackLeft.setPower(-joyR_X);
-                robot.motorBackRight.setPower(joyR_X);
-                robot.motorFrontLeft.setPower(joyR_X);
-                robot.motorFrontRight.setPower(-joyR_X);
+                robot.motorBackLeft.setPower(-joyR_X * speed);
+                robot.motorBackRight.setPower(joyR_X * speed);
+                robot.motorFrontLeft.setPower(joyR_X * speed);
+                robot.motorFrontRight.setPower(-joyR_X * speed);
                 telemetry.update();
             } else if (gamepad1.right_stick_x > 0) {
                 //strafe left
                 //when right joy stick is moved left and its x-axis position on the cartesian plane is greater than than zero, robot strafes left
-                robot.motorBackLeft.setPower(joyR_X);
-                robot.motorBackRight.setPower(-joyR_X);
-                robot.motorFrontLeft.setPower(-joyR_X);
-                robot.motorFrontRight.setPower(joyR_X);
+                robot.motorBackLeft.setPower(joyR_X * speed);
+                robot.motorBackRight.setPower(-joyR_X * speed);
+                robot.motorFrontLeft.setPower(-joyR_X * speed);
+                robot.motorFrontRight.setPower(joyR_X * speed);
                 telemetry.update();
             }
         } else if (gamepad1.left_stick_x > 0) {
@@ -122,18 +122,18 @@ public class OneTeleOpToRuleThemAll extends OpMode {
             //
             //turn left
             //when joy stick's displacement is greater than zero, the robot turns left
-            robot.motorBackLeft.setPower(-joyL_X);
-            robot.motorBackRight.setPower(joyL_X);
-            robot.motorFrontLeft.setPower(-joyL_X);
-            robot.motorFrontRight.setPower(joyL_X);
+            robot.motorBackLeft.setPower(-joyL_X * speed);
+            robot.motorBackRight.setPower(joyL_X * speed);
+            robot.motorFrontLeft.setPower(-joyL_X * speed);
+            robot.motorFrontRight.setPower(joyL_X * speed);
 
         } else if (gamepad1.left_stick_x < 0) {
             //turn right
             //when joy stick's displacement is less than zero, the robot turns right
-            robot.motorBackLeft.setPower(joyL_X);
-            robot.motorBackRight.setPower(-joyL_X);
-            robot.motorFrontLeft.setPower(joyL_X);
-            robot.motorFrontRight.setPower(-joyL_X);
+            robot.motorBackLeft.setPower(joyL_X * speed);
+            robot.motorBackRight.setPower(-joyL_X * speed);
+            robot.motorFrontLeft.setPower(joyL_X * speed);
+            robot.motorFrontRight.setPower(-joyL_X * speed);
         }
 
         // Code for the 2nd controller
