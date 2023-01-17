@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.code202223;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.hardware.HardwareGoobus;
 
@@ -20,6 +21,8 @@ public class OneTeleOpToRuleThemAll extends OpMode {
     int maxArmCounts = 1000000;
 
 
+
+
     //find the counts value when the arm is at max height
 
     /*  a double that stores the speed used when moving the arm with the y or a buttons
@@ -33,8 +36,13 @@ public class OneTeleOpToRuleThemAll extends OpMode {
 
         System.out.println("Right motor counts: " + robot.motorLiftRight.getCurrentPosition());
         System.out.println("Left motor counts: " + robot.motorLiftLeft.getCurrentPosition());
-        //arm gamepad: y/a to move arm to max/min height, b/x to open and close claw, dpad for more precise height changes
+
+        telemetry.addData("Counts:", "motorLiftRight=%d motorLiftLeft=%d",
+                robot.motorLiftRight.getCurrentPosition(), robot.motorLiftLeft.getCurrentPosition()); //adds telemetry data to phone for output
+
         double startTime = getRuntime();
+
+        robot.claw.setPosition(1); //sets claw closed to start
 
         // Robot motion variables. We use linear control of the motors driving the wheels, based on displacement of
         // joystick controllers in gamepad1. Variable declarations and usage:
@@ -180,6 +188,13 @@ public class OneTeleOpToRuleThemAll extends OpMode {
                 robot.motorLiftRight.setPower(liftjoyL_Y);
                 telemetry.update();
             }
+        } if (gamepad2.a){ //Press a to raise to max height; - 1 is in there just for testing.
+            robot.motorLiftLeft.setTargetPosition(maxArmCounts - 1);
+            robot.motorLiftRight.setTargetPosition(maxArmCounts - 1);
+
+            robot.motorLiftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.motorLiftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         }
            /*
             //code to extend arm out and in
