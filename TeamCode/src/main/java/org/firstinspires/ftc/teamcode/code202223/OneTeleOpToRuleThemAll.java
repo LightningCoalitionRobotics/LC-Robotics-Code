@@ -164,7 +164,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
             // LIFT UP / LIFT DOWN MOVEMENT (@ LINEAR SPEED)
             //when liftjoyL_Y is > than liftjoyL_X, the lift mechanism lifts up/down
             //speed magnitude is the absolute value of joystick position
-            if (gamepad2.left_stick_y > 0) {
+            if (gamepad2.left_stick_y > 0 && (robot.motorLiftLeft.getCurrentPosition() <= maxArmCounts && robot.motorLiftRight.getCurrentPosition() <= maxArmCounts )) {
                 //upward motion
                 //when left joy stick is moved upward and its y-axis position on cartesian plane is > than 0, lift moves upward
                 robot.motorLiftLeft.setPower(liftjoyL_Y);
@@ -172,7 +172,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
                 telemetry.update();
 
 
-            } else if (gamepad2.left_stick_y < 0) {
+            } else if (gamepad2.left_stick_y < 0 && (robot.motorLiftLeft.getCurrentPosition() >= minArmCounts && robot.motorLiftRight.getCurrentPosition() >= minArmCounts )) {
                 //downward motion
                 //when left joy stick is moved upward and its y-axis position on cartesian plane is < than 0, lift moved upward
                 //Motors have to running in opposite directions (L = up: ccw; down: cw || R = up: cw; down: ccw)
@@ -194,25 +194,27 @@ public class OneTeleOpToRuleThemAll extends OpMode {
     */
         //CLAW OPEN AND CLOSE MOVEMENT
         //When y, x, b, or a button is pressed, the claw opens or closes to the position that the servo was programed to move to.
-        if (gamepad2.y){
+       /* if (gamepad2.y){
             //moves servo in claw to -135 degrees
             robot.claw.setPosition(0);
             telemetry.addData("Servo Position", robot.claw.getPosition());
             telemetry.update();
-
-        } else if (gamepad2.x || gamepad2.b){
-            //moves servo in claw to 0 degrees or its default position
+*/
+          if (gamepad2.left_bumper){
+            //moves servo in claw to 0 degrees or its default position //OPEN CLAW
             robot.claw.setPosition(0.5);
             telemetry.addData("Servo Position", robot.claw.getPosition());
             telemetry.update();
 
-        } else if (gamepad2.a){
-            //moves servo in claw to 135 degrees
+        } else if (gamepad2.right_bumper){
+            //moves servo in claw to 135 degrees; CLOSE CLAW
             robot.claw.setPosition(1);
             telemetry.addData("Servo Position", robot.claw.getPosition());
             telemetry.update();
         }
 
+
     }
 }
+
 
