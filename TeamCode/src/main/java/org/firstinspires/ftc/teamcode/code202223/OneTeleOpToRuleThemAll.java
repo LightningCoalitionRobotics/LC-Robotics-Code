@@ -16,6 +16,11 @@ public class OneTeleOpToRuleThemAll extends OpMode {
 
     double speed = 0.5; // a double that stores a speed that can be increased or decreased using the dpad
     double speedArm = 0.0;
+    int minArmCounts = -1000000;
+    int maxArmCounts = 1000000;
+
+
+    //find the counts value when the arm is at max height
 
     /*  a double that stores the speed used when moving the arm with the y or a buttons
         used to make sure that the arm doesn't stop halfway up
@@ -26,6 +31,8 @@ public class OneTeleOpToRuleThemAll extends OpMode {
     public void loop() {
         // Main processing loop for the robot. The loop processes gamepad inputs for robot actions.
 
+        System.out.println("Right motor counts: " + robot.motorLiftRight.getCurrentPosition());
+        System.out.println("Left motor counts: " + robot.motorLiftLeft.getCurrentPosition());
         //arm gamepad: y/a to move arm to max/min height, b/x to open and close claw, dpad for more precise height changes
         double startTime = getRuntime();
 
@@ -140,11 +147,12 @@ public class OneTeleOpToRuleThemAll extends OpMode {
 
         // LIFT UP / LIFT DOWN MOVEMENT (@ CONSTANT SPEED).
         // when dpad is pressed up or down, lift moves up and down at a set speed.
+        //r = CW                l = CCW
         // later we will need to find a good speed to set lift to.
-        if (gamepad2.dpad_up) {
+        if (gamepad2.dpad_up && (robot.motorLiftLeft.getCurrentPosition() <= maxArmCounts && robot.motorLiftRight.getCurrentPosition() <= maxArmCounts )) {
             robot.motorLiftLeft.setPower(0.5);
             robot.motorLiftRight.setPower(0.5);
-        } else if (gamepad2.dpad_down) {
+        } else if (gamepad2.dpad_down && (robot.motorLiftLeft.getCurrentPosition() >= minArmCounts && robot.motorLiftRight.getCurrentPosition() >= minArmCounts )) {
             robot.motorLiftLeft.setPower(-0.5);
             robot.motorLiftRight.setPower(-0.5);
         } else {
