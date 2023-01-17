@@ -176,7 +176,7 @@ public class TeleOpCompetition extends OpMode {
             }
         }
         //code to extend arm out and in
-        if(gamepad2.right_stick_y != 0){
+      /*  if(gamepad2.right_stick_y != 0){
             if(gamepad2.right_stick_y > 0){
                 robot.motorExtendArm.setPower(extendArm);
             }
@@ -184,7 +184,7 @@ public class TeleOpCompetition extends OpMode {
                 robot.motorExtendArm.setPower(-extendArm);
             }
         }
-
+*/
 
         // Code for claw in progress
         if (gamepad2.y) {
@@ -197,6 +197,8 @@ public class TeleOpCompetition extends OpMode {
             //move to 135 degrees
             robot.claw.setPosition(1);
         }
+        
+
 
     }
-}
+   }
