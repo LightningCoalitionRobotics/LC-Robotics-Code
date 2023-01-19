@@ -27,7 +27,7 @@ public class BlueLeftSideCorner extends LinearOpMode {
         robot.drive(-.5, 11.97, 5);
         robot.lowerArm();
         robot.turn(.5, -45, 5);
-        robot.strafe(.5, 84, 5);
+        robot.strafe(.5, 60, 5);
         robot.drive(-.5,36,5);
 
     }

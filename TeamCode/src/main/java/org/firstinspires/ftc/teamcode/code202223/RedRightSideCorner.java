@@ -4,10 +4,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.hardware.HardwareGoobus;
 
-@Autonomous(name="BlueRightSideCorner", group = "autonomous")
+@Autonomous(name="RedRightSideCorner", group = "autonomous")
 
 
-public class BlueRightSideCorner extends LinearOpMode {
+public class RedRightSideCorner extends LinearOpMode {
     private HardwareGoobus robot = new HardwareGoobus(this);
 
     @Override
@@ -28,7 +28,7 @@ public class BlueRightSideCorner extends LinearOpMode {
         robot.drive(-.5, 11.97, 5);
         robot.lowerArm();
         robot.turn(.5, 45, 5);
-        robot.strafe(.5, 60, 5);
+        robot.strafe(.5, 84, 5);
         robot.drive(-.5, 24, 5);
     }
 }
