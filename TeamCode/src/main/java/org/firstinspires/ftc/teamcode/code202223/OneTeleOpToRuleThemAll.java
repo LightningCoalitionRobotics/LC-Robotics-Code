@@ -178,7 +178,8 @@ public class OneTeleOpToRuleThemAll extends OpMode {
             // LIFT UP / LIFT DOWN MOVEMENT (@ LINEAR SPEED)
             //when liftjoyL_Y is > than liftjoyL_X, the lift mechanism lifts up/down
             //speed magnitude is the absolute value of joystick position
-            if (gamepad2.left_stick_y > 0 && (robot.motorLiftLeft.getCurrentPosition() <= maxArmCounts && robot.motorLiftRight.getCurrentPosition() <= maxArmCounts )) {
+            // Note that the motorLiftRight encoder is counting DOWN as the arm raises, because it is opposite the left motor.
+            if (gamepad2.left_stick_y > 0 && (robot.motorLiftLeft.getCurrentPosition() <= 1200 && Math.abs(robot.motorLiftRight.getCurrentPosition()) <= 1200 )) {
                 //upward motion
                 //when left joy stick is moved upward and its y-axis position on cartesian plane is > than 0, lift moves upward
                 robot.motorLiftLeft.setPower(-liftjoyL_Y);
@@ -186,7 +187,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
 //                telemetry.update();
 
 
-            } else if (gamepad2.left_stick_y < 0 && (robot.motorLiftLeft.getCurrentPosition() >= minArmCounts && robot.motorLiftRight.getCurrentPosition() >= minArmCounts )) {
+            } else if (gamepad2.left_stick_y < 0 && (robot.motorLiftLeft.getCurrentPosition() >=0)  && Math.abs(robot.motorLiftRight.getCurrentPosition()) >= 0) {
                 //downward motion
                 //when left joy stick is moved upward and its y-axis position on cartesian plane is < than 0, lift moved upward
                 //Motors have to running in opposite directions (L = up: ccw; down: cw || R = up: cw; down: ccw)
@@ -194,14 +195,25 @@ public class OneTeleOpToRuleThemAll extends OpMode {
                 robot.motorLiftRight.setPower(-liftjoyL_Y);
 //                telemetry.update();
             }
-        } if (gamepad2.a){ //Press a to raise to max height; - 1 is in there just for testing.
-            // JWD - Note - should not change run mode during loop, because we initialize this differently up at top.
+            else{       // Joystick is not being touched -> then brake the arm so it doesn't fall.
+                robot.motorLiftLeft.setPower(0);
+                robot.motorLiftRight.setPower(0);
+            }
+        }
+        /*
+        if(gamepad2.a){ //Press a to raise to max height; - 1 is in there just for testing.
+            // JWD - Note - should not change run mode during loop, because we initialize this differently up at top
+
             robot.motorLiftLeft.setTargetPosition(maxArmCounts - 1);
             robot.motorLiftRight.setTargetPosition(maxArmCounts - 1);
 
             robot.motorLiftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.motorLiftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
         }
+        */
+
            /*
             //code to extend arm out and in
             if(gamepad2.right_stick_y != 0){
