@@ -23,7 +23,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
 
 
 
-    //find the counts value when the arm is at max height
+    //find the counts value when the arm is at max height!!!! Use to update code in Hardware for Autonomous code!!
 
     /*  a double that stores the speed used when moving the arm with the y or a buttons
         used to make sure that the arm doesn't stop halfway up
@@ -175,8 +175,8 @@ public class OneTeleOpToRuleThemAll extends OpMode {
             if (gamepad2.left_stick_y > 0 && (robot.motorLiftLeft.getCurrentPosition() <= maxArmCounts && robot.motorLiftRight.getCurrentPosition() <= maxArmCounts )) {
                 //upward motion
                 //when left joy stick is moved upward and its y-axis position on cartesian plane is > than 0, lift moves upward
-                robot.motorLiftLeft.setPower(liftjoyL_Y);
-                robot.motorLiftRight.setPower(-liftjoyL_Y);
+                robot.motorLiftLeft.setPower(-liftjoyL_Y);
+                robot.motorLiftRight.setPower(liftjoyL_Y);
                 telemetry.update();
 
 
@@ -184,8 +184,8 @@ public class OneTeleOpToRuleThemAll extends OpMode {
                 //downward motion
                 //when left joy stick is moved upward and its y-axis position on cartesian plane is < than 0, lift moved upward
                 //Motors have to running in opposite directions (L = up: ccw; down: cw || R = up: cw; down: ccw)
-                robot.motorLiftLeft.setPower(-liftjoyL_Y);
-                robot.motorLiftRight.setPower(liftjoyL_Y);
+                robot.motorLiftLeft.setPower(liftjoyL_Y);
+                robot.motorLiftRight.setPower(-liftjoyL_Y);
                 telemetry.update();
             }
         } if (gamepad2.a){ //Press a to raise to max height; - 1 is in there just for testing.
