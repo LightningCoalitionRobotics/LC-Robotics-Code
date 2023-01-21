@@ -241,11 +241,11 @@ public class HardwareGoobus extends Robot {
             motorBackRight.setPower(a * speed);
 
             while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-                telemetry.addData("Encoder Value of motorFrontRight:", motorFrontRight.getCurrentPosition());
-                telemetry.addData("Encoder Value of motorFrontLeft:", motorFrontLeft.getCurrentPosition());
-                telemetry.addData("Encoder Value of motorBackLeft:", motorBackLeft.getCurrentPosition());
-                telemetry.addData("Encoder Value of motorBackRight:", motorBackRight.getCurrentPosition());
-                telemetry.update();
+//                telemetry.addData("Encoder Value of motorFrontRight:", motorFrontRight.getCurrentPosition());
+//                telemetry.addData("Encoder Value of motorFrontLeft:", motorFrontLeft.getCurrentPosition());
+//                telemetry.addData("Encoder Value of motorBackLeft:", motorBackLeft.getCurrentPosition());
+//                telemetry.addData("Encoder Value of motorBackRight:", motorBackRight.getCurrentPosition());
+//                telemetry.update();
                 if (a > 0 && b > 0) {
                     if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
                         break;
@@ -340,11 +340,11 @@ public class HardwareGoobus extends Robot {
         motorBackRight.setPower(speed * correctDirection);
 
         while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-            telemetry.addData("Encoder Value of motorFrontRight:", motorFrontRight.getCurrentPosition());
-            telemetry.addData("Encoder Value of motorFrontLeft:", motorFrontLeft.getCurrentPosition());
-            telemetry.addData("Encoder Value of motorBackLeft:", motorBackLeft.getCurrentPosition());
-            telemetry.addData("Encoder Value of motorBackRight:", motorBackRight.getCurrentPosition());
-            telemetry.update();
+//            telemetry.addData("Encoder Value of motorFrontRight:", motorFrontRight.getCurrentPosition());
+//            telemetry.addData("Encoder Value of motorFrontLeft:", motorFrontLeft.getCurrentPosition());
+//            telemetry.addData("Encoder Value of motorBackLeft:", motorBackLeft.getCurrentPosition());
+//            telemetry.addData("Encoder Value of motorBackRight:", motorBackRight.getCurrentPosition());
+//            telemetry.update();
             if (speed > 0) {
                 if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
                     break;
@@ -418,11 +418,11 @@ public class HardwareGoobus extends Robot {
         motorLiftRight.setPower(speed * correctDirection);
 
         while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-            telemetry.addData("Encoder reading of motorLiftLeft:", motorLiftLeft.getCurrentPosition());
-            telemetry.addData( "    Encoder TARGET for motorLiftLeft ", motorLiftLeftTarget);
-            telemetry.addData("Encoder reading of motorLiftRight:", motorLiftRight.getCurrentPosition());
-            telemetry.addData( "   Encoder TARGET motorLiftRight: ", motorLiftRightTarget);
-            telemetry.update();
+//            telemetry.addData("Encoder reading of motorLiftLeft:", motorLiftLeft.getCurrentPosition());
+//            telemetry.addData( "    Encoder TARGET for motorLiftLeft ", motorLiftLeftTarget);
+//            telemetry.addData("Encoder reading of motorLiftRight:", motorLiftRight.getCurrentPosition());
+//            telemetry.addData( "   Encoder TARGET motorLiftRight: ", motorLiftRightTarget);
+//            telemetry.update();
             if (speed > 0) { // arm is moving upwards
                 if ((motorLiftLeft.getCurrentPosition() >= motorLiftLeftTarget) || (motorLiftRight.getCurrentPosition() <= motorLiftRightTarget)) {
                     break;

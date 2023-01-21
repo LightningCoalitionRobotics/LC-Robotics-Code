@@ -37,13 +37,13 @@ public class OneTeleOpToRuleThemAll extends OpMode {
 //        System.out.println("Right motor counts: " + robot.motorLiftRight.getCurrentPosition());
 //        System.out.println("Left motor counts: " + robot.motorLiftLeft.getCurrentPosition());
 
-        telemetry.addData("Counts:", "motorLiftRight=%d motorLiftLeft=%d",
+        telemetry.addData("Arm Counts:", "motorLiftRight=%d motorLiftLeft=%d",
                 robot.motorLiftRight.getCurrentPosition(), robot.motorLiftLeft.getCurrentPosition()); //adds telemetry data to phone for output
         telemetry.addData("Servo Position", robot.claw.getPosition());
-        telemetry.addData("Encoder Value of motorFrontRight:", robot.motorFrontRight.getCurrentPosition());
-        telemetry.addData("Encoder Value of motorFrontLeft:", robot.motorFrontLeft.getCurrentPosition());
-        telemetry.addData("Encoder Value of motorBackRight:", robot.motorBackRight.getCurrentPosition());
-        telemetry.addData("Encoder Value of motorBackLeft:", robot.motorBackLeft.getCurrentPosition());
+        telemetry.addData("Encoder reading of motorFrontRight:", robot.motorFrontRight.getCurrentPosition());
+        telemetry.addData("Encoder reading of motorFrontLeft:", robot.motorFrontLeft.getCurrentPosition());
+        telemetry.addData("Encoder reading of motorBackRight:", robot.motorBackRight.getCurrentPosition());
+        telemetry.addData("Encoder reading of motorBackLeft:", robot.motorBackLeft.getCurrentPosition());
         telemetry.update();
 
         double startTime = getRuntime();
@@ -101,7 +101,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
                 robot.motorBackRight.setPower(joyR_Y * speed);
                 robot.motorFrontLeft.setPower(joyR_Y * speed);
                 robot.motorFrontRight.setPower(joyR_Y * speed);
-                telemetry.update();
+//                telemetry.update();
             } else if (gamepad1.right_stick_y < 0) {
                 //straight backward
                 //when right joy stick is moved downward and its y-axis position on the cartesian plane is less than zero, robot moves backward
@@ -109,7 +109,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
                 robot.motorBackRight.setPower(-joyR_Y * speed);
                 robot.motorFrontLeft.setPower(-joyR_Y * speed);
                 robot.motorFrontRight.setPower(-joyR_Y * speed);
-                telemetry.update();
+//                telemetry.update();
             }
         } else if (joyR_X > joyR_Y) {
             // STRAFE LEFT / RIGHT MOTION
@@ -124,7 +124,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
                 robot.motorBackRight.setPower(joyR_X * speed);
                 robot.motorFrontLeft.setPower(joyR_X * speed);
                 robot.motorFrontRight.setPower(-joyR_X * speed);
-                telemetry.update();
+//                telemetry.update();
             } else if (gamepad1.right_stick_x > 0) {
                 //strafe left
                 //when right joy stick is moved left and its x-axis position on the cartesian plane is greater than than zero, robot strafes left
@@ -132,7 +132,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
                 robot.motorBackRight.setPower(-joyR_X * speed);
                 robot.motorFrontLeft.setPower(-joyR_X * speed);
                 robot.motorFrontRight.setPower(joyR_X * speed);
-                telemetry.update();
+//                telemetry.update();
             }
         } else if (gamepad1.left_stick_x > 0) {
             // TURN CLOCKWISE/COUNTERCLOCKWISE MOTION
@@ -183,7 +183,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
                 //when left joy stick is moved upward and its y-axis position on cartesian plane is > than 0, lift moves upward
                 robot.motorLiftLeft.setPower(-liftjoyL_Y);
                 robot.motorLiftRight.setPower(liftjoyL_Y);
-                telemetry.update();
+//                telemetry.update();
 
 
             } else if (gamepad2.left_stick_y < 0 && (robot.motorLiftLeft.getCurrentPosition() >= minArmCounts && robot.motorLiftRight.getCurrentPosition() >= minArmCounts )) {
@@ -192,7 +192,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
                 //Motors have to running in opposite directions (L = up: ccw; down: cw || R = up: cw; down: ccw)
                 robot.motorLiftLeft.setPower(liftjoyL_Y);
                 robot.motorLiftRight.setPower(-liftjoyL_Y);
-                telemetry.update();
+//                telemetry.update();
             }
         } if (gamepad2.a){ //Press a to raise to max height; - 1 is in there just for testing.
             // JWD - Note - should not change run mode during loop, because we initialize this differently up at top.
