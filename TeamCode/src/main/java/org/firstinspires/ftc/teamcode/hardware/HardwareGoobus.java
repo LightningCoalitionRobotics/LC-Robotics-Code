@@ -397,20 +397,59 @@ public class HardwareGoobus extends Robot {
     } //closes claw to a position that will secure cone in the claw
 
     public void open() {
-        claw.setPosition(0.0);
+        claw.setPosition(0.5);
     } //opens claw
 
-    public void liftArm() {
+    //lifts arm upward and downward depending on if speed is defined as negative or positive
+    public void LiftLowerArm(double speed, double dist, double timeout) {
+        int distInCounts = (int) (dist * COUNTS_PER_SIDE_INCH);  // Once again, converting from things we understand to the language the motor understands
+
+        int correctDirection;
+        if (speed > 0) {
+            correctDirection = 1;
+        } else {
+            correctDirection = -1;
+        }
+
+        int motorLiftLeftTarget = motorLiftLeft.getCurrentPosition() - (correctDirection * distInCounts);
+        int motorLiftRightTarget = motorLiftRight.getCurrentPosition() + (correctDirection * distInCounts);
+
+        motorLiftLeft.setPower(speed * correctDirection);
+        motorLiftRight.setPower(speed * correctDirection);
+
+        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
+            telemetry.addData("Encoder Value of motorLiftLeft:", motorLiftLeft.getCurrentPosition());
+            telemetry.addData("Encoder Value of motorLiftRight:", motorLiftRight.getCurrentPosition());
+            telemetry.update();
+            if (speed > 0) {
+                if (motorLiftLeft.getCurrentPosition() <= motorLiftLeftTarget || motorLiftRight.getCurrentPosition() <= motorLiftRightTarget) {
+                    break;
+                }
+            } else {
+                if (motorLiftLeft.getCurrentPosition() <= motorLiftLeftTarget || motorLiftRight.getCurrentPosition() <= motorLiftRightTarget) {
+                    break;
+                }
+            }
+            ((LinearOpMode) opMode).idle();
+        }
+
+        stop();
+    }
+}
+
+
+
+    /* public void liftArm() {
         motorLiftLeft.setPower(0.75);
         motorLiftRight.setPower(0.75);
-        //make it so that this stops eventually
+        //LIMITS NOT YET SET FOR LIFT!
     }
 
     public void lowerArm() {
         motorLiftLeft.setPower(-0.75);
         motorLiftRight.setPower(-0.75);
-        //lowers arm
+        //LIMITS NOT YET SET FOR LIFT!
     }
 }
-
+*/
 
