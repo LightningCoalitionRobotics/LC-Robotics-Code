@@ -15,13 +15,14 @@ public class RedLeftSideCorner extends LinearOpMode {
         waitForStart();
 
         //from origin of (36,9) or (108,135)
+        robot.LiftLowerArm(.5, 4, 5);
         robot.drive(.5, 3,  5);
         robot.turn(.5, 90, 5);
         robot.drive(.5, 24, 5);
         robot.turn(.5, -90, 5);
         robot.drive(.5, 24, 5);
         robot.turn(.5, 45, 5);
-        robot.LiftLowerArm(.5, 34, 5);
+        robot.LiftLowerArm(.5, 30, 5);
         robot.drive(.5, 11.97, 5);
         robot.open();
         robot.drive(-.5, 11.97, 5);
