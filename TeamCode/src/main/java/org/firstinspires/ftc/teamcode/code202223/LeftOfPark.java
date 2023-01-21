@@ -4,11 +4,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.hardware.HardwareGoobus;
 
-@Autonomous(name="LeftofPark", group = "autonomous")
+@Autonomous(name="LeftOfPark", group = "autonomous")
 
-public class RightofPark extends LinearOpMode {
+public class LeftOfPark extends LinearOpMode {
     private HardwareGoobus robot = new HardwareGoobus(this);
-
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
