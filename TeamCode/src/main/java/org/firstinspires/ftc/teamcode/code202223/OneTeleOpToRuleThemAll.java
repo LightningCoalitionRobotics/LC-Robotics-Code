@@ -34,15 +34,21 @@ public class OneTeleOpToRuleThemAll extends OpMode {
     public void loop() {
         // Main processing loop for the robot. The loop processes gamepad inputs for robot actions.
 
-        System.out.println("Right motor counts: " + robot.motorLiftRight.getCurrentPosition());
-        System.out.println("Left motor counts: " + robot.motorLiftLeft.getCurrentPosition());
+//        System.out.println("Right motor counts: " + robot.motorLiftRight.getCurrentPosition());
+//        System.out.println("Left motor counts: " + robot.motorLiftLeft.getCurrentPosition());
 
         telemetry.addData("Counts:", "motorLiftRight=%d motorLiftLeft=%d",
                 robot.motorLiftRight.getCurrentPosition(), robot.motorLiftLeft.getCurrentPosition()); //adds telemetry data to phone for output
+        telemetry.addData("Servo Position", robot.claw.getPosition());
+        telemetry.addData("Encoder Value of motorFrontRight:", robot.motorFrontRight.getCurrentPosition());
+        telemetry.addData("Encoder Value of motorFrontLeft:", robot.motorFrontLeft.getCurrentPosition());
+        telemetry.addData("Encoder Value of motorBackRight:", robot.motorBackRight.getCurrentPosition());
+        telemetry.addData("Encoder Value of motorBackLeft:", robot.motorBackLeft.getCurrentPosition());
+        telemetry.update();
 
         double startTime = getRuntime();
 
-        robot.claw.setPosition(1); //sets claw closed to start
+
 
         // Robot motion variables. We use linear control of the motors driving the wheels, based on displacement of
         // joystick controllers in gamepad1. Variable declarations and usage:
@@ -69,7 +75,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
 
         // LEGACY CODE TO BE CLEANED UP
         telemetry.addLine("double startTime = " + startTime);
-        telemetry.addLine("double speedArm = " + speedArm);
+//        telemetry.addLine("double speedArm = " + speedArm);
 
 
         // ROBOT MOTION CODE
@@ -189,12 +195,12 @@ public class OneTeleOpToRuleThemAll extends OpMode {
                 telemetry.update();
             }
         } if (gamepad2.a){ //Press a to raise to max height; - 1 is in there just for testing.
+            // JWD - Note - should not change run mode during loop, because we initialize this differently up at top.
             robot.motorLiftLeft.setTargetPosition(maxArmCounts - 1);
             robot.motorLiftRight.setTargetPosition(maxArmCounts - 1);
 
             robot.motorLiftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.motorLiftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
         }
            /*
             //code to extend arm out and in
@@ -218,14 +224,14 @@ public class OneTeleOpToRuleThemAll extends OpMode {
           if (gamepad2.left_bumper){
             //moves servo in claw to 0 degrees or its default position //OPEN CLAW
             robot.claw.setPosition(0.5);
-            telemetry.addData("Servo Position", robot.claw.getPosition());
-            telemetry.update();
+//            telemetry.addData("Servo Position", robot.claw.getPosition());
+//            telemetry.update();
 
         } else if (gamepad2.right_bumper){
             //moves servo in claw to 135 degrees; CLOSE CLAW
             robot.claw.setPosition(1);
-            telemetry.addData("Servo Position", robot.claw.getPosition());
-            telemetry.update();
+//            telemetry.addData("Servo Position", robot.claw.getPosition());
+//            telemetry.update();
         }
 
 
