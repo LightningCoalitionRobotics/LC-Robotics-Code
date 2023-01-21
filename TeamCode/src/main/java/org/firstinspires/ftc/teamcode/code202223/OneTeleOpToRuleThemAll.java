@@ -12,7 +12,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
     private HardwareGoobus robot = new HardwareGoobus(this);
 
     public void init() {
-        robot.init(hardwareMap);
+        robot.init(hardwareMap); //sets claw closed to start;
     }
 
     double speed = 0.5; // a double that stores a speed that can be increased or decreased using the dpad
@@ -46,7 +46,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
         telemetry.addData("Encoder reading of motorBackLeft:", robot.motorBackLeft.getCurrentPosition());
         telemetry.update();
 
-        double startTime = getRuntime();
+        // double startTime = getRuntime();
 
 
 
@@ -74,7 +74,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
         float clawjoyR_Y = Math.abs(gamepad2.right_stick_x);
 
         // LEGACY CODE TO BE CLEANED UP
-        telemetry.addLine("double startTime = " + startTime);
+       // telemetry.addLine("double startTime = " + startTime);
 //        telemetry.addLine("double speedArm = " + speedArm);
 
 
@@ -182,8 +182,8 @@ public class OneTeleOpToRuleThemAll extends OpMode {
             if (gamepad2.left_stick_y > 0 && (robot.motorLiftLeft.getCurrentPosition() <= 1200 && Math.abs(robot.motorLiftRight.getCurrentPosition()) <= 1200 )) {
                 //upward motion
                 //when left joy stick is moved upward and its y-axis position on cartesian plane is > than 0, lift moves upward
-                robot.motorLiftLeft.setPower(-liftjoyL_Y);
-                robot.motorLiftRight.setPower(liftjoyL_Y);
+                robot.motorLiftLeft.setPower(liftjoyL_Y);
+                robot.motorLiftRight.setPower(-liftjoyL_Y);
 //                telemetry.update();
 
 
@@ -191,8 +191,8 @@ public class OneTeleOpToRuleThemAll extends OpMode {
                 //downward motion
                 //when left joy stick is moved upward and its y-axis position on cartesian plane is < than 0, lift moved upward
                 //Motors have to running in opposite directions (L = up: ccw; down: cw || R = up: cw; down: ccw)
-                robot.motorLiftLeft.setPower(liftjoyL_Y);
-                robot.motorLiftRight.setPower(-liftjoyL_Y);
+                robot.motorLiftLeft.setPower(-liftjoyL_Y);
+                robot.motorLiftRight.setPower(liftjoyL_Y);
 //                telemetry.update();
             }
             else{       // Joystick is not being touched -> then brake the arm so it doesn't fall.
@@ -204,12 +204,13 @@ public class OneTeleOpToRuleThemAll extends OpMode {
         if(gamepad2.a){ //Press a to raise to max height; - 1 is in there just for testing.
             // JWD - Note - should not change run mode during loop, because we initialize this differently up at top
 
-            robot.motorLiftLeft.setTargetPosition(maxArmCounts - 1);
-            robot.motorLiftRight.setTargetPosition(maxArmCounts - 1);
+
+            robot.motorLiftLeft.setTargetPosition(1000);
+            robot.motorLiftRight.setTargetPosition(-1000);
 
             robot.motorLiftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.motorLiftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
+            telemetry.update();
 
         }
         */

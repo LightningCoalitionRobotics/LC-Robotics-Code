@@ -31,5 +31,6 @@ public class RedLeftSideCorner extends LinearOpMode {
         robot.strafe(-.5, 60, 5);
         robot.drive(-.5,36,5);
 
+        robot.strafe(.7, 36,5);
     }
 }
