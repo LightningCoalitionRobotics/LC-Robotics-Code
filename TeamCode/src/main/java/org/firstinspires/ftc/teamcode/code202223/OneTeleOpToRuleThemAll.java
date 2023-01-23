@@ -39,6 +39,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
         telemetry.addData("Encoder reading of motorFrontLeft:", robot.motorFrontLeft.getCurrentPosition());
         telemetry.addData("Encoder reading of motorBackRight:", robot.motorBackRight.getCurrentPosition());
         telemetry.addData("Encoder reading of motorBackLeft:", robot.motorBackLeft.getCurrentPosition());
+        telemetry.addData("Motor lifting joystick reading:", gamepad2.left_stick_y);
         telemetry.update();
 
         // double startTime = getRuntime();
@@ -168,21 +169,10 @@ public class OneTeleOpToRuleThemAll extends OpMode {
             //when liftjoyL_Y is > than liftjoyL_X, the lift mechanism lifts up/down
             //speed magnitude is the absolute value of joystick position
             // Note that the motorLiftRight encoder is counting DOWN as the arm raises, because it is opposite the left motor.
-            if (liftjoyL_Y> 0 ) {
-                //upward motion
-                //when left joy stick is moved upward and its y-axis position on cartesian plane is > than 0, lift moves upward
-                robot.motorLiftLeft.setPower(liftjoyL_Y/2);
-                robot.motorLiftRight.setPower(-liftjoyL_Y/2);
-//                telemetry.update();
 
-            } else if (liftjoyL_Y < 0) {
-                //downward motion
-                //when left joy stick is moved upward and its y-axis position on cartesian plane is < than 0, lift moved upward
-                //Motors have to running in opposite directions (L = up: ccw; down: cw || R = up: cw; down: ccw)
-                robot.motorLiftLeft.setPower(-liftjoyL_Y/2);
-                robot.motorLiftRight.setPower(liftjoyL_Y/2);
-//                telemetry.update();
-            }
+            robot.motorLiftLeft.setPower(-liftjoyL_Y/2);
+            robot.motorLiftRight.setPower(liftjoyL_Y/2);
+
         } else{       // Joystick is not being touched -> then brake the arm so it doesn't fall.
             robot.motorLiftLeft.setPower(0);
             robot.motorLiftRight.setPower(0);
