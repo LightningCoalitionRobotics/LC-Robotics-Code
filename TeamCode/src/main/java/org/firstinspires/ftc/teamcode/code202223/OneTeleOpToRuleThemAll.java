@@ -57,17 +57,13 @@ public class OneTeleOpToRuleThemAll extends OpMode {
         float joyL_Y = Math.abs(gamepad1.left_stick_y);
 
         //variables for lift
-        float liftjoyL_X = Math.abs(gamepad2.left_stick_x);
-        float liftjoyL_Y = Math.abs(gamepad2.left_stick_y);
-        float extendArm = Math.abs(gamepad2.right_stick_y);
+//        float liftjoyL_X = Math.abs(gamepad2.left_stick_x);
+        float liftjoyL_Y = gamepad2.left_stick_y;
+//        float extendArm = Math.abs(gamepad2.right_stick_y);
 
-        //variables for grab
-        float clawjoyR_X = Math.abs(gamepad2.right_stick_x);
-        float clawjoyR_Y = Math.abs(gamepad2.right_stick_x);
-
-        // LEGACY CODE TO BE CLEANED UP
-       // telemetry.addLine("double startTime = " + startTime);
-//        telemetry.addLine("double speedArm = " + speedArm);
+        //variables for grab -
+//        float clawjoyR_X = Math.abs(gamepad2.right_stick_x);
+//        float clawjoyR_Y = Math.abs(gamepad2.right_stick_x);
 
 
         // ROBOT MOTION CODE
@@ -167,19 +163,19 @@ public class OneTeleOpToRuleThemAll extends OpMode {
             robot.motorLiftRight.setPower(0.0);
         } */
 
-        if (gamepad2.left_stick_y != 0) {
+        if (liftjoyL_Y != 0) {
             // LIFT UP / LIFT DOWN MOVEMENT (@ LINEAR SPEED)
             //when liftjoyL_Y is > than liftjoyL_X, the lift mechanism lifts up/down
             //speed magnitude is the absolute value of joystick position
             // Note that the motorLiftRight encoder is counting DOWN as the arm raises, because it is opposite the left motor.
-            if (gamepad2.left_stick_y > 0 && (robot.motorLiftLeft.getCurrentPosition() <= 1200 && Math.abs(robot.motorLiftRight.getCurrentPosition()) <= 1200 )) {
+            if (liftjoyL_Y> 0 ) {
                 //upward motion
                 //when left joy stick is moved upward and its y-axis position on cartesian plane is > than 0, lift moves upward
                 robot.motorLiftLeft.setPower(liftjoyL_Y/2);
                 robot.motorLiftRight.setPower(-liftjoyL_Y/2);
 //                telemetry.update();
 
-            } else if (gamepad2.left_stick_y < 0 && (robot.motorLiftLeft.getCurrentPosition() >=0)  && Math.abs(robot.motorLiftRight.getCurrentPosition()) >= 0) {
+            } else if (liftjoyL_Y < 0) {
                 //downward motion
                 //when left joy stick is moved upward and its y-axis position on cartesian plane is < than 0, lift moved upward
                 //Motors have to running in opposite directions (L = up: ccw; down: cw || R = up: cw; down: ccw)
