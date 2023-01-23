@@ -175,16 +175,7 @@ public class TeleOpCompetition extends OpMode {
                 telemetry.update();
             }
         }
-        //code to extend arm out and in
-      /*  if(gamepad2.right_stick_y != 0){
-            if(gamepad2.right_stick_y > 0){
-                robot.motorExtendArm.setPower(extendArm);
-            }
-            else if (gamepad2.right_stick_y < 0){
-                robot.motorExtendArm.setPower(-extendArm);
-            }
-        }
-*/
+
 
         // Code for claw in progress
         if (gamepad2.y) {

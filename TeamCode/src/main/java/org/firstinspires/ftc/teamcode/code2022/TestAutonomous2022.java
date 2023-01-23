@@ -37,13 +37,13 @@ public class    TestAutonomous2022 extends LinearOpMode{
 
     private void teststrafe() {
         telemetry.addLine("Testing Strafe function: Left at half speed for 10 inches");
-        robot.strafe(0-.5,10,60);
+        robot.strafeLeft(0-.5,10,60);
 
         telemetry.addLine("Testing Strafe function: Right at half speed for 10 inches");
-        robot.strafe(0.5,10,60);
+        robot.strafeRight(0.5,10,60);
 
         telemetry.addLine("Testing Strafe function: Timeout after 5 seconds");
-        robot.strafe(.5,40,5);
+        robot.strafeRight(.5,40,5);
         //once again, speed and distance should always be positive so no need to test those
     }
 

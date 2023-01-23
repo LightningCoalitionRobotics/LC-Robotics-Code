@@ -13,7 +13,7 @@ public class LeftOfPark extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
 
-        robot.strafe(.7, 36,5);
+        robot.strafeRight(.7, 36,5);
 
     }
 }

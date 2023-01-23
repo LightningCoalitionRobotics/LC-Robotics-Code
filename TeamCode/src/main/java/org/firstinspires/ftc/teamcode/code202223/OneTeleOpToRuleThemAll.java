@@ -20,9 +20,6 @@ public class OneTeleOpToRuleThemAll extends OpMode {
     int minArmCounts = -1000000;
     int maxArmCounts = 1000000;
 
-
-
-
     //find the counts value when the arm is at max height!!!! Use to update code in Hardware for Autonomous code!!
 
     /*  a double that stores the speed used when moving the arm with the y or a buttons
@@ -34,8 +31,6 @@ public class OneTeleOpToRuleThemAll extends OpMode {
     public void loop() {
         // Main processing loop for the robot. The loop processes gamepad inputs for robot actions.
 
-//        System.out.println("Right motor counts: " + robot.motorLiftRight.getCurrentPosition());
-//        System.out.println("Left motor counts: " + robot.motorLiftLeft.getCurrentPosition());
 
         telemetry.addData("Arm Counts:", "motorLiftRight=%d motorLiftLeft=%d",
                 robot.motorLiftRight.getCurrentPosition(), robot.motorLiftLeft.getCurrentPosition()); //adds telemetry data to phone for output
@@ -47,9 +42,6 @@ public class OneTeleOpToRuleThemAll extends OpMode {
         telemetry.update();
 
         // double startTime = getRuntime();
-
-
-
         // Robot motion variables. We use linear control of the motors driving the wheels, based on displacement of
         // joystick controllers in gamepad1. Variable declarations and usage:
         //      joyR_X = right joystick, X axis. Used for strafe left/right motion input.
@@ -163,6 +155,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
         // when dpad is pressed up or down, lift moves up and down at a set speed.
         //r = CW                l = CCW
         // later we will need to find a good speed to set lift to.
+        /*
         if (gamepad2.dpad_up && (robot.motorLiftLeft.getCurrentPosition() <= maxArmCounts && robot.motorLiftRight.getCurrentPosition() <= maxArmCounts )) {
             robot.motorLiftLeft.setPower(0.5);
             robot.motorLiftRight.setPower(0.5);
@@ -172,7 +165,7 @@ public class OneTeleOpToRuleThemAll extends OpMode {
         } else {
             robot.motorLiftLeft.setPower(0.0);
             robot.motorLiftRight.setPower(0.0);
-        }
+        } */
 
         if (gamepad2.left_stick_y != 0) {
             // LIFT UP / LIFT DOWN MOVEMENT (@ LINEAR SPEED)
@@ -186,7 +179,6 @@ public class OneTeleOpToRuleThemAll extends OpMode {
                 robot.motorLiftRight.setPower(-liftjoyL_Y/2);
 //                telemetry.update();
 
-
             } else if (gamepad2.left_stick_y < 0 && (robot.motorLiftLeft.getCurrentPosition() >=0)  && Math.abs(robot.motorLiftRight.getCurrentPosition()) >= 0) {
                 //downward motion
                 //when left joy stick is moved upward and its y-axis position on cartesian plane is < than 0, lift moved upward
@@ -195,10 +187,9 @@ public class OneTeleOpToRuleThemAll extends OpMode {
                 robot.motorLiftRight.setPower(liftjoyL_Y/2);
 //                telemetry.update();
             }
-            else{       // Joystick is not being touched -> then brake the arm so it doesn't fall.
-                robot.motorLiftLeft.setPower(0);
-                robot.motorLiftRight.setPower(0);
-            }
+        } else{       // Joystick is not being touched -> then brake the arm so it doesn't fall.
+            robot.motorLiftLeft.setPower(0);
+            robot.motorLiftRight.setPower(0);
         }
         /*
         if(gamepad2.a){ //Press a to raise to max height; - 1 is in there just for testing.
@@ -237,14 +228,11 @@ public class OneTeleOpToRuleThemAll extends OpMode {
           if (gamepad2.left_bumper){
             //moves servo in claw to 0 degrees or its default position //OPEN CLAW
             robot.claw.setPosition(0.5);
-//            telemetry.addData("Servo Position", robot.claw.getPosition());
-//            telemetry.update();
+
 
         } else if (gamepad2.right_bumper){
             //moves servo in claw to 135 degrees; CLOSE CLAW
             robot.claw.setPosition(1);
-//            telemetry.addData("Servo Position", robot.claw.getPosition());
-//            telemetry.update();
         }
 
 

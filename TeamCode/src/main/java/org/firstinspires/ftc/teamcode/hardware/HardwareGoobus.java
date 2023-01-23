@@ -37,18 +37,11 @@ public class HardwareGoobus extends Robot {
     // All of the components we will need (e.g. motors, servos, sensors...) that are attached to the robot are declared here
 
     public DcMotor motorFrontLeft;
-
     public DcMotor motorFrontRight;
-
     public DcMotor motorBackLeft;
-
     public DcMotor motorBackRight;
-
     public DcMotor motorLiftLeft;
-
     public DcMotor motorLiftRight;
-
-    //public DcMotor motorExtendArm;
 
     public Servo claw;
 
@@ -66,11 +59,9 @@ public class HardwareGoobus extends Robot {
         motorBackRight = registerMotor("motorBackRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER); // Same problem as above with this motor
         motorLiftLeft = registerMotor("motorLiftLeft", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
         motorLiftRight = registerMotor("motorLiftRight", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
-        //motorExtendArm = registerMotor("motorExtendArm", DcMotorSimple.Direction.REVERSE, DcMotor.RunMode.RUN_USING_ENCODER);
         claw = registerServo("claw", 1.0f);
         motorLiftLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorLiftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //motorExtendArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     /**
@@ -86,12 +77,13 @@ public class HardwareGoobus extends Robot {
     public void drive(double speed, double dist, double timeout) {
         int distInCounts = (int) (dist * COUNTS_PER_FORWARD_INCH); //convert distance from human inches to motor counts
 
+        double initialTime = elapsedTime.seconds();
         // Target count value for each motor given dist, calculated from current position in counts plus (or minus if going backwards) distance in counts
 
-        int topRightTarget;
-        int topLeftTarget;
-        int bottomRightTarget;
-        int bottomLeftTarget;
+        int topRightTarget = motorFrontRight.getCurrentPosition();
+        int topLeftTarget = motorFrontLeft.getCurrentPosition();
+        int bottomRightTarget = motorBackRight.getCurrentPosition();
+        int bottomLeftTarget = motorBackLeft.getCurrentPosition();
 
         if (speed > 0) {
             topRightTarget = motorFrontRight.getCurrentPosition() + distInCounts;
@@ -105,11 +97,6 @@ public class HardwareGoobus extends Robot {
             bottomRightTarget = motorBackRight.getCurrentPosition() - distInCounts;
             bottomLeftTarget = motorBackLeft.getCurrentPosition() - distInCounts;
 
-        } else {
-            topRightTarget = motorFrontRight.getCurrentPosition();
-            topLeftTarget = motorFrontLeft.getCurrentPosition();
-            bottomRightTarget = motorBackRight.getCurrentPosition();
-            bottomLeftTarget = motorBackLeft.getCurrentPosition();
         }
 
         motorFrontRight.setPower(speed); //set motors to speed
@@ -117,12 +104,7 @@ public class HardwareGoobus extends Robot {
         motorBackRight.setPower(speed);
         motorBackLeft.setPower(speed);
 
-        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) { //while opmode active and timeout not reached
-//            telemetry.addData("Encoder Value of motorFrontRight:", motorFrontRight.getCurrentPosition());
-//            telemetry.addData("Encoder Value of motorFrontLeft:", motorFrontLeft.getCurrentPosition());
-//            telemetry.addData("Encoder Value of motorBackRight:", motorBackRight.getCurrentPosition());
-//            telemetry.addData("Encoder Value of motorBackLeft:", motorBackLeft.getCurrentPosition());
-//            telemetry.update();
+        while (((LinearOpMode) opMode).opModeIsActive() && (elapsedTime.seconds() < initialTime + timeout)) { //while opmode active and timeout not reached
             if (speed > 0) { // if you want the robot to go forwards (positive speed)
                 if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget) { //if at or beyond target
                     break; //break from while loop and move on to stop()
@@ -153,6 +135,7 @@ public class HardwareGoobus extends Robot {
         int angleInCounts = (int) (angle * COUNTS_PER_DEGREE);
         //changes the angle variable from degrees to counts
 
+        double initialTime = elapsedTime.seconds();
         int topRightTarget = motorFrontRight.getCurrentPosition() - angleInCounts;
         int topLeftTarget = motorFrontLeft.getCurrentPosition() + angleInCounts;
         int bottomLeftTarget = motorBackLeft.getCurrentPosition() + angleInCounts;
@@ -172,7 +155,7 @@ public class HardwareGoobus extends Robot {
             motorBackRight.setPower(-speed);
             //sets left motors to positive and right to negative for clockwise turn
         }
-        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) { //while opmode active and timenout not reached
+        while (((LinearOpMode) opMode).opModeIsActive() && (elapsedTime.seconds() < initialTime + timeout)){ //while opmode active and timenout not reached
 //            telemetry.addData("Encoder Value of motorFrontRight:", motorFrontRight.getCurrentPosition());
 //            telemetry.addData("Encoder Value of motorFrontLeft:", motorFrontLeft.getCurrentPosition());
 //            telemetry.addData("Encoder Value of motorBackLeft:", motorBackLeft.getCurrentPosition());
@@ -191,7 +174,6 @@ public class HardwareGoobus extends Robot {
         }
         stop();
         //tells motors to stop if they've reached target number of counts
-
     }
 
 
@@ -210,6 +192,7 @@ public class HardwareGoobus extends Robot {
         double b; // top right and bottom left
 
         double tangent = Math.tan(degrees);
+        double initialTime = elapsedTime.seconds();
 
         a = 1;
         // tan ø = a+b / a-b
@@ -240,11 +223,7 @@ public class HardwareGoobus extends Robot {
             motorBackLeft.setPower(b * speed);
             motorBackRight.setPower(a * speed);
 
-            while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-//                telemetry.addData("Encoder Value of motorFrontRight:", motorFrontRight.getCurrentPosition());
-//                telemetry.addData("Encoder Value of motorFrontLeft:", motorFrontLeft.getCurrentPosition());
-//                telemetry.addData("Encoder Value of motorBackLeft:", motorBackLeft.getCurrentPosition());
-//                telemetry.addData("Encoder Value of motorBackRight:", motorBackRight.getCurrentPosition());
+            while (((LinearOpMode) opMode).opModeIsActive() && (elapsedTime.seconds() < initialTime + timeout)){
 //                telemetry.update();
                 if (a > 0 && b > 0) {
                     if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
@@ -289,27 +268,6 @@ public class HardwareGoobus extends Robot {
         motorBackRight.setPower(0);
     } //stops only the motors so lift can continue to run
 
-   /* public void extend(){
-        grabber.setPosition(1.0);
-    } //extends grabber
-
-    public void unextend(){
-        grabber.setPosition(0.0);
-    } //retracts grabber
-
-    public void liftArm(){
-        arm.setPower(0.75);
-        //make it so that this stops eventually
-    }
-
-    // height of lvl 1 = 3.5 inches
-    // height of lvl 2 = 9 inches, lvl 3 = 15.5 inches
-
-    public void lowerArm() {
-        arm.setPower(.75);
-        //min height for arm
-
-    } // code commented out above was for arm and grabber from last year.
 
     /**
      * Strafe the robot left or right.
@@ -322,22 +280,17 @@ public class HardwareGoobus extends Robot {
     public void strafeRight(double speed, double dist, double timeout) {
         int distInCounts = (int) (dist * COUNTS_PER_SIDE_INCH);  // Once again, converting from things we understand to the language the motor understands
 
-        int topRightTarget = motorFrontRight.getCurrentPosition() - (1 * distInCounts);
-        int topLeftTarget = motorFrontLeft.getCurrentPosition() + (1 * distInCounts);
-        int bottomLeftTarget = motorBackLeft.getCurrentPosition() - (1 * distInCounts);
-        int bottomRightTarget = motorBackRight.getCurrentPosition() + (1 * distInCounts);
+        int topRightTarget = motorFrontRight.getCurrentPosition() -  distInCounts;
+        int topLeftTarget = motorFrontLeft.getCurrentPosition() + distInCounts;
+        int bottomLeftTarget = motorBackLeft.getCurrentPosition() -  distInCounts;
+        int bottomRightTarget = motorBackRight.getCurrentPosition() + distInCounts;
 
-        motorFrontRight.setPower(-speed * 1);
-        motorFrontLeft.setPower(speed * 1);
-        motorBackLeft.setPower(-speed * 1);
-        motorBackRight.setPower(speed * 1);
+        motorFrontRight.setPower(-speed);
+        motorFrontLeft.setPower(speed);
+        motorBackLeft.setPower(-speed);
+        motorBackRight.setPower(speed);
 
         while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-//            telemetry.addData("Encoder Value of motorFrontRight:", motorFrontRight.getCurrentPosition());
-//            telemetry.addData("Encoder Value of motorFrontLeft:", motorFrontLeft.getCurrentPosition());
-//            telemetry.addData("Encoder Value of motorBackLeft:", motorBackLeft.getCurrentPosition());
-//            telemetry.addData("Encoder Value of motorBackRight:", motorBackRight.getCurrentPosition());
-//            telemetry.update();
             if (speed > 0) {
                 if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
                     break;
@@ -355,23 +308,19 @@ public class HardwareGoobus extends Robot {
 
     public void strafeLeft(double speed, double dist, double timeout) {
         int distInCounts = (int) (dist * COUNTS_PER_SIDE_INCH);  // Once again, converting from things we understand to the language the motor understands
+        double initialTime = elapsedTime.seconds();
 
-        int topRightTarget = motorFrontRight.getCurrentPosition() + (1 * distInCounts);
-        int topLeftTarget = motorFrontLeft.getCurrentPosition() - (1 * distInCounts);
-        int bottomLeftTarget = motorBackLeft.getCurrentPosition() + (1 * distInCounts);
-        int bottomRightTarget = motorBackRight.getCurrentPosition() - (1 * distInCounts);
+        int topRightTarget = motorFrontRight.getCurrentPosition() + distInCounts;
+        int topLeftTarget = motorFrontLeft.getCurrentPosition() - distInCounts;
+        int bottomLeftTarget = motorBackLeft.getCurrentPosition() + distInCounts;
+        int bottomRightTarget = motorBackRight.getCurrentPosition() - distInCounts;
 
-        motorFrontRight.setPower(speed * 1);
-        motorFrontLeft.setPower(-speed * 1);
-        motorBackLeft.setPower(speed * 1);
-        motorBackRight.setPower(-speed * 1);
+        motorFrontRight.setPower(speed );
+        motorFrontLeft.setPower(-speed);
+        motorBackLeft.setPower(speed);
+        motorBackRight.setPower(-speed);
 
-        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-//            telemetry.addData("Encoder Value of motorFrontRight:", motorFrontRight.getCurrentPosition());
-//            telemetry.addData("Encoder Value of motorFrontLeft:", motorFrontLeft.getCurrentPosition());
-//            telemetry.addData("Encoder Value of motorBackLeft:", motorBackLeft.getCurrentPosition());
-//            telemetry.addData("Encoder Value of motorBackRight:", motorBackRight.getCurrentPosition());
-//            telemetry.update();
+        while (((LinearOpMode) opMode).opModeIsActive() && (elapsedTime.seconds() < initialTime + timeout)) {
             if (speed > 0) {
                 if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
                     break;
@@ -383,40 +332,9 @@ public class HardwareGoobus extends Robot {
             }
             ((LinearOpMode) opMode).idle();
         }
-
         stop();
     }
 
-    /*code to extend and unextend the arm
-    to unextend, plug in a negative dist*/
-    /*
-    public void extend(double dist, double timeout) {
-        int distInCounts = (int) (dist * COUNTS_PER_SIDE_INCH);  // Once again, converting from things we understand to the language the motor understands
-
-        int correctDirection;
-        if (dist > 0) {
-            correctDirection = 1;
-        } else {
-            correctDirection = -1;
-        }
-
-        int targetCounts = motorExtendArm.getCurrentPosition() + distInCounts;
-        motorExtendArm.setPower(1.0 * correctDirection);
-
-        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-            if (dist > 0) {
-                if (motorExtendArm.getCurrentPosition() >= targetCounts) {
-                    break;
-                }
-            } else {
-                if (motorExtendArm.getCurrentPosition() <= targetCounts) {
-                    break;
-                }
-            }
-            ((LinearOpMode) opMode).idle();
-        }
-    }
-  */
 
     public void close() {
         claw.setPosition(1.0);
@@ -429,6 +347,7 @@ public class HardwareGoobus extends Robot {
     //lifts arm upward and downward depending on if speed is defined as negative or positive
     public void LiftLowerArm(double speed, double dist, double timeout) {
         int distInCounts = (int) (dist * COUNTS_PER_SIDE_INCH);  // Once again, converting from things we understand to the language the motor understands
+        double initialTime = elapsedTime.seconds();
 
         int correctDirection = 1;
         if (speed > 0) {
@@ -443,12 +362,7 @@ public class HardwareGoobus extends Robot {
         motorLiftLeft.setPower(speed * correctDirection);
         motorLiftRight.setPower(speed * correctDirection);
 
-        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
-//            telemetry.addData("Encoder reading of motorLiftLeft:", motorLiftLeft.getCurrentPosition());
-//            telemetry.addData( "    Encoder TARGET for motorLiftLeft ", motorLiftLeftTarget);
-//            telemetry.addData("Encoder reading of motorLiftRight:", motorLiftRight.getCurrentPosition());
-//            telemetry.addData( "   Encoder TARGET motorLiftRight: ", motorLiftRightTarget);
-//            telemetry.update();
+        while (((LinearOpMode) opMode).opModeIsActive() && (elapsedTime.seconds() < initialTime + timeout)) {
             if (speed > 0) { // arm is moving upwards
                 if ((motorLiftLeft.getCurrentPosition() >= motorLiftLeftTarget) || (motorLiftRight.getCurrentPosition() <= motorLiftRightTarget)) {
                     break;
@@ -460,24 +374,6 @@ public class HardwareGoobus extends Robot {
             }
             ((LinearOpMode) opMode).idle();
         }
-
         stop();
     }
 }
-
-
-
-    /* public void liftArm() {
-        motorLiftLeft.setPower(0.75);
-        motorLiftRight.setPower(0.75);
-        //LIMITS NOT YET SET FOR LIFT!
-    }
-
-    public void lowerArm() {
-        motorLiftLeft.setPower(-0.75);
-        motorLiftRight.setPower(-0.75);
-        //LIMITS NOT YET SET FOR LIFT!
-    }
-}
-*/
-
