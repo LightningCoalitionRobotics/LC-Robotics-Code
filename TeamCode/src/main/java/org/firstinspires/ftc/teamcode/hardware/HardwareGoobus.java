@@ -319,25 +319,18 @@ public class HardwareGoobus extends Robot {
      */
 
 
-    public void strafe(double speed, double dist, double timeout) {
+    public void strafeRight(double speed, double dist, double timeout) {
         int distInCounts = (int) (dist * COUNTS_PER_SIDE_INCH);  // Once again, converting from things we understand to the language the motor understands
 
-        int correctDirection;
-        if (speed > 0) {
-            correctDirection = 1;
-        } else {
-            correctDirection = -1;
-        }
+        int topRightTarget = motorFrontRight.getCurrentPosition() - (1 * distInCounts);
+        int topLeftTarget = motorFrontLeft.getCurrentPosition() + (1 * distInCounts);
+        int bottomLeftTarget = motorBackLeft.getCurrentPosition() - (1 * distInCounts);
+        int bottomRightTarget = motorBackRight.getCurrentPosition() + (1 * distInCounts);
 
-        int topRightTarget = motorFrontRight.getCurrentPosition() - (correctDirection * distInCounts);
-        int topLeftTarget = motorFrontLeft.getCurrentPosition() + (correctDirection * distInCounts);
-        int bottomLeftTarget = motorBackLeft.getCurrentPosition() - (correctDirection * distInCounts);
-        int bottomRightTarget = motorBackRight.getCurrentPosition() + (correctDirection * distInCounts);
-
-        motorFrontRight.setPower(-speed * correctDirection);
-        motorFrontLeft.setPower(speed * correctDirection);
-        motorBackLeft.setPower(-speed * correctDirection);
-        motorBackRight.setPower(speed * correctDirection);
+        motorFrontRight.setPower(-speed * 1);
+        motorFrontLeft.setPower(speed * 1);
+        motorBackLeft.setPower(-speed * 1);
+        motorBackRight.setPower(speed * 1);
 
         while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
 //            telemetry.addData("Encoder Value of motorFrontRight:", motorFrontRight.getCurrentPosition());
@@ -360,6 +353,39 @@ public class HardwareGoobus extends Robot {
         stop();
     }
 
+    public void strafeLeft(double speed, double dist, double timeout) {
+        int distInCounts = (int) (dist * COUNTS_PER_SIDE_INCH);  // Once again, converting from things we understand to the language the motor understands
+
+        int topRightTarget = motorFrontRight.getCurrentPosition() + (1 * distInCounts);
+        int topLeftTarget = motorFrontLeft.getCurrentPosition() - (1 * distInCounts);
+        int bottomLeftTarget = motorBackLeft.getCurrentPosition() + (1 * distInCounts);
+        int bottomRightTarget = motorBackRight.getCurrentPosition() - (1 * distInCounts);
+
+        motorFrontRight.setPower(speed * 1);
+        motorFrontLeft.setPower(-speed * 1);
+        motorBackLeft.setPower(speed * 1);
+        motorBackRight.setPower(-speed * 1);
+
+        while (((LinearOpMode) opMode).opModeIsActive() && elapsedTime.seconds() < timeout) {
+//            telemetry.addData("Encoder Value of motorFrontRight:", motorFrontRight.getCurrentPosition());
+//            telemetry.addData("Encoder Value of motorFrontLeft:", motorFrontLeft.getCurrentPosition());
+//            telemetry.addData("Encoder Value of motorBackLeft:", motorBackLeft.getCurrentPosition());
+//            telemetry.addData("Encoder Value of motorBackRight:", motorBackRight.getCurrentPosition());
+//            telemetry.update();
+            if (speed > 0) {
+                if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget) {
+                    break;
+                }
+            } else {
+                if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() <= topLeftTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget) {
+                    break;
+                }
+            }
+            ((LinearOpMode) opMode).idle();
+        }
+
+        stop();
+    }
 
     /*code to extend and unextend the arm
     to unextend, plug in a negative dist*/
