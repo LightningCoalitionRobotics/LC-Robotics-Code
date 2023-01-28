@@ -170,8 +170,8 @@ public class OneTeleOpToRuleThemAll extends OpMode {
             //speed magnitude is the absolute value of joystick position
             // Note that the motorLiftRight encoder is counting DOWN as the arm raises, because it is opposite the left motor.
 
-            robot.motorLiftLeft.setPower(-liftjoyL_Y/2);
-            robot.motorLiftRight.setPower(liftjoyL_Y/2);
+            robot.motorLiftLeft.setPower(-liftjoyL_Y * .33);
+            robot.motorLiftRight.setPower(liftjoyL_Y * .33);
 
         } else{       // Joystick is not being touched -> then brake the arm so it doesn't fall.
             robot.motorLiftLeft.setPower(0);
