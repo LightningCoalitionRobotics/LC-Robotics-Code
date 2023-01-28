@@ -33,7 +33,16 @@ public abstract class Robot {
      * @param dist In inches, the distance the robot should travel.
      * @param timeout In seconds, how long the robot should attempt to reach the target distance.
      */
-    public abstract void drive(double speed, double dist, double timeout);
+    public abstract void driveForward(double speed, double dist, double timeout);
+
+    /**
+     * Use the drive motors to move the robot in a straight line.
+     *
+     * @param speed A value from -1 to 1, a higher absolute value meaning a higher speed.
+     * @param dist In inches, the distance the robot should travel.
+     * @param timeout In seconds, how long the robot should attempt to reach the target distance.
+     */
+    public abstract void driveBackwards(double speed, double dist, double timeout);
 
     /**
      * Use the drive motors to turn the robot in place.
@@ -42,6 +51,7 @@ public abstract class Robot {
      * @param angle In degrees, how far the robot should turn. A positive amount is counterclockwise.
      * @param timeout In seconds, how long the robot should attempt to reach the target angle.
      */
+
     public abstract void turn(double speed, double angle, double timeout);
 
     /**

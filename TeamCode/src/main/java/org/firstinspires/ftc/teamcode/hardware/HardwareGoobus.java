@@ -73,8 +73,7 @@ public class HardwareGoobus extends Robot {
      */
 
 
-    @Override
-    public void drive(double speed, double dist, double timeout) {
+    public void driveForward(double speed, double dist, double timeout) {
         int distInCounts = (int) (dist * COUNTS_PER_FORWARD_INCH); //convert distance from human inches to motor counts
 
         double initialTime = elapsedTime.seconds();
@@ -85,19 +84,12 @@ public class HardwareGoobus extends Robot {
         int bottomRightTarget = motorBackRight.getCurrentPosition();
         int bottomLeftTarget = motorBackLeft.getCurrentPosition();
 
-        if (speed > 0) {
-            topRightTarget = motorFrontRight.getCurrentPosition() + distInCounts;
-            topLeftTarget = motorFrontLeft.getCurrentPosition() + distInCounts;
-            bottomRightTarget = motorBackRight.getCurrentPosition() + distInCounts;
-            bottomLeftTarget = motorBackLeft.getCurrentPosition() + distInCounts;
+        topRightTarget = motorFrontRight.getCurrentPosition() + distInCounts;
+        topLeftTarget = motorFrontLeft.getCurrentPosition() + distInCounts;
+        bottomRightTarget = motorBackRight.getCurrentPosition() + distInCounts;
+        bottomLeftTarget = motorBackLeft.getCurrentPosition() + distInCounts;
 
-        } else if (speed < 0) {
-            topRightTarget = motorFrontRight.getCurrentPosition() - distInCounts;
-            topLeftTarget = motorFrontLeft.getCurrentPosition() - distInCounts;
-            bottomRightTarget = motorBackRight.getCurrentPosition() - distInCounts;
-            bottomLeftTarget = motorBackLeft.getCurrentPosition() - distInCounts;
 
-        }
 
         motorFrontRight.setPower(speed); //set motors to speed
         motorFrontLeft.setPower(speed);
@@ -105,24 +97,42 @@ public class HardwareGoobus extends Robot {
         motorBackLeft.setPower(speed);
 
         while (((LinearOpMode) opMode).opModeIsActive() && (elapsedTime.seconds() < initialTime + timeout)) { //while opmode active and timeout not reached
-            if (speed > 0) { // if you want the robot to go forwards (positive speed)
                 if (motorFrontRight.getCurrentPosition() >= topRightTarget || motorFrontLeft.getCurrentPosition() >= topLeftTarget || motorBackRight.getCurrentPosition() >= bottomRightTarget || motorBackLeft.getCurrentPosition() >= bottomLeftTarget) { //if at or beyond target
                     break; //break from while loop and move on to stop()
                 } else {
                     ((LinearOpMode) opMode).idle();
                 }
-            } else if (speed < 0) { // if you want the robot to go backwards (negative speed)
-                if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorBackRight.getCurrentPosition() <= topLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget) { //if at or beyond target
-                    break; //break from while loop and move on to stop()
-                } else {
-                    ((LinearOpMode) opMode).idle();
-                }
-            }
             ((LinearOpMode) opMode).idle();
         }
         stopMotor();
     }
 
+    public void driveBackwards(double speed, double dist, double timeout) {
+        int distInCounts = (int) (dist * COUNTS_PER_FORWARD_INCH); //convert distance from human inches to motor counts
+
+        double initialTime = elapsedTime.seconds();
+        // Target count value for each motor given dist, calculated from current position in counts plus (or minus if going backwards) distance in counts
+
+        int topRightTarget = motorFrontRight.getCurrentPosition();
+        int topLeftTarget = motorFrontLeft.getCurrentPosition();
+        int bottomRightTarget = motorBackRight.getCurrentPosition();
+        int bottomLeftTarget = motorBackLeft.getCurrentPosition();
+
+        topRightTarget = motorFrontRight.getCurrentPosition() - distInCounts;
+        topLeftTarget = motorFrontLeft.getCurrentPosition() - distInCounts;
+        bottomRightTarget = motorBackRight.getCurrentPosition() - distInCounts;
+        bottomLeftTarget = motorBackLeft.getCurrentPosition() - distInCounts;
+
+        while (((LinearOpMode) opMode).opModeIsActive() && (elapsedTime.seconds() < initialTime + timeout)) { //while opmode active and timeout not reached
+            if (motorFrontRight.getCurrentPosition() <= topRightTarget || motorBackRight.getCurrentPosition() <= topLeftTarget || motorBackRight.getCurrentPosition() <= bottomRightTarget || motorBackLeft.getCurrentPosition() <= bottomLeftTarget) { //if at or beyond target
+                break; //break from while loop and move on to stop()
+            } else {
+                ((LinearOpMode) opMode).idle();
+            }
+            ((LinearOpMode) opMode).idle();
+        }
+        stopMotor();
+    }
     /**
      * @param speed   A value from 0 to 1, a higher value meaning a higher speed.
      * @param angle   In degrees, how far the robot should turn. A positive amount is clockwise.
@@ -246,7 +256,7 @@ public class HardwareGoobus extends Robot {
 
             stopMotor();
         } else { // if degrees == 90
-            drive(speed, dist, timeout); // this is because plugging 90 into driveAngle returns an angle (imagine a triangle with two 90 degree angles, obviously not possible), so we just use drive
+            driveForward(speed, dist, timeout); // this is because plugging 90 into driveAngle returns an angle (imagine a triangle with two 90 degree angles, obviously not possible), so we just use drive
         }
     }
 
