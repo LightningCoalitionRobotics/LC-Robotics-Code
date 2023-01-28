@@ -73,7 +73,7 @@ public class HardwareGoobus extends Robot {
      */
 
 
-    public void driveForward(double speed, double dist, double timeout) {
+    public void drive(double speed, double dist, double timeout) {
         int distInCounts = (int) (dist * COUNTS_PER_FORWARD_INCH); //convert distance from human inches to motor counts
 
         double initialTime = elapsedTime.seconds();
@@ -107,7 +107,7 @@ public class HardwareGoobus extends Robot {
         stopMotor();
     }
 
-    public void driveBackwards(double speed, double dist, double timeout) {
+    /*public void driveBackwards(double speed, double dist, double timeout) {
         int distInCounts = (int) (dist * COUNTS_PER_FORWARD_INCH); //convert distance from human inches to motor counts
 
         double initialTime = elapsedTime.seconds();
@@ -256,7 +256,7 @@ public class HardwareGoobus extends Robot {
 
             stopMotor();
         } else { // if degrees == 90
-            driveForward(speed, dist, timeout); // this is because plugging 90 into driveAngle returns an angle (imagine a triangle with two 90 degree angles, obviously not possible), so we just use drive
+            drive(speed, dist, timeout); // this is because plugging 90 into driveAngle returns an angle (imagine a triangle with two 90 degree angles, obviously not possible), so we just use drive
         }
     }
 

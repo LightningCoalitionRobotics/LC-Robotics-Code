@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  *
  * @author Noah Simon
  */
+
 public class HardwareLilPanini extends Robot {
 
     // These are constants that we have experimentally determined, relating counts (the way an encoder measures movement) to inches or degrees (the way we understand movement)
