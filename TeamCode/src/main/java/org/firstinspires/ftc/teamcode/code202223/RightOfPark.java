@@ -4,9 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.hardware.HardwareGoobus;
 
-@Autonomous(name="GoBack", group = "autonomous")
+@Autonomous(name="RightOfPark", group = "autonomous")
 
-public class GoBack extends LinearOpMode {
+public class RightOfPark extends LinearOpMode {
     private HardwareGoobus robot = new HardwareGoobus(this);
 
     @Override
@@ -14,7 +14,7 @@ public class GoBack extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
 
-        robot.drive(-.7, 33,5);
+        robot.strafeLeft(.7, 33,5);
 
     }
 }
